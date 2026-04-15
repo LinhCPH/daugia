@@ -142,8 +142,16 @@
                 <input type="text" id="ignInput" placeholder="Nhập tên nhân vật của bạn">
             </div>
             <div class="payment-box" id="paymentOptions"></div>
-            <button class="confirm-btn" onclick="submitOrder()">XÁC NHẬN GỬI</button>
+            <button class="confirm-btn" onclick="submitOrder()">ĐẶT HÀNG</button>
             <button class="cancel-btn" onclick="closeOrderModal()">Quay lại</button>
+        </div>
+    </div>
+
+    <div id="noticeModal" class="order-modal" style="z-index: 3000;">
+        <div class="order-content" style="text-align: center;">
+            <h2 style="color: #d4af37; margin-bottom: 15px;">LẠC VÂN THƯƠNG HỘI</h2>
+            <p id="noticeMessage" style="font-weight: bold; color: #333; margin-bottom: 20px;"></p>
+            <button class="confirm-btn" onclick="closeNotice()">ĐÃ HIỂU</button>
         </div>
     </div>
 
@@ -221,11 +229,26 @@
             document.getElementById('ignInput').value = '';
         }
 
+        // HÀM HIỂN THỊ THÔNG BÁO RIÊNG
+        function showNotice(msg) {
+            document.getElementById('noticeMessage').innerText = msg;
+            document.getElementById('noticeModal').style.display = 'flex';
+        }
+
+        function closeNotice() {
+            document.getElementById('noticeModal').style.display = 'none';
+        }
+
         function submitOrder() {
             const discordName = document.getElementById('discordInput').value.trim();
             const ign = document.getElementById('ignInput').value.trim() || "Không điền";
             const payType = document.querySelector('input[name="payType"]:checked')?.value;
-            if (!discordName) { alert("Bạn bắt buộc phải nhập tên Discord để chúng tôi liên hệ!"); return; }
+            
+            if (!discordName) { 
+                showNotice("Bạn bắt buộc phải nhập tên Discord để chúng tôi liên hệ!"); 
+                return; 
+            }
+
             const data = {
                 content: "🔔 **YÊU CẦU MUA HÀNG MỚI!**",
                 embeds: [{
@@ -242,9 +265,13 @@
                     timestamp: new Date()
                 }]
             };
+
             fetch(DISCORD_WEBHOOK_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
-            .then(() => { alert("Yêu cầu đã được gửi! LVT sẽ chủ động nhắn tin cho bạn qua Discord."); closeOrderModal(); })
-            .catch(() => alert("Lỗi kết nối!"));
+            .then(() => { 
+                showNotice("Yêu cầu đã được gửi! LVT sẽ chủ động nhắn tin cho bạn qua Discord."); 
+                closeOrderModal(); 
+            })
+            .catch(() => showNotice("Lỗi kết nối!"));
         }
 
         function openImg(src) {
