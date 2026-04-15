@@ -10,6 +10,7 @@
             --accent-color: #e74c3c;
             --bg-color: #f4f7f6;
             --card-bg: #ffffff;
+            --modal-bg: rgba(0, 0, 0, 0.85); /* Nền mờ khi phóng to ảnh */
         }
 
         body {
@@ -42,6 +43,7 @@
             transition: transform 0.3s ease;
             display: flex;
             flex-direction: column;
+            cursor: pointer; /* Đổi con trỏ chuột thành hình bàn tay để báo hiệu bấm được */
         }
 
         .product-card:hover {
@@ -51,7 +53,7 @@
         .product-image {
             width: 100%;
             height: 200px;
-            object-fit: cover; /* Giúp ảnh luôn vuông vắn dù gốc là kích thước nào */
+            object-fit: cover; 
             background-color: #ddd;
         }
 
@@ -61,16 +63,49 @@
         }
 
         .product-price {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
             color: var(--accent-color);
-            margin: 10px 0;
+            margin: 5px 0;
         }
 
         .product-desc {
             font-size: 0.9rem;
             color: #666;
             line-height: 1.4;
+        }
+
+        /* --- PHẦN MỚI: MODAL PHÓNG TO ẢNH --- */
+        .modal {
+            display: none; /* Mặc định ẩn */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--modal-bg);
+            justify-content: center;
+            align-items: center;
+            cursor: zoom-out; /* Bấm vào vùng trống để thoát */
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            cursor: default;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
         }
 
         /* Responsive cho điện thoại */
@@ -87,73 +122,35 @@
 
     <h1>DANH SÁCH MẶT HÀNG</h1>
 
-    <div class="grid-container" id="product-grid">
-        </div>
+    <div class="grid-container" id="product-grid"></div>
+
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <span class="close-btn">&times;</span>
+        <img class="modal-content" id="fullImage">
+    </div>
 
     <script>
-        // ================= SCETION TÙY CHỈNH DỄ DÀNG =================
-        // Bạn chỉ cần thêm hoặc sửa các dòng ở dưới đây:
+        // Danh sách mặt hàng của bạn
         const products = [
-            {
-                image: "html.png",
-                price: "600.000 VNĐ",
-                desc: "Hoàng Thiên Mộng Liêm +10 1 dòng thần - Tồn kho: 2"
-            },
-            {
-                image: "daychuyentheluc", // Thay link ảnh vào đây
-                price: "100.000 VNĐ/ 40.000.000 linh thạch",
-                desc: "Pháo bảo Dây chuyền thể lực - Tồn kho: 5"
-            },
-            {
-                image: "nguclongthiet.png",
-                price: "250.000 VNĐ",
-                desc: "Pháo bảo Ngục Long Thiết +20 - Tồn kho: 1"
-            },
-            {
-                image: "huyetlecothan",
-                price: "250.000 VNĐ",
-                desc: "Pháp bảo Huyết lệ Cổ Thần - Tồn kho: 1"
-            },
-                        {
-                image: "minhquang.png",
-                price: "400.000 VNĐ",
-                desc: "Set giáp Minh Quang - Tồn kho: 1"
-            },
-                        {
-                image: "setlamhoang",
-                price: "550.000 VNĐ",
-                desc: "Set giáp Lam Hoàng - Tồn kho: 1"
-            },
-                        {
-                image: "hackiem.png",
-                price: "80.000 VNĐ / 25.000.000 linh thạch",
-                desc: "Hắc Kiếm - Tồn kho: 2"
-            },
-                                    {
-                image: "thiencolinhtich",
-                price: "80.000 VNĐ / 25.000.000 linh thạch",
-                desc: "Pháp bảo Thiên cổ linh tịch - Tồn kho: 2"
-            },
-
-                                    {
-                image: "sethoangkim",
-                price: "100.000 VNĐ",
-                desc: "Set giáp Hoàng Kim - Tồn kho: 1"
-            },
-                                    {
-                image: "hulinh.png",
-                price: "140.000 VNĐ",
-                desc: "Set giáp Hư Linh - Tồn kho: 1"
-            },
-            // Muốn thêm món mới? Bạn chỉ việc copy cụm { ... } ở trên rồi dán xuống dưới.
+            { image: "html.png", price: "600.000 VNĐ", desc: "Hoàng Thiên Mộng Liêm +10 1 dòng thần - Tồn kho: 2" },
+            { image: "daychuyentheluc", price: "100.000 VNĐ/ 40.000.000 linh thạch", desc: "Pháo bảo Dây chuyền thể lực - Tồn kho: 5" },
+            { image: "nguclongthiet.png", price: "250.000 VNĐ", desc: "Pháo bảo Ngục Long Thiết +20 - Tồn kho: 1" },
+            { image: "huyetlecothan", price: "250.000 VNĐ", desc: "Pháp bảo Huyết lệ Cổ Thần - Tồn kho: 1" },
+            { image: "minhquang.png", price: "400.000 VNĐ", desc: "Set giáp Minh Quang - Tồn kho: 1" },
+            { image: "setlamhoang", price: "550.000 VNĐ", desc: "Set giáp Lam Hoàng - Tồn kho: 1" },
+            { image: "hackiem.png", price: "80.000 VNĐ / 25.000.000 linh thạch", desc: "Hắc Kiếm - Tồn kho: 2" },
+            { image: "thiencolinhtich", price: "80.000 VNĐ / 25.000.000 linh thạch", desc: "Pháp bảo Thiên cổ linh tịch - Tồn kho: 2" },
+            { image: "sethoangkim", price: "100.000 VNĐ", desc: "Set giáp Hoàng Kim - Tồn kho: 1" },
+            { image: "hulinh.png", price: "140.000 VNĐ", desc: "Set giáp Hư Linh - Tồn kho: 1" }
         ];
-        // =============================================================
 
         const grid = document.getElementById('product-grid');
+        const modal = document.getElementById('imageModal');
+        const fullImg = document.getElementById('fullImage');
 
         function renderProducts() {
             grid.innerHTML = products.map(item => `
-                <div class="product-card">
+                <div class="product-card" onclick="openModal('${item.image}')">
                     <img src="${item.image}" alt="Sản phẩm" class="product-image">
                     <div class="product-info">
                         <div class="product-price">${item.price}</div>
@@ -161,6 +158,17 @@
                     </div>
                 </div>
             `).join('');
+        }
+
+        // Hàm mở modal
+        function openModal(imageSrc) {
+            modal.style.display = "flex";
+            fullImg.src = imageSrc;
+        }
+
+        // Hàm đóng modal
+        function closeModal() {
+            modal.style.display = "none";
         }
 
         renderProducts();
