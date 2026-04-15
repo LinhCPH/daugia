@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh Mục Đấu Giá / Mặt Hàng - Sàn Đấu Giá Số 1</title>
+    <title>Sàn Đấu Giá LVT - Danh Mục Vật Phẩm</title>
     <style>
         :root {
-            /* Tông màu chủ đạo: Xanh đen thanh lịch và Vàng ánh kim */
-            --primary-color: #f1c40f; /* Màu vàng ánh kim cho tiêu đề phụ/nhấn */
-            --accent-color: #d4af37; /* Màu vàng Gold đậm cho khung và giá */
-            --title-color: #ffffff; /* Màu trắng cho tiêu đề chính */
-            --bg-overlay: rgba(0, 0, 0, 0.6); /* Lớp phủ tối để nổi bật thẻ */
-            --card-bg: rgba(255, 255, 255, 0.95); /* Màu nền thẻ trắng hơi trong suốt */
+            --primary-color: #f1c40f; 
+            --accent-color: #d4af37; /* Màu vàng Gold */
+            --title-color: #ffffff; 
+            /* Giảm độ tối của lớp phủ để ảnh nền hiện rõ hơn */
+            --bg-overlay: rgba(0, 0, 0, 0.4); 
+            --card-bg: rgba(255, 255, 255, 0.95);
             --modal-bg: rgba(0, 0, 0, 0.9);
         }
 
@@ -27,30 +27,30 @@
             position: relative;
         }
 
-        /* --- PHẦN 1: CÀI ĐẶT ẢNH NỀN VÀ LÀM MỜ (Yêu cầu 1) --- */
+        /* --- CÀI ĐẶT ẢNH NỀN RÕ NÉT --- */
         body::before {
             content: "";
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            /* Sử dụng ảnh bạn cung cấp làm nền */
-            background-image: url('uploaded:Screenshot_20260405_220857_Photos.webp-52ea32e7-595d-4592-a9be-243db4cd1fbb');
+            /* Sử dụng file anhnen.png cùng thư mục */
+            background-image: url('anhnen.png');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed; /* Giữ nền cố định khi cuộn */
-            /* Làm mờ đi một tí (5px là mức vừa phải, bạn có thể tăng/giảm) */
-            filter: blur(5px) brightness(0.8); 
-            z-index: -2; /* Nằm dưới cùng */
+            background-attachment: fixed;
+            /* Giảm blur xuống còn 2px và tăng brightness lên 0.9 để ảnh rõ hơn, không bị xám */
+            filter: blur(2px) brightness(0.9); 
+            z-index: -2;
         }
 
-        /* Thêm một lớp phủ tối để chữ và thẻ nổi bật hơn trên nền mờ */
+        /* Lớp phủ hỗ trợ đọc chữ, đã làm nhạt bớt */
         body::after {
             content: "";
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
             background-color: var(--bg-overlay);
-            z-index: -1; /* Nằm giữa nền mờ và nội dung */
+            z-index: -1;
         }
 
         h1 { 
@@ -58,12 +58,11 @@
             margin-bottom: 40px; 
             text-transform: uppercase;
             letter-spacing: 2px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Đổ bóng cho chữ nổi bật */
-            border-bottom: 3px solid var(--accent-color); /* Gạch chân màu vàng */
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+            border-bottom: 3px solid var(--accent-color);
             padding-bottom: 10px;
         }
 
-        /* Lưới hiển thị các ô vuông */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -72,32 +71,28 @@
             max-width: 1200px;
         }
 
-        /* --- PHẦN 2: TRANG TRÍ MÀU VÀNG CHO KHUNG (Yêu cầu 2) --- */
         .product-card {
             background: var(--card-bg);
-            border-radius: 15px; /* Bo góc mềm mại hơn */
+            border-radius: 15px;
             overflow: hidden;
-            /* Đổ bóng đậm hơn để tạo cảm giác sang trọng, nổi khối */
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3); 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
             transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
             cursor: pointer;
-            /* Khung trang trí màu vàng GOLD */
             border: 3px solid var(--accent-color);
             position: relative;
         }
 
-        /* Hiệu ứng khi di chuột vào: Phóng to nhẹ và viền sáng hơn */
         .product-card:hover {
             transform: translateY(-8px) scale(1.02);
-            border-color: #f1c40f; /* Vàng tươi hơn khi hover */
-            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.4); /* Đổ bóng màu vàng */
+            border-color: #f1c40f;
+            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.4);
         }
 
-        /* Thêm một ruy băng vàng nhỏ ở góc (Tùy chọn trang trí thêm) */
+        /* --- ĐỔI BID THÀNH LVT --- */
         .product-card::before {
-            content: "BID";
+            content: "LVT"; /* Đã thay đổi ở đây */
             position: absolute;
             top: 10px;
             right: -30px;
@@ -105,7 +100,7 @@
             color: #fff;
             padding: 5px 35px;
             transform: rotate(45deg);
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: bold;
             letter-spacing: 1px;
             z-index: 10;
@@ -117,7 +112,6 @@
             height: 220px;
             object-fit: cover; 
             background-color: #ddd;
-            /* Tạo một vạch phân cách màu vàng mỏng giữa ảnh và thông tin */
             border-bottom: 2px solid var(--accent-color);
         }
 
@@ -129,19 +123,17 @@
         .product-price {
             font-size: 1.25rem;
             font-weight: bold;
-            color: var(--accent-color); /* Giá tiền màu vàng Gold */
+            color: var(--accent-color);
             margin: 5px 0 12px 0;
-            text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
         }
 
         .product-desc {
             font-size: 0.95rem;
-            color: #555;
+            color: #444;
             line-height: 1.5;
             font-weight: 500;
         }
 
-        /* --- MODAL PHÓNG TO ẢNH (Giữ nguyên tính năng cũ) --- */
         .modal {
             display: none; 
             position: fixed;
@@ -151,13 +143,13 @@
             background-color: var(--modal-bg);
             justify-content: center; align-items: center;
             cursor: zoom-out;
-            backdrop-filter: blur(5px); /* Làm mờ thêm nền khi xem ảnh to */
+            backdrop-filter: blur(8px);
         }
 
         .modal-content {
             max-width: 90%; max-height: 90%;
             border-radius: 8px;
-            border: 4px solid var(--accent-color); /* Viền vàng cho ảnh phóng to */
+            border: 4px solid var(--accent-color);
             box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
             cursor: default;
         }
@@ -167,28 +159,21 @@
             top: 20px; right: 35px;
             color: white; font-size: 40px;
             font-weight: bold; cursor: pointer;
-            transition: color 0.2s;
         }
-        .close-btn:hover { color: var(--accent-color); }
 
-        /* Responsive cho điện thoại */
         @media (max-width: 600px) {
             .grid-container {
                 grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
                 gap: 15px;
-                padding: 10px;
             }
             .product-image { height: 160px; }
-            h1 { font-size: 1.5rem; margin-bottom: 25px; }
-            .product-info { padding: 12px; }
-            .product-price { font-size: 1rem; }
-            .product-desc { font-size: 0.8rem; }
+            h1 { font-size: 1.4rem; }
         }
     </style>
 </head>
 <body>
 
-    <h1>DANH SÁCH MẶT HÀNG ĐẤU GIÁ</h1>
+    <h1>LẠC VÂN THƯƠNG HỘI</h1>
 
     <div class="grid-container" id="product-grid"></div>
 
@@ -198,8 +183,6 @@
     </div>
 
     <script>
-        // ================= SECTION TÙY CHỈNH DỄ DÀNG (Giữ nguyên dữ liệu của bạn) =================
-        // Bạn chỉ cần thêm hoặc sửa các dòng ở dưới đây:
         const products = [
             { image: "html.png", price: "600.000 VNĐ", desc: "Hoàng Thiên Mộng Liêm +10 1 dòng thần - Tồn kho: 2" },
             { image: "daychuyentheluc", price: "100.000 VNĐ/ 40.000.000 linh thạch", desc: "Pháo bảo Dây chuyền thể lực - Tồn kho: 5" },
@@ -212,7 +195,6 @@
             { image: "sethoangkim", price: "100.000 VNĐ", desc: "Set giáp Hoàng Kim - Tồn kho: 1" },
             { image: "hulinh.png", price: "140.000 VNĐ", desc: "Set giáp Hư Linh - Tồn kho: 1" }
         ];
-        // =========================================================================================
 
         const grid = document.getElementById('product-grid');
         const modal = document.getElementById('imageModal');
