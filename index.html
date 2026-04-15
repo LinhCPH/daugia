@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sàn Đấu Giá LVT - Hệ Thống Đặt Hàng</title>
+    <title>Sàn Đấu Giá LVT - Hệ Thống Quản Lý Chuyên Nghiệp</title>
     <style>
         :root {
             --primary-color: #f1c40f; 
             --accent-color: #d4af37; 
             --title-color: #ffffff; 
             --bg-overlay: rgba(0, 0, 0, 0.4); 
-            --card-bg: rgba(255, 255, 255, 0.95);
+            --card-bg: rgba(255, 255, 255, 0.98);
             --modal-bg: rgba(0, 0, 0, 0.9);
-            --buy-btn-color: #27ae60; /* Màu xanh lá cho nút Mua */
         }
 
         body {
@@ -49,10 +48,8 @@
             background: var(--card-bg); border-radius: 15px; overflow: hidden;
             box-shadow: 0 10px 20px rgba(0,0,0,0.3); transition: all 0.3s ease;
             display: flex; flex-direction: column; border: 3px solid var(--accent-color);
-            position: relative;
+            position: relative; height: 100%;
         }
-
-        .product-card:hover { transform: translateY(-8px); border-color: #f1c40f; }
 
         .product-card::before {
             content: "LVT"; position: absolute; top: 10px; right: -30px;
@@ -61,35 +58,71 @@
         }
 
         .product-image {
-            width: 100%; height: 200px; object-fit: cover; 
+            width: 100%; height: 180px; object-fit: cover; 
             border-bottom: 2px solid var(--accent-color); cursor: pointer;
         }
 
-        .product-info { padding: 15px; text-align: center; }
+        .product-info { padding: 15px; display: flex; flex-direction: column; flex-grow: 1; }
 
-        .product-price { font-size: 1.1rem; font-weight: bold; color: var(--accent-color); margin: 5px 0; }
+        .product-desc { font-size: 0.95rem; color: #333; font-weight: 600; margin-bottom: 5px; text-align: center; }
+        
+        .stock-label { font-size: 0.85rem; color: #666; text-align: center; margin-bottom: 15px; }
 
-        .product-desc { font-size: 0.9rem; color: #444; height: 50px; overflow: hidden; margin-bottom: 15px; }
+        .card-footer { margin-top: auto; padding-top: 10px; border-top: 1px dashed #ccc; text-align: center; }
 
-        /* --- NÚT MUA NGAY --- */
+        .price-row { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
+
+        .price-item { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.9rem; font-weight: bold; }
+        .no-entry-icon { width: 18px; height: 18px; }
+
         .buy-btn {
-            background-color: var(--accent-color);
-            color: white; border: none; padding: 10px 20px;
+            background: linear-gradient(to bottom, #f1c40f, #d4af37);
+            color: #000; border: none; padding: 10px 20px;
             border-radius: 8px; font-weight: bold; cursor: pointer;
-            transition: background 0.2s; width: 100%;
+            width: 100%; transition: 0.2s;
+        }
+        .buy-btn:hover { filter: brightness(1.2); transform: scale(1.02); }
+
+        /* --- MODAL ORDER --- */
+        .order-modal {
+            display: none; position: fixed; z-index: 2000; left: 0; top: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.85);
+            justify-content: center; align-items: center;
         }
 
-        .buy-btn:hover { background-color: #f1c40f; color: #000; }
+        .order-content {
+            background: white; padding: 25px; border-radius: 15px;
+            width: 90%; max-width: 400px; border: 4px solid var(--accent-color);
+        }
 
-        .modal {
+        .order-content h2 { margin-top: 0; color: #d4af37; text-align: center; font-size: 1.2rem; }
+
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; color: #555; }
+        .form-group input[type="text"] {
+            width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;
+        }
+
+        .payment-box { background: #f9f9f9; padding: 10px; border-radius: 8px; margin: 15px 0; border: 1px solid #eee; }
+
+        .confirm-btn {
+            background-color: #27ae60; color: white; border: none;
+            padding: 12px; width: 100%; border-radius: 8px;
+            font-weight: bold; cursor: pointer; font-size: 1rem;
+        }
+
+        .cancel-btn {
+            background: none; color: #777; border: none; width: 100%;
+            margin-top: 10px; cursor: pointer; text-decoration: underline; font-size: 0.85rem;
+        }
+
+        /* Modal ảnh */
+        .img-modal {
             display: none; position: fixed; z-index: 1000; left: 0; top: 0;
-            width: 100%; height: 100%; background-color: var(--modal-bg);
+            width: 100%; height: 100%; background: var(--modal-bg);
             justify-content: center; align-items: center; backdrop-filter: blur(8px);
         }
-
-        .modal-content { max-width: 90%; max-height: 90%; border: 4px solid var(--accent-color); }
-
-        .close-btn { position: absolute; top: 20px; right: 35px; color: white; font-size: 40px; cursor: pointer; }
+        .img-modal img { max-width: 90%; max-height: 90%; border: 3px solid gold; }
     </style>
 </head>
 <body>
@@ -98,89 +131,162 @@
 
     <div class="grid-container" id="product-grid"></div>
 
-    <div id="imageModal" class="modal" onclick="closeModal()">
-        <span class="close-btn">&times;</span>
-        <img class="modal-content" id="fullImage">
+    <div id="orderModal" class="order-modal">
+        <div class="order-content">
+            <h2>📦 XÁC NHẬN ĐƠN HÀNG</h2>
+            <p id="targetItem" style="font-weight: bold; text-align: center; color: #333; margin-bottom: 20px;"></p>
+            
+            <div class="form-group">
+                <label>Tên Discord (Bắt buộc):</label>
+                <input type="text" id="discordInput" placeholder="Ví dụ: lvt_member#1234">
+            </div>
+
+            <div class="form-group">
+                <label>Tên In-game (Không bắt buộc):</label>
+                <input type="text" id="ignInput" placeholder="Nhập tên nhân vật của bạn">
+            </div>
+
+            <div class="payment-box" id="paymentOptions">
+                </div>
+
+            <button class="confirm-btn" onclick="submitOrder()">XÁC NHẬN GỬI</button>
+            <button class="cancel-btn" onclick="closeOrderModal()">Quay lại</button>
+        </div>
+    </div>
+
+    <div id="imageModal" class="img-modal" onclick="this.style.display='none'">
+        <img id="fullImage" src="">
     </div>
 
     <script>
-        // CHÈN LINK WEBHOOK CỦA BẠN VÀO ĐÂY
         const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1494077464102568097/oG4QV87lTbZ1XKG3HhAYW7sngyJvqwhq43atabQSgE6tQetcvyEwmQ9eOVvexWYTI6jE";
 
-        const products = [
-                 { image: "html.png", price: "600.000 VNĐ", desc: "Hoàng Thiên Mộng Liêm +10 1 dòng thần - Tồn kho: 2" },
-            { image: "daychuyentheluc", price: "100.000 VNĐ/ 40.000.000 linh thạch", desc: "Pháo bảo Dây chuyền thể lực - Tồn kho: 5" },
-            { image: "nguclongthiet.png", price: "250.000 VNĐ", desc: "Pháo bảo Ngục Long Thiết +20 - Tồn kho: 1" },
-            { image: "huyetlecothan", price: "250.000 VNĐ", desc: "Pháp bảo Huyết lệ Cổ Thần - Tồn kho: 1" },
-            { image: "minhquang.png", price: "400.000 VNĐ", desc: "Set giáp Minh Quang - Tồn kho: 1" },
-            { image: "setlamhoang", price: "550.000 VNĐ", desc: "Set giáp Lam Hoàng - Tồn kho: 1" },
-            { image: "hackiem.png", price: "80.000 VNĐ / 25.000.000 linh thạch", desc: "Hắc Kiếm - Tồn kho: 2" },
-            { image: "thiencolinhtich", price: "80.000 VNĐ / 25.000.000 linh thạch", desc: "Pháp bảo Thiên cổ linh tịch - Tồn kho: 2" },
-            { image: "sethoangkim", price: "100.000 VNĐ", desc: "Set giáp Hoàng Kim - Tồn kho: 1" },
-            { image: "hulinh.png", price: "140.000 VNĐ", desc: "Set giáp Hư Linh - Tồn kho: 1" }
+        // ================= CÚ PHÁP CẬP NHẬT MỚI =================
+        // [link ảnh], [mô tả], [tồn kho], [giá tiền mặt], [giá linh thạch]
+        const rawData = [
+            "html.png, Hoàng Thiên Mộng Liêm +10 1 dòng thần, 2, 600.000 VNĐ, ",
+            "daychuyentheluc, Pháo bảo Dây chuyền thể lực, 5, 100.000 VNĐ, 40.000.000 linh thạch",
+            "nguclongthiet.png, Pháo bảo Ngục Long Thiết +20, 1, 250.000 VNĐ, ",
+            "huyetlecothan, Pháp bảo Huyết lệ Cổ Thần, 1, 250.000 VNĐ, ",
+            "minhquang.png, Set giáp Minh Quang, 1, 400.000 VNĐ, ",
+            "setlamhoang, Set giáp Lam Hoàng, 1, 550.000 VNĐ, ",
+            "hackiem.png, Hắc Kiếm, 2, 80.000 VNĐ, 25.000.000 linh thạch",
+            "thiencolinhtich, Pháp bảo Thiên cổ linh tịch, 2, 80.000 VNĐ, 25.000.000 linh thạch",
+            "sethoangkim, Set giáp Hoàng Kim, 1, 100.000 VNĐ, ",
+            "hulinh.png, Set giáp Hư Linh, 1, 140.000 VNĐ, "
         ];
 
-        const grid = document.getElementById('product-grid');
+        // Xử lý dữ liệu thô sang mảng đối tượng
+        const products = rawData.map(line => {
+            const parts = line.split(',').map(p => p.trim());
+            return {
+                image: parts[0],
+                desc: parts[1],
+                stock: parts[2],
+                priceVND: parts[3] || null,
+                priceLT: parts[4] || null
+            };
+        });
+
+        let currentProduct = null;
 
         function renderProducts() {
-            grid.innerHTML = products.map((item, index) => `
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = products.map((item, index) => {
+                // Logic hiển thị icon no_entry nếu giá trống
+                const vndDisplay = item.priceVND 
+                    ? `<span style="color:#e74c3c">💰 ${item.priceVND}</span>` 
+                    : `<span><img src="no_entry.png" class="no-entry-icon"> Không bán</span>`;
+                
+                const ltDisplay = item.priceLT 
+                    ? `<span style="color:#2980b9">💎 ${item.priceLT}</span>` 
+                    : `<span><img src="no_entry.png" class="no-entry-icon"> Không bán</span>`;
+
+                return `
                 <div class="product-card">
-                    <img src="${item.image}" alt="Sản phẩm" class="product-image" onclick="openModal('${item.image}')">
+                    <img src="${item.image}" class="product-image" onclick="openImg('${item.image}')">
                     <div class="product-info">
-                        <div class="product-price">${item.price}</div>
                         <div class="product-desc">${item.desc}</div>
-                        <button class="buy-btn" onclick="buyItem('${item.desc}', '${item.price}')">MUA NGAY</button>
+                        <div class="stock-label">Tồn kho: ${item.stock}</div>
+                        <div class="card-footer">
+                            <div class="price-row">
+                                <div class="price-item">${vndDisplay}</div>
+                                <div class="price-item">${ltDisplay}</div>
+                            </div>
+                            <button class="buy-btn" onclick="openOrderModal(${index})">MUA NGAY</button>
+                        </div>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
-        // Hàm gửi tin nhắn về Discord
-        function buyItem(name, price) {
-            if (!DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL.includes("DÁN_LINK")) {
-                alert("Lỗi: Bạn chưa cài đặt Webhook URL trong code!");
+        function openOrderModal(index) {
+            currentProduct = products[index];
+            document.getElementById('targetItem').innerText = currentProduct.desc;
+            
+            let payHTML = '<p style="margin:0 0 10px 0; font-size:0.85rem; font-weight:bold;">Phương thức thanh toán:</p>';
+            let hasOption = false;
+
+            if (currentProduct.priceVND) {
+                payHTML += `<label style="display:block; margin-bottom:5px; cursor:pointer;"><input type="radio" name="payType" value="Tiền mặt" checked> Tiền mặt (${currentProduct.priceVND})</label>`;
+                hasOption = true;
+            }
+            if (currentProduct.priceLT) {
+                const isChecked = !currentProduct.priceVND ? 'checked' : '';
+                payHTML += `<label style="display:block; cursor:pointer;"><input type="radio" name="payType" value="Linh thạch" ${isChecked}> Linh thạch (${currentProduct.priceLT})</label>`;
+                hasOption = true;
+            }
+
+            document.getElementById('paymentOptions').innerHTML = payHTML;
+            document.getElementById('orderModal').style.display = 'flex';
+        }
+
+        function closeOrderModal() {
+            document.getElementById('orderModal').style.display = 'none';
+            document.getElementById('discordInput').value = '';
+            document.getElementById('ignInput').value = '';
+        }
+
+        function submitOrder() {
+            const discordName = document.getElementById('discordInput').value.trim();
+            const ign = document.getElementById('ignInput').value.trim() || "Không điền";
+            const payType = document.querySelector('input[name="payType"]:checked')?.value;
+
+            if (!discordName) {
+                alert("Bạn bắt buộc phải nhập tên Discord để chúng tôi liên hệ!");
                 return;
             }
 
-            const message = {
-                content: "🔔 **CÓ ĐƠN HÀNG MỚI!**",
+            const data = {
+                content: "🔔 **YÊU CẦU MUA HÀNG MỚI!**",
                 embeds: [{
-                    title: "Người dùng muốn mua vật phẩm",
-                    color: 15844367, // Màu vàng Gold
+                    title: "Thông Tin Đơn Hàng",
+                    color: 15844367,
                     fields: [
-                        { name: "Vật phẩm", value: name, inline: true },
-                        { name: "Giá niêm yết", value: price, inline: true }
+                        { name: "Tên Discord", value: discordName, inline: true },
+                        { name: "Tên In-game", value: ign, inline: true },
+                        { name: "Vật phẩm", value: currentProduct.desc, inline: false },
+                        { name: "Thanh toán bằng", value: payType, inline: true },
+                        { name: "Tồn kho lúc đặt", value: currentProduct.stock, inline: true }
                     ],
-                    footer: { text: "Yêu cầu từ trang web đấu giá LVT" },
+                    footer: { text: "LVT Market System" },
                     timestamp: new Date()
                 }]
             };
 
             fetch(DISCORD_WEBHOOK_URL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(message)
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert("Yêu cầu mua hàng đã được gửi đến Discord của LVT! Vui lòng chờ phản hồi.");
-                } else {
-                    alert("Gửi yêu cầu thất bại. Vui lòng thử lại sau.");
-                }
-            })
-            .catch(error => {
-                console.error("Lỗi:", error);
-                alert("Có lỗi xảy ra khi kết nối với Discord.");
-            });
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).then(() => {
+                alert("Yêu cầu đã được gửi! LVT sẽ chủ động nhắn tin cho bạn qua Discord.");
+                closeOrderModal();
+            }).catch(() => alert("Lỗi kết nối!"));
         }
 
-        function openModal(imageSrc) {
-            document.getElementById('imageModal').style.display = "flex";
-            document.getElementById('fullImage').src = imageSrc;
-        }
-
-        function closeModal() {
-            document.getElementById('imageModal').style.display = "none";
+        function openImg(src) {
+            document.getElementById('fullImage').src = src;
+            document.getElementById('imageModal').style.display = 'flex';
         }
 
         renderProducts();
