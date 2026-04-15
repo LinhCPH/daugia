@@ -116,7 +116,7 @@
         .order-content h2 { margin-top: 0; color: #d4af37; text-align: center; font-size: 1.2rem; }
         .form-group { margin-bottom: 12px; }
         .form-group label { display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; color: #555; }
-        .form-group input[type="text"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .form-group input[type="text"], .form-group input[type="number"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
         .payment-box { background: #f9f9f9; padding: 10px; border-radius: 8px; margin: 15px 0; border: 1px solid #eee; }
         .confirm-btn { background-color: #27ae60; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; }
         .cancel-btn { background: none; color: #777; border: none; width: 100%; margin-top: 10px; cursor: pointer; text-decoration: underline; font-size: 0.85rem; }
@@ -140,6 +140,10 @@
             <div class="form-group">
                 <label>Tên In-game (Không bắt buộc):</label>
                 <input type="text" id="ignInput" placeholder="Nhập tên nhân vật của bạn">
+            </div>
+            <div class="form-group">
+                <label>Số lượng mua (Tồn kho: <span id="maxStockLabel">0</span>):</label>
+                <input type="number" id="quantityInput" min="1" value="1">
             </div>
             <div class="payment-box" id="paymentOptions"></div>
             <button class="confirm-btn" onclick="submitOrder()">ĐẶT HÀNG</button>
@@ -185,7 +189,6 @@
             "thienlinhcham.png,Thiên Linh Châm x64 ,2,20.000 VNĐ , ",
             "thiennguuqua.png,Huyết Ngưu Quả x64  ,2,20.000 VNĐ , ",
             "huyenthugiac.png,Huyền Thú Giác x64  ,2,20.000 VNĐ , ",
-
         ];
 
         const products = rawData.map(line => {
@@ -226,6 +229,11 @@
         function openOrderModal(index) {
             currentProduct = products[index];
             document.getElementById('targetItem').innerText = currentProduct.desc;
+            
+            // Cập nhật nhãn tồn kho tối đa trong modal
+            document.getElementById('maxStockLabel').innerText = currentProduct.stock;
+            document.getElementById('quantityInput').value = 1;
+
             let payHTML = '<p style="margin:0 0 10px 0; font-size:0.85rem; font-weight:bold;">Phương thức thanh toán:</p>';
             if (currentProduct.priceVND) payHTML += `<label style="display:block; margin-bottom:5px; cursor:pointer;"><input type="radio" name="payType" value="Tiền mặt" checked> Tiền mặt (${currentProduct.priceVND})</label>`;
             if (currentProduct.priceLT) {
@@ -240,9 +248,9 @@
             document.getElementById('orderModal').style.display = 'none';
             document.getElementById('discordInput').value = '';
             document.getElementById('ignInput').value = '';
+            document.getElementById('quantityInput').value = 1;
         }
 
-        // HÀM HIỂN THỊ THÔNG BÁO RIÊNG
         function showNotice(msg) {
             document.getElementById('noticeMessage').innerText = msg;
             document.getElementById('noticeModal').style.display = 'flex';
@@ -257,9 +265,24 @@
             const ign = document.getElementById('ignInput').value.trim() || "Không điền";
             const payType = document.querySelector('input[name="payType"]:checked')?.value;
             
+            // Lấy và kiểm tra số lượng mua
+            const buyQty = parseInt(document.getElementById('quantityInput').value);
+            // Xử lý tồn kho (lấy phần số nếu tồn kho là dạng "150 triệu")
+            const stockQty = parseInt(currentProduct.stock);
+
             if (!discordName) { 
                 showNotice("Bạn bắt buộc phải nhập tên Discord để chúng tôi liên hệ!"); 
                 return; 
+            }
+
+            if (isNaN(buyQty) || buyQty < 1) {
+                showNotice("Vui lòng nhập số lượng mua hợp lệ!");
+                return;
+            }
+
+            if (buyQty > stockQty) {
+                showNotice("Số lượng mua không được vượt quá tồn kho hiện có!");
+                return;
             }
 
             const data = {
@@ -271,8 +294,9 @@
                         { name: "Tên Discord", value: discordName, inline: true },
                         { name: "Tên In-game", value: ign, inline: true },
                         { name: "Vật phẩm", value: currentProduct.desc, inline: false },
+                        { name: "Số lượng mua", value: buyQty.toString(), inline: true }, // Thêm số lượng vào Discord
                         { name: "Thanh toán bằng", value: payType, inline: true },
-                        { name: "Tồn kho lúc đặt", value: currentProduct.stock, inline: true }
+                        { name: "Tồn kho hiện tại", value: currentProduct.stock, inline: true }
                     ],
                     footer: { text: "LVT Market System" },
                     timestamp: new Date()
