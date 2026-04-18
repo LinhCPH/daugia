@@ -122,6 +122,61 @@
     content: "👑 ";
     -webkit-text-fill-color: initial; /* Giữ màu cho vương miện */
 }
+
+
+/* Card Quyền Lợi */
+.benefit-card {
+    padding: 20px;
+    border-radius: 15px;
+    height: 100%;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    transition: 0.3s;
+}
+
+.benefit-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+}
+
+.benefit-card.inner {
+    background: linear-gradient(145deg, rgba(139, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
+    border-left: 5px solid #ff4500;
+}
+
+.benefit-card.outer {
+    background: linear-gradient(145deg, rgba(0, 100, 0, 0.4), rgba(0, 0, 0, 0.6));
+    border-left: 5px solid #28a745;
+}
+
+.benefit-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 2px #000;
+}
+
+.benefit-card ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.benefit-card ul li {
+    margin-bottom: 10px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.benefit-card ul li::before {
+    content: "✦";
+    position: absolute;
+    left: 0;
+    color: gold;
+}
+
+/* Tinh chỉnh bảng */
+.table-bordered {
+    border: 1px solid rgba(255, 215, 0, 0.3) !important;
+}
+
         
         /* Layout cho danh sách thẻ nhiệm vụ */
 .mission-list {
@@ -329,8 +384,62 @@
             <p>Chỉ tiêu tu luyện và cống hiến của đệ tử...</p>
         </div>
         <div id="quyen-loi" class="tab-content">
-            <h2>Quyền lợi</h2>
-            <p>Đặc quyền dành cho các bậc chức vụ trong tông môn...</p>
+           <div id="quyen-loi" class="tab-content">
+    <h2 style="color: gold; text-align: center; text-transform: uppercase; margin-bottom: 30px;">Phúc Lợi Tông Môn</h2>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="benefit-card inner">
+                <h3><i class="fas fa-crown"></i> NỘI MÔN</h3>
+                <ul>
+                    <li>Tối thiểu <strong>3 lần Ngục Thần</strong> / tuần.</li>
+                    <li>Ưu tiên nhận tài nguyên tu luyện cấp cao.</li>
+                    <li>Tham gia các đại hội bàn luận công pháp.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="benefit-card outer">
+                <h3><i class="fas fa-leaf"></i> NGOẠI MÔN</h3>
+                <ul>
+                    <li>Tối thiểu <strong>3 lần Tàn Tích</strong> / tuần.</li>
+                    <li><strong>1 lần Ngục Thần</strong> (Điều kiện: Điểm nhiệm vụ > 5).</li>
+                    <li>Cơ hội thăng tiến lên Nội môn hàng tháng.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <h3 style="color: gold; margin-top: 40px;"><i class="fas fa-scroll"></i> Đặc Quyền Chức Danh</h3>
+    <div class="table-responsive">
+        <table class="table table-dark table-bordered mt-2">
+            <thead>
+                <tr style="color: gold; background: rgba(255, 215, 0, 0.1);">
+                    <th>Chức Danh / Đội Nhóm</th>
+                    <th>Quyền Lợi Bổ Sung</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Chấp Pháp Đường</td>
+                    <td>Thêm 3 lần Ngục Thần / tuần</td>
+                </tr>
+                <tr>
+                    <td>Luyện Dược Đường</td>
+                    <td>Thêm 3 lần Ngục Thần / tuần</td>
+                </tr>
+                <tr>
+                    <td>Đội Xây Dựng</td>
+                    <td>Thêm 3 lần Ngục Thần / tuần</td>
+                </tr>
+                <tr>
+                    <td>Các đội nhóm khác...</td>
+                    <td>Thêm 3 lần Ngục Thần / tuần</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
         </div>
         <div id="to-cao" class="tab-content">
             <h2>Hệ thống Tố cáo</h2>
