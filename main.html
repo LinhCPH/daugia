@@ -79,6 +79,70 @@
         .tab-content.active {
             display: block;
         }
+.report-container {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 25px;
+    border-radius: 10px;
+    border: 1px solid #dc3545;
+}
+.report-container label { color: #ccc; }
+.report-container input, .report-container textarea {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #444;
+    color: white;
+}
+.report-container input:focus {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border-color: #dc3545;
+}
+/* Thẻ KPI tương tự thẻ nhiệm vụ */
+.kpi-card {
+    display: flex;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid gold;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+}
+
+.kpi-img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-right: 1px solid gold;
+}
+
+.kpi-info {
+    padding: 20px;
+}
+
+.kpi-info h4 {
+    color: gold;
+    text-transform: uppercase;
+}
+
+.kpi-time {
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+/* Ruy băng trạng thái KPI */
+.ribbon-kpi {
+    position: absolute;
+    top: 15px;
+    right: -40px;
+    transform: rotate(45deg);
+    width: 150px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.75rem;
+    color: white;
+}
+.status-done { background: #28a745; } /* Đã hoàn thành */
+.status-not { background: #dc3545; }  /* Chưa hoàn thành */
+        
 .member-column {
     background: rgba(0, 0, 0, 0.4);
     padding: 20px;
@@ -380,9 +444,36 @@
 
     
         <div id="kpi" class="tab-content">
-            <h2>KPI Hàng Tuần</h2>
-            <p>Chỉ tiêu tu luyện và cống hiến của đệ tử...</p>
+         <div id="kpi" class="tab-content">
+    <h2 style="color: gold; text-align: center; text-transform: uppercase;">Chỉ Tiêu KPI Các Đội Nhóm</h2>
+    
+    <div class="d-flex mt-4" style="min-height: 500px;">
+        <div class="nav flex-column nav-pills me-3 border-end border-warning pe-3" style="min-width: 180px;">
+            <button class="nav-link btn-outline-warning mb-2 active" onclick="showTeamKPI('linh-thach')">Đội Linh Thạch</button>
+            <button class="nav-link btn-outline-warning mb-2" onclick="showTeamKPI('linh-thảo')">Đội Linh Thảo</button>
+            <button class="nav-link btn-outline-warning mb-2" onclick="showTeamKPI('tai-nguyen')">Đội Tài Nguyên</button>
+            <button class="nav-link btn-outline-warning mb-2" onclick="showTeamKPI('xay-dung')">Đội Xây Dựng</button>
+            <button class="nav-link btn-outline-warning mb-2" onclick="showTeamKPI('tuyen-dung')">Đội Tuyển Dụng</button>
         </div>
+
+        <div class="flex-grow-1 p-3 bg-dark-subtle rounded">
+            <ul class="nav nav-tabs mb-3" id="weekTabs">
+                <li class="nav-item"><a class="nav-link active" href="#" onclick="showWeek(1)">Tuần 1</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" onclick="showWeek(2)">Tuần 2</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" onclick="showWeek(3)">Tuần 3</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" onclick="showWeek(4)">Tuần 4</a></li>
+            </ul>
+
+            <div id="kpi-content-display">
+                </div>
+        </div>
+    </div>
+</div>
+        </div>
+
+
+
+    
         <div id="quyen-loi" class="tab-content">
            <div id="quyen-loi" class="tab-content">
     <h2 style="color: gold; text-align: center; text-transform: uppercase; margin-bottom: 30px;">Phúc Lợi Tông Môn</h2>
@@ -441,10 +532,70 @@
     </div>
 </div>
         </div>
+
+    
         <div id="to-cao" class="tab-content">
-            <h2>Hệ thống Tố cáo</h2>
-            <p>Nơi tiếp nhận phản ánh về các hành vi vi phạm môn quy...</p>
+<div id="to-cao" class="tab-content">
+    <h2 style="color: gold; text-align: center; text-transform: uppercase;">Hệ Thống Tố Cáo & Kỷ Luật</h2>
+
+    <div class="report-container mt-4">
+        <h3 style="color: #dc3545;"><i class="fas fa-gavel"></i> ĐƠN TỐ CÁO</h3>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Người bị tố cáo</label>
+                <input type="text" id="accusedName" class="form-control" placeholder="Tên đệ tử vi phạm...">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Thời gian vi phạm</label>
+                <input type="datetime-local" id="reportTime" class="form-control">
+            </div>
+            <div class="col-12">
+                <label class="form-label">Lý do / Chứng cứ</label>
+                <textarea id="reportReason" class="form-control" rows="3" placeholder="Mô tả chi tiết hành vi..."></textarea>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-danger w-100" onclick="sendReport()">GỬI SỚ TỐ CÁO</button>
+            </div>
         </div>
+    </div>
+
+    <hr style="border-color: gold; margin: 40px 0;">
+
+    <h3 style="color: gold;"><i class="fas fa-skull-crossbones"></i> BẢNG KỶ LUẬT TÔNG MÔN</h3>
+    
+    <button id="adminReportBtn" class="btn btn-warning mb-3" style="display:none;" onclick="showDisciplineForm()">CẬP NHẬT KỶ LUẬT</button>
+
+    <div class="table-responsive">
+        <table class="table table-dark table-bordered">
+            <thead>
+                <tr class="text-center" style="background: rgba(220, 53, 69, 0.2);">
+                    <th>Tên</th>
+                    <th>Cảnh cáo nhẹ</th>
+                    <th>Cảnh cáo nghiêm khắc</th>
+                    <th>Nghiêm trọng</th>
+                </tr>
+            </thead>
+            <tbody id="discipline-body">
+                </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="disciplineModal" class="modal-overlay" onclick="closeDiscipline()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <h2 style="color: gold;">CẬP NHẬT HÌNH PHẠT</h2>
+        <input type="text" id="discName" class="form-control mb-2" placeholder="Tên đệ tử">
+        <input type="text" id="discLight" class="form-control mb-2" placeholder="Cảnh cáo nhẹ (Ví dụ: 1 lần)">
+        <input type="text" id="discHard" class="form-control mb-2" placeholder="Nghiêm khắc (Ví dụ: Cấm túc 3 ngày)">
+        <input type="text" id="discExtreme" class="form-control mb-2" placeholder="Nghiêm trọng (Ví dụ: Trục xuất)">
+        <button class="btn btn-danger w-100" onclick="saveDiscipline()">XÁC NHẬN PHẠT</button>
+    </div>
+</div>
+        </div>
+
+
+
+    
         <div id="thanh-vien" class="tab-content">
 <div id="thanh-vien" class="tab-content">
     <h2 style="color: gold; text-align: center; text-transform: uppercase; margin-bottom: 30px;">Danh Sách Đệ Tử Tông Môn</h2>
@@ -869,6 +1020,159 @@ openTab = function(tabId) {
         renderThanhVien();
     }
 };   
+
+// --- KHU VỰC EDIT KPI THỦ CÔNG ---
+const KPI_DATA = {
+    "linh-thach": {
+        1: { title: "KPI Tuần 1", time: "19/04 - 26/04", status: "done", text: "Khai thác 5000 Linh Thạch hạ phẩm.", statusText: "ĐÃ HOÀN THÀNH" },
+        2: { title: "KPI Tuần 2", time: "26/04 - 03/05", status: "not", text: "Khai thác 7000 Linh Thạch hạ phẩm.", statusText: "CHƯA HOÀN THÀNH" }
+    },
+    "linh-thảo": {
+        1: { title: "KPI Tuần 1", time: "19/04 - 26/04", status: "done", text: "Thu thập 100 cỏ Ngưng Lộ.", statusText: "ĐÃ HOÀN THÀNH" }
+    },
+    // Đạo hữu thêm các đội khác tương tự...
+};
+
+let currentTeam = 'linh-thach';
+let currentWeek = 1;
+
+function showTeamKPI(teamId) {
+    currentTeam = teamId;
+    renderKPI();
+    
+    // Cập nhật giao diện nút Đội
+    event.target.parentElement.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+function showWeek(weekNum) {
+    currentWeek = weekNum;
+    renderKPI();
+
+    // Cập nhật giao diện nút Tuần
+    event.target.parentElement.parentElement.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+function renderKPI() {
+    const display = document.getElementById('kpi-content-display');
+    const data = KPI_DATA[currentTeam] ? KPI_DATA[currentTeam][currentWeek] : null;
+
+    if (!data) {
+        display.innerHTML = `<div class="p-5 text-center text-muted">Chưa có dữ liệu KPI cho tuần này.</div>`;
+        return;
+    }
+
+    const statusClass = data.status === 'done' ? 'status-done' : 'status-not';
+
+    display.innerHTML = `
+        <div class="kpi-card">
+            <img src="kpi.png" class="kpi-img" alt="kpi">
+            <div class="kpi-info">
+                <h4>${data.title}</h4>
+                <p class="kpi-time"><i class="far fa-calendar-alt"></i> Thời gian: ${data.time}</p>
+                <hr style="border-color: rgba(255,215,0,0.3)">
+                <p>${data.text}</p>
+            </div>
+            <div class="ribbon-kpi ${statusClass}">${data.statusText}</div>
+        </div>
+    `;
+}
+
+// Khởi tạo mặc định
+document.addEventListener('DOMContentLoaded', () => {
+    if(document.getElementById('kpi')) renderKPI();
+});
+   // --- CẤU HÌNH WEBHOOK TỐ CÁO ---
+const DISCORD_REPORT_WEBHOOK = 'DÁN_LINK_WEBHOOK_KÊNH_TỐ_CÁO_VÀO_ĐÂY';
+
+// 1. Gửi tố cáo lên Discord
+async function sendReport() {
+    const accused = document.getElementById('accusedName').value;
+    const time = document.getElementById('reportTime').value;
+    const reason = document.getElementById('reportReason').value;
+    const sender = localStorage.getItem('currentUser') || "Ẩn danh";
+
+    if (!accused || !reason) return alert("Vui lòng điền tên người bị tố cáo và lý do!");
+
+    const data = {
+        content: `⚠️ **ĐƠN TỐ CÁO MỚI**`,
+        embeds: [{
+            title: "Phát hiện vi phạm môn quy",
+            color: 15158332, // Màu đỏ
+            fields: [
+                { name: "Người tố cáo:", value: sender, inline: true },
+                { name: "Đối tượng bị tố cáo:", value: accused, inline: true },
+                { name: "Thời gian:", value: time, inline: false },
+                { name: "Lý do / Chứng cứ:", value: reason, inline: false }
+            ],
+            footer: { text: "Pháp luật Lạc Vân Tông" }
+        }]
+    };
+
+    try {
+        await fetch(DISCORD_REPORT_WEBHOOK, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        alert("Sớ tố cáo đã được gửi lên Ban Chấp Pháp!");
+        // Reset form
+        document.getElementById('accusedName').value = "";
+        document.getElementById('reportReason').value = "";
+    } catch (e) { alert("Pháp trận truyền tin gặp lỗi!"); }
+}
+
+// 2. Quản lý Bảng Kỷ Luật (Admin minertiti)
+function showDisciplineForm() { document.getElementById('disciplineModal').style.display = 'flex'; }
+function closeDiscipline() { document.getElementById('disciplineModal').style.display = 'none'; }
+
+function saveDiscipline() {
+    const name = document.getElementById('discName').value;
+    const light = document.getElementById('discLight').value;
+    const hard = document.getElementById('discHard').value;
+    const extreme = document.getElementById('discExtreme').value;
+
+    if(!name) return alert("Cần nhập tên người bị phạt!");
+
+    let records = JSON.parse(localStorage.getItem('LacVanTong_KyLuat')) || [];
+    
+    // Tìm xem đã có tên này trong sổ chưa
+    const index = records.findIndex(r => r.name === name);
+    if(index > -1) {
+        records[index] = { name, light, hard, extreme };
+    } else {
+        records.push({ name, light, hard, extreme });
+    }
+
+    localStorage.setItem('LacVanTong_KyLuat', JSON.stringify(records));
+    alert("Đã cập nhật sổ kỷ luật!");
+    renderDiscipline();
+    closeDiscipline();
+}
+
+function renderDiscipline() {
+    const body = document.getElementById('discipline-body');
+    let records = JSON.parse(localStorage.getItem('LacVanTong_KyLuat')) || [];
+    
+    body.innerHTML = records.map(r => `
+        <tr class="text-center">
+            <td style="color: gold;">${r.name}</td>
+            <td>${r.light || '-'}</td>
+            <td>${r.hard || '-'}</td>
+            <td class="text-danger font-weight-bold">${r.extreme || '-'}</td>
+        </tr>
+    `).join('');
+}
+
+// 3. Cập nhật phân quyền Admin trong hàm checkAdmin cũ
+function checkAdmin(user) {
+    if (user === "minertiti") {
+        document.getElementById('adminBtn').style.display = 'block';
+        if(document.getElementById('adminReportBtn')) 
+            document.getElementById('adminReportBtn').style.display = 'block';
+    }
+}     
 </script>
 <div id="adminModal" class="modal-overlay" onclick="closeAdmin()">
     <div class="modal-box" onclick="event.stopPropagation()">
