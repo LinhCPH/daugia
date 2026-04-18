@@ -79,6 +79,98 @@
         .tab-content.active {
             display: block;
         }
+
+        /* Layout cho danh sách thẻ nhiệm vụ */
+.mission-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.mission-card {
+    display: flex;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.mission-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.mission-img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+}
+
+.mission-info {
+    padding: 15px;
+    flex: 1;
+}
+
+.mission-info h3 {
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    color: gold;
+    margin-bottom: 5px;
+}
+
+.mission-desc-short {
+    font-size: 0.9rem;
+    color: #ddd;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Cắt chữ sau 2 dòng */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Ruy băng phân cấp góc phải trên */
+.ribbon {
+    position: absolute;
+    top: 15px;
+    right: -35px;
+    transform: rotate(45deg);
+    width: 120px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.ribbon.so { background: #28a745; }    /* Xanh lá */
+.ribbon.trung { background: #007bff; } /* Xanh lam */
+.ribbon.cao { background: #ffc107; color: black; } /* Vàng */
+.ribbon.thien { background: #dc3545; } /* Đỏ */
+
+/* Modal (Khung chi tiết) */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85); /* Làm mờ phía sau */
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-box {
+    background: #1a1a1a;
+    border: 2px solid gold;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+}
+        
     </style>
 </head>
 <body>
@@ -98,11 +190,37 @@
         <button class="nav-link" onclick="openTab('bxh')">Bảng xếp hạng</button>
     </div>
 
-    <div class="content-area">
-        <div id="nhiem-vu" class="tab-content active">
-            <h2>Nhiệm vụ tông môn</h2>
-            <p>Danh sách các nhiệm vụ đang diễn ra trên Discord...</p>
+   <div id="nhiem-vu" class="tab-content active">
+    <h2>Nhiệm vụ tông môn</h2>
+    <div class="mission-list">
+        <div class="mission-card" onclick="showDetail('Truy tìm Linh Thảo', 'Cấp Sơ', 'Thu thập 10 ngọn Cỏ Ngưng Lộ tại ngoại vi Lạc Vân Sơn.', 'Đệ tử ngoại môn', '3 ngày', '50 Linh thạch', 'Cẩn thận yêu thú cấp 1', 'so')">
+            <img src="mission1.jpg" class="mission-img" alt="mission">
+            <div class="mission-info">
+                <h3>Truy tìm Linh Thảo</h3>
+                <p class="mission-desc-short">Thu thập 10 ngọn Cỏ Ngưng Lộ tại ngoại vi Lạc Vân Sơn để dùng cho việc luyện đan.</p>
+            </div>
+            <div class="ribbon so">SƠ</div>
         </div>
+        
+        </div>
+</div>
+
+<div id="missionModal" class="modal-overlay" onclick="closeModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <h2 id="m-name" style="color: gold; text-transform: uppercase;"></h2>
+        <hr style="border-color: gold;">
+        <p><strong>Cấp độ:</strong> <span id="m-rank"></span></p>
+        <p><strong>Mô tả:</strong> <span id="m-desc"></span></p>
+        <p><strong>Điều kiện:</strong> <span id="m-req"></span></p>
+        <p><strong>Thời hạn:</strong> <span id="m-time"></span></p>
+        <p><strong>Thưởng:</strong> <span id="m-reward"></span></p>
+        <p><strong>Lưu ý:</strong> <span id="m-note"></span></p>
+        <br>
+        <button class="btn btn-warning w-100" onclick="takeMission()">NHẬN NHIỆM VỤ</button>
+    </div>
+</div>
+
+    
         <div id="kpi" class="tab-content">
             <h2>KPI Hàng Tuần</h2>
             <p>Chỉ tiêu tu luyện và cống hiến của đệ tử...</p>
