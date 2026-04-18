@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lạc Vân Tông - Khởi Đầu Tu Tiên</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+
+        :root {
+            --primary-color: #f1c40f; 
+            --accent-color: #d4af37; 
+            --bg-dark: #0a0a0a;
+        }
+
+        /* Cho phép cuộn trang mượt mà */
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: auto;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-dark);
+            color: white;
+            scroll-behavior: smooth;
+        }
+
+        /* Hiệu ứng nền mây khói huyền ảo - Cố định khi cuộn */
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: url('anhnen.png') no-repeat center center;
+            background-size: cover; filter: brightness(0.3) blur(3px);
+            z-index: -1; animation: bgPulse 10s infinite alternate;
+        }
+
+        @keyframes bgPulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+
+        /* --- HEADER LOGO GÓC TRÁI --- */
+        .top-header {
+            display: flex; align-items: center;
+            width: 100%; padding: 15px 30px;
+            box-sizing: border-box; z-index: 100;
+            position: fixed; top: 0; left: 0;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(5px);
+        }
+
+        .header-logo-group { display: flex; align-items: center; gap: 15px; }
+        
+        .header-logo { 
+            width: 45px; height: 45px; border-radius: 50%; 
+            border: 2px solid var(--primary-color); object-fit: cover;
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+        .header-text { 
+            color: var(--primary-color); font-weight: bold; 
+            font-size: 1.8rem;
+            text-shadow: 1px 1px 4px black;
+            font-family: 'UTM Thu Phap', 'Dancing Script', cursive;
+        }
+
+        /* --- KHU VỰC GIỚI THIỆU CHÍNH --- */
+        .hero-section {
+            min-height: 85vh; 
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            padding-top: 80px; text-align: center;
+            box-sizing: border-box;
+        }
+
+        /* Hiệu ứng Tên Tông Môn xuất hiện */
+        .tong-name {
+            font-family: 'UTM Thu Phap', 'Dancing Script', cursive;
+            font-size: 6rem; color: var(--primary-color);
+            text-shadow: 0 0 20px rgba(241, 196, 15, 0.8), 0 0 40px rgba(212, 175, 55, 0.4);
+            margin: 0; opacity: 0;
+            animation: fadeInTitle 2s ease-out forwards;
+        }
+
+        @keyframes fadeInTitle {
+            0% { opacity: 0; transform: translateY(-50px) scale(0.8); filter: blur(10px); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+
+        /* Lời giới thiệu Tông môn */
+        .tong-intro {
+            max-width: 800px; font-size: 1.2rem; line-height: 1.8;
+            color: #ddd; margin: 20px 0 40px 0; padding: 0 20px;
+            font-style: italic; text-shadow: 1px 1px 3px black;
+        }
+
+        /* Khu vực 2 bảng hình vuông */
+        .box-wrapper {
+            display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .main-box {
+            width: 230px; height: 230px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--accent-color);
+            border-radius: 15px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none; color: white;
+            backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .main-box:hover {
+            transform: translateY(-15px) scale(1.05);
+            background: rgba(212, 175, 55, 0.2);
+            box-shadow: 0 0 30px var(--accent-color);
+        }
+
+        .main-box i, .main-box span { font-size: 1.3rem; font-weight: bold; margin-top: 15px; text-transform: uppercase; letter-spacing: 2px; }
+        .main-box img { width: 80px; filter: drop-shadow(0 0 10px var(--primary-color)); }
+
+        /* --- KHU VỰC 6 KHUNG TRUYỀN THỐNG --- */
+        .gallery-section {
+            padding: 0 20px 100px 20px;
+            max-width: 1200px; margin: 0 auto;
+        }
+
+        .gallery-title {
+            text-align: center; font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem; color: var(--primary-color); margin-bottom: 40px;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+            animation: pulseGlow 2s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            from { text-shadow: 0 0 10px rgba(241, 196, 15, 0.5); }
+            to { text-shadow: 0 0 20px rgba(241, 196, 15, 1); }
+        }
+
+        .gallery-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        /* Khung mờ khi chưa cuộn tới */
+        .gallery-item {
+            background: #111; border: 1px solid #333; border-radius: 15px;
+            overflow: hidden; height: 280px;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0.1;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Class được JS thêm vào khi cuộn tới */
+        .gallery-item.reveal {
+            opacity: 1;
+            transform: translateY(0);
+            border-color: var(--accent-color);
+        }
+
+        .gallery-item img, .gallery-item video { width: 100%; height: 100%; object-fit: cover; }
+
+        /* --- MODAL GIA NHẬP --- */
+        .modal {
+            display: none; position: fixed; z-index: 2000; left: 0; top: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.9);
+            justify-content: center; align-items: center; backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            background: #1a1a1a; padding: 30px; border-radius: 20px;
+            width: 90%; max-width: 450px; border: 3px solid var(--accent-color);
+            position: relative; animation: modalPop 0.4s ease;
+        }
+
+        @keyframes modalPop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .modal-content h2 { color: var(--primary-color); text-align: center; margin-top: 0; }
+
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #ccc; font-size: 0.9rem; }
+        .form-group input { 
+            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #444; 
+            background: #222; color: white; box-sizing: border-box; 
+        }
+
+        .choice-group { display: flex; gap: 20px; margin-top: 10px; }
+        .choice-item { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+
+        .btn-join {
+            background: linear-gradient(to bottom, #f1c40f, #d4af37);
+            color: black; border: none; padding: 15px; width: 100%;
+            border-radius: 10px; font-weight: bold; font-size: 1.1rem;
+            cursor: pointer; transition: 0.3s; margin-top: 10px;
+        }
+        .btn-join:hover { filter: brightness(1.2); transform: scale(1.02); }
+
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; color: #777; }
+
+        /* Thông báo */
+        #notice {
+            position: fixed; top: 20px; background: #e74c3c; color: white;
+            padding: 15px 30px; border-radius: 10px; font-weight: bold;
+            display: none; z-index: 3000; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            left: 50%; transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="notice"></div>
+
+    <header class="top-header">
+        <div class="header-logo-group">
+            <img src="logo.png" alt="Logo" class="header-logo">
+            <span class="header-text">Lạc Vân Tông</span>
+        </div>
+    </header>
+
+    <section class="hero-section">
+        <h1 class="tong-name">Lạc Vân Tông</h1>
+        
+        <p class="tong-intro">
+            Chào mừng các Đạo hữu đến với Lạc Vân Tông - Nơi hội tụ của những bậc kỳ tài, 
+            cùng nhau tu luyện và chinh phục đỉnh cao tiên giới. Hãy gia nhập để viết nên truyền thuyết của riêng bạn!
+        </p>
+
+        <div class="box-wrapper">
+            <div class="main-box" onclick="openModal()">
+                <img src="https://cdn-icons-png.flaticon.com/512/1141/1141771.png" alt="Join">
+                <span>Gia Nhập Tông Môn</span>
+            </div>
+
+            <a href="index.html" target="_blank" class="main-box">
+                <img src="logo.png" alt="Market">
+                <span>Lạc Vân Thương Hội</span>
+            </a>
+        </div>
+    </section>
+
+    <section class="gallery-section">
+        <h2 class="gallery-title">Truyền Thống Tông Môn</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item"><video controls><source src="media/media1.mp4" type="video/mp4"></video></div>
+            <div class="gallery-item"><img src="media/media2.png" alt="Truyền thống 2"></div>
+            <div class="gallery-item"><img src="media/media3.png" alt="Truyền thống 3"></div>
+            
+            <div class="gallery-item"><video controls><source src="media/media4.mp4" type="video/mp4"></video></div>
+            <div class="gallery-item"><img src="media/media5.png" alt="Truyền thống 5"></div>
+            <div class="gallery-item"><img src="media/media6.png" alt="Truyền thống 6"></div>
+        </div>
+    </section>
+
+    <div id="joinModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2>GIA NHẬP TÔNG MÔN</h2>
+            
+            <div class="form-group">
+                <label>Tên In-game (Bắt buộc):</label>
+                <input type="text" id="ignInput" placeholder="Nhập tên nhân vật">
+            </div>
+
+            <div class="form-group">
+                <label>Tên Discord (Bắt buộc):</label>
+                <input type="text" id="discordInput" placeholder="Ví dụ: minertitan">
+            </div>
+
+            <div class="form-group">
+                <label>Năm sinh (Bắt buộc):</label>
+                <input type="number" id="yobInput" placeholder="Ví dụ: 2000">
+            </div>
+
+            <div class="form-group">
+                <label>Chọn nơi tu luyện:</label>
+                <div class="choice-group">
+                    <label class="choice-item">
+                        <input type="radio" name="sectType" value="Ngoại môn" checked> Ngoại môn
+                    </label>
+                    <label class="choice-item" onclick="handleNoiMon(event)">
+                        <input type="radio" name="sectType" value="Nội môn" id="noiMonRadio"> Nội môn
+                    </label>
+                </div>
+            </div>
+
+            <button class="btn-join" id="submitBtn" onclick="submitJoin()">GIA NHẬP NGAY</button>
+        </div>
+    </div>
+
+    <script>
+        function openModal() { document.getElementById('joinModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('joinModal').style.display = 'none'; }
+
+        function showMsg(text, isError = true) {
+            const n = document.getElementById('notice');
+            n.innerText = text;
+            n.style.background = isError ? "#e74c3c" : "#27ae60";
+            n.style.display = 'block';
+            setTimeout(() => { n.style.display = 'none'; }, 3000);
+        }
+
+        function handleNoiMon(e) {
+            e.preventDefault();
+            showMsg("Hiện tại nội môn chưa tuyển dụng!");
+            document.getElementById('noiMonRadio').checked = false;
+        }
+
+        function submitJoin() {
+            const ign = document.getElementById('ignInput').value.trim();
+            const discord = document.getElementById('discordInput').value.trim();
+            const yob = document.getElementById('yobInput').value.trim();
+            const btn = document.getElementById('submitBtn');
+
+            if (!ign || !discord || !yob) {
+                showMsg("Đạo hữu bắt buộc phải điền đầy đủ Tên In-game, Tên Discord và Năm sinh!");
+                return;
+            }
+
+            let count = 3;
+            btn.disabled = true;
+            
+            const timer = setInterval(() => {
+                btn.innerText = `Đến discord tông trong ${count} giây`;
+                if (count <= 0) {
+                    clearInterval(timer);
+                    window.location.href = "https://discord.gg/YvMT5Fzg75";
+                }
+                count--;
+            }, 1000);
+        }
+
+        const revealItems = () => {
+            const items = document.querySelectorAll('.gallery-item');
+            const triggerBottom = window.innerHeight / 5 * 4;
+
+            items.forEach(item => {
+                const itemTop = item.getBoundingClientRect().top;
+                if(itemTop < triggerBottom) {
+                    item.classList.add('reveal');
+                } else {
+                    item.classList.remove('reveal');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', revealItems);
+        revealItems();
+    </script>
+</body>
+</html>
