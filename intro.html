@@ -139,9 +139,14 @@
 
         /* Khung mờ khi chưa cuộn tới */
         .gallery-item {
-            background: #111; border: 1px solid #333; border-radius: 15px;
-            overflow: hidden; height: auto; min-height: 280px;
-            display: flex; justify-content: center; align-items: center;
+            background: #000; /* Đổi thành đen để tiệp màu video */
+            border: 1px solid #333; 
+            border-radius: 15px;
+            overflow: hidden; 
+            height: 450px; /* Tăng chiều cao vì video TikTok thường là dạng dọc */
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
             opacity: 0.1;
             transform: translateY(40px);
             transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
@@ -256,14 +261,14 @@
     <section class="gallery-section">
         <h2 class="gallery-title">Hoạt động Tông Môn</h2>
         <div class="gallery-grid">
-<div class="gallery-item" style="height: auto; min-height: 280px; background: transparent; border: none;">
-    <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@vangioinetwork_mc/video/7629393286892899591" data-video-id="7629393286892899591" style="max-width: 605px; min-width: 325px; margin: 0; padding: 0;"> 
-        <section> 
-            <a target="_blank" title="@vangioinetwork_mc" href="https://www.tiktok.com/@vangioinetwork_mc">@vangioinetwork_mc</a> 
-        </section> 
-    </blockquote> 
-    <script async src="https://www.tiktok.com/embed.js"></script>
-</div>           
+<div class="gallery-item">
+    <iframe 
+        src="https://www.tiktok.com/player/v1/7629393286892899591?&music_info=1&description=1" 
+        style="width: 100%; height: 100%; border: none;" 
+        allow="fullscreen" 
+        title="Lạc Vân Tông Truyền Thống">
+    </iframe>
+</div>
             <div class="gallery-item"><img src="media/media2.png" alt="Truyền thống 2"></div>
             <div class="gallery-item"><img src="media/media3.png" alt="Truyền thống 3"></div>
             
