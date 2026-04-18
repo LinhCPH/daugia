@@ -170,7 +170,30 @@
     max-width: 600px;
     position: relative;
 }
-        
+    /* Nút dành riêng cho Tông chủ */
+#adminBtn {
+    background-color: #dc3545;
+    border: 1px solid gold;
+    color: white;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Form hoàn thành nhiệm vụ trong Admin Panel */
+#completeForm {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    border: 1px dashed gold;
+}
+
+/* Định dạng bảng xếp hạng */
+.table-dark {
+    background: rgba(0, 0, 0, 0.5);
+    color: gold;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}    
     </style>
 </head>
 <body>
@@ -208,7 +231,7 @@
     </div>
 
    <div id="nhiem-vu" class="tab-content active">
-    <h2>Nhiệm vụ tông môn</h2>
+       <button id="adminBtn" class="btn w-100" style="display:none;" onclick="showAdminPanel()">QUẢN LÝ NHIỆM VỤ</button>
     <div class="mission-list">
         <div class="mission-card" onclick="showDetail('Truy tìm Linh Thảo', 'Cấp Sơ', 'Thu thập 10 ngọn Cỏ Ngưng Lộ tại ngoại vi Lạc Vân Sơn.', 'Đệ tử ngoại môn', '3 ngày', '50 Linh thạch', 'Cẩn thận yêu thú cấp 1', 'so')">
             <img src="mission1.jpg" class="mission-img" alt="mission">
@@ -221,7 +244,27 @@
         
         </div>
 </div>
+<button id="adminBtn" class="btn btn-danger mb-3" style="display:none;" onclick="showAdminPanel()">QUẢN LÝ NHIỆM VỤ</button>
 
+<div id="adminModal" class="modal-overlay" onclick="closeAdmin()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <h2 style="color: gold;">BẢNG TRƯỞNG LÃO</h2>
+        <div class="d-flex gap-2">
+            <button class="btn btn-info w-50" onclick="alert('Tính năng Edit/Thêm đang phát triển...')">THÊM/SỬA NHIỆM VỤ</button>
+            <button class="btn btn-success w-50" onclick="showCompleteForm()">HOÀN THÀNH NHIỆM VỤ</button>
+        </div>
+        <div id="completeForm" class="mt-4" style="display:none;">
+            <input type="text" id="finishUser" class="form-control mb-2" placeholder="Tên đệ tử">
+            <select id="finishRank" class="form-control mb-2">
+                <option value="2">Cấp Sơ (+2)</option>
+                <option value="5">Cấp Trung (+5)</option>
+                <option value="7">Cấp Cao (+7)</option>
+                <option value="10">Cấp Thiên (+10)</option>
+            </select>
+            <button class="btn btn-primary w-100" onclick="addPoints()">XÁC NHẬN CỘNG ĐIỂM</button>
+        </div>
+    </div>
+</div>
 <div id="missionModal" class="modal-overlay" onclick="closeModal(event)">
     <div class="modal-box" onclick="event.stopPropagation()">
         <h2 id="m-name" style="color: gold; text-transform: uppercase;"></h2>
@@ -255,12 +298,100 @@
             <p>Thông tin các đệ tử thuộc Lạc Vân Tông...</p>
         </div>
         <div id="bxh" class="tab-content">
-            <h2>Bảng xếp hạng</h2>
-            <p>Vinh danh những đệ tử có tu vi cao nhất...</p>
+            <div id="bxh" class="tab-content">
+    <h2 style="color: gold; text-align: center; text-transform: uppercase;">Top 10 Đệ Tử Xuất Sắc</h2>
+    <div class="table-responsive">
+        <table class="table table-dark table-hover mt-3">
+            <thead>
+                <tr style="color: gold; border-bottom: 2px solid gold;">
+                    <th scope="col" style="width: 20%;">Hạng</th>
+                    <th scope="col" style="width: 50%;">Đệ Tử</th>
+                    <th scope="col" style="width: 30%;">Điểm Cống Hiến</th>
+                </tr>
+            </thead>
+            <tbody id="bxh-body">
+                </tbody>
+        </table>
+    </div>
+</div>
         </div>
     </div>
 </div>
+// Kiểm tra quyền khi đăng nhập
+function handleLogin() {
+    const user = document.getElementById('username').value;
+    const pass = document.getElementById('password').value;
+    const storedPass = localStorage.getItem(`user_${user}`);
 
+    if (storedPass && storedPass === pass) {
+        localStorage.setItem('currentUser', user);
+        checkAdmin(user); // Kiểm tra xem có phải tông chủ không
+        document.getElementById('authOverlay').style.display = 'none';
+    } else {
+        alert("Danh tánh hoặc mật mã không đúng!");
+    }
+}
+
+// Hàm kiểm tra quyền Admin
+function checkAdmin(user) {
+    if (user === "minertiti") {
+        document.getElementById('adminBtn').style.display = 'block';
+    }
+}
+
+// Hiển thị bảng Admin
+function showAdminPanel() {
+    document.getElementById('adminModal').style.display = 'flex';
+}
+
+function showCompleteForm() {
+    document.getElementById('completeForm').style.display = 'block';
+}
+
+function closeAdmin() {
+    document.getElementById('adminModal').style.display = 'none';
+}
+
+// Hàm Cộng điểm & Lưu vào Bảng xếp hạng
+function addPoints() {
+    const targetUser = document.getElementById('finishUser').value;
+    const pointsToAdd = parseInt(document.getElementById('finishRank').value);
+
+    if (!targetUser) return alert("Chưa nhập tên đệ tử!");
+
+    // Lấy dữ liệu BXH hiện tại từ LocalStorage
+    let leaderboard = JSON.parse(localStorage.getItem('LạcVânTông_BXH')) || {};
+
+    // Cộng dồn điểm
+    leaderboard[targetUser] = (leaderboard[targetUser] || 0) + pointsToAdd;
+
+    // Lưu lại vào LocalStorage
+    localStorage.setItem('LạcVânTông_BXH', JSON.stringify(leaderboard));
+
+    alert(`Đã cộng ${pointsToAdd} điểm cho đệ tử ${targetUser}!`);
+    updateBXHDisplay(); // Cập nhật hiển thị ở tab Bảng Xếp Hạng
+    closeAdmin();
+}
+
+// Cập nhật hiển thị Tab Bảng Xếp Hạng
+function updateBXHDisplay() {
+    const bxhDiv = document.getElementById('bxh');
+    let leaderboard = JSON.parse(localStorage.getItem('LạcVânTông_BXH')) || {};
+    
+    // Sắp xếp theo điểm giảm dần
+    let sortedList = Object.entries(leaderboard).sort((a, b) => b[1] - a[1]);
+
+    let html = `<h2>Bảng Xếp Hạng Tu Vi</h2><table class="table table-dark">
+                <thead><tr><th>Hạng</th><th>Tên Đệ Tử</th><th>Điểm Cống Hiến</th></tr></thead><tbody>`;
+    
+    sortedList.forEach((item, index) => {
+        html += `<tr><td>${index + 1}</td><td>${item[0]}</td><td>${item[1]}</td></tr>`;
+    });
+
+    html += `</tbody></table>`;
+    bxhDiv.innerHTML = html;
+}
+    
 <script>
     // 1. Cấu hình Pháp bảo
 const DISCORD_WEBHOOK_URL = 'DÁN_LINK_WEBHOOK_CỦA_BẠN_VÀO_ĐÂY'; // Cần bảo mật link này [cite: 45, 47]
@@ -292,7 +423,52 @@ function toggleAuth(isReg) {
     document.getElementById('registerForm').style.display = isReg ? 'block' : 'none';
     document.getElementById('authTitle').innerText = isReg ? 'KHỞI TẠO DANH TÁNH' : 'ĐĂNG NHẬP TÔNG MÔN';
 }
+// Kiểm tra quyền Tông chủ ngay khi đăng nhập thành công
+function checkAdmin(user) {
+    if (user === "minertiti") {
+        document.getElementById('adminBtn').style.display = 'block'; [cite: 148]
+    }
+}
 
+// Logic cộng dồn điểm vào LocalStorage
+function addPoints() {
+    const targetUser = document.getElementById('finishUser').value;
+    const pointsToAdd = parseInt(document.getElementById('finishRank').value); [cite: 126]
+
+    if (!targetUser) return alert("Chưa nhập tên đệ tử!");
+
+    // Lấy dữ liệu cũ hoặc tạo mới nếu chưa có
+    let leaderboard = JSON.parse(localStorage.getItem('LacVanTong_BXH')) || {}; [cite: 162]
+
+    // Cộng dồn điểm nhiệm vụ [cite: 163]
+    leaderboard[targetUser] = (leaderboard[targetUser] || 0) + pointsToAdd;
+
+    // Lưu lại vào bộ nhớ máy local [cite: 162]
+    localStorage.setItem('LacVanTong_BXH', JSON.stringify(leaderboard));
+
+    alert(`Đã cộng ${pointsToAdd} điểm cho ${targetUser}!`);
+    updateBXHDisplay(); 
+    closeAdmin();
+}
+
+// Hàm hiển thị danh sách đệ tử ở Tab Bảng xếp hạng
+function updateBXHDisplay() {
+    const bxhDiv = document.getElementById('bxh');
+    let leaderboard = JSON.parse(localStorage.getItem('LacVanTong_BXH')) || {};
+    let sortedList = Object.entries(leaderboard).sort((a, b) => b[1] - a[1]);
+
+    let html = `<h2>Bảng Xếp Hạng Tu Vi</h2><table class="table table-dark">
+                <thead><tr><th>Hạng</th><th>Tên Đệ Tử</th><th>Điểm</th></tr></thead><tbody>`;
+    sortedList.forEach((item, index) => {
+        html += `<tr><td>${index + 1}</td><td>${item[0]}</td><td>${item[1]}</td></tr>`;
+    });
+    html += `</tbody></table>`;
+    bxhDiv.innerHTML = html;
+}
+
+function showAdminPanel() { document.getElementById('adminModal').style.display = 'flex'; }
+function showCompleteForm() { document.getElementById('completeForm').style.display = 'block'; }
+function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
 function handleRegister() {
     const user = document.getElementById('regUser').value;
     const pass = document.getElementById('regPass').value;
@@ -370,6 +546,24 @@ async function takeMission() {
     }
 }
 </script>
-
+<div id="adminModal" class="modal-overlay" onclick="closeAdmin()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <h2 style="color: gold;">BẢNG TRƯỞNG LÃO</h2>
+        <div class="d-flex gap-2">
+            <button class="btn btn-info w-50" onclick="alert('Đang bảo trì pháp trận này...')">EDIT NHIỆM VỤ</button>
+            <button class="btn btn-success w-50" onclick="showCompleteForm()">HOÀN THÀNH</button>
+        </div>
+        <div id="completeForm" style="display:none;">
+            <input type="text" id="finishUser" class="form-control mb-2" placeholder="Tên đệ tử">
+            <select id="finishRank" class="form-control mb-2">
+                <option value="2">Cấp Sơ (+2)</option>
+                <option value="5">Cấp Trung (+5)</option>
+                <option value="7">Cấp Cao (+7)</option>
+                <option value="10">Cấp Thiên (+10)</option>
+            </select>
+            <button class="btn btn-primary w-100" onclick="addPoints()">XÁC NHẬN CỘNG ĐIỂM</button>
+        </div>
+    </div>
+</div>
 </body>
 </html>
