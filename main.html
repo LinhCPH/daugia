@@ -4,1194 +4,681 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lạc Vân Tông - Tông Môn Bảng</title>
+    <!-- Thư viện giao diện -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
-        /* Thiết lập background làm mờ */
+        /* --- CẤU HÌNH GIAO DIỆN CHỦ ĐẠO --- */
+        :root {
+            --gold: #ffd700;
+            --dark-bg: rgba(10, 10, 10, 0.9);
+            --border-color: rgba(255, 215, 0, 0.3);
+        }
+
         body {
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: white;
+            color: #e0e0e0;
             min-height: 100vh;
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+            /* Ảnh nền được làm mờ bằng lớp phủ đen */
+            background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), 
                         url('anhnen.png') no-repeat center center fixed;
             background-size: cover;
         }
 
-        /* Header logo và tên tông môn */
+        /* Header */
         header {
             display: flex;
             align-items: center;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.4);
-            border-bottom: 1px solid gold;
+            padding: 15px 40px;
+            background: rgba(0, 0, 0, 0.6);
+            border-bottom: 2px solid var(--gold);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.5);
         }
-        header img {
-            height: 60px;
-            margin-right: 20px;
-        }
+        header img { height: 70px; margin-right: 25px; filter: drop-shadow(0 0 5px var(--gold)); }
         header h1 {
-            color: gold;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px #000;
+            color: var(--gold);
+            font-weight: 800;
+            margin: 0;
+            text-shadow: 2px 2px 8px #000;
+            letter-spacing: 3px;
+            text-transform: uppercase;
         }
 
-        /* Layout chia cột */
+        /* Bố cục chính */
         .main-container {
             display: flex;
-            margin-top: 20px;
-            padding: 0 20px;
+            margin: 30px auto;
+            padding: 0 30px;
+            max-width: 1400px;
+            gap: 25px;
         }
 
-        /* Menu bên trái */
+        /* Sidebar bên trái */
         .sidebar {
-            width: 250px;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 10px;
-            padding: 15px;
-            border: 1px solid rgba(255, 215, 0, 0.3);
+            width: 280px;
+            background: var(--dark-bg);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
         }
         .nav-link {
-            color: #ccc;
-            margin-bottom: 10px;
+            color: #bbb;
+            margin-bottom: 12px;
             cursor: pointer;
-            transition: 0.3s;
-            border-left: 3px solid transparent;
+            text-align: left;
+            border-left: 4px solid transparent;
+            transition: all 0.3s ease;
+            width: 100%;
+            background: rgba(255,255,255,0.03);
+            border-top: none; border-right: none; border-bottom: none;
+            padding: 12px 20px;
+            font-weight: 600;
+            border-radius: 0 8px 8px 0;
         }
         .nav-link:hover, .nav-link.active {
-            color: gold;
+            color: var(--gold) !important;
             background: rgba(255, 215, 0, 0.1);
-            border-left: 3px solid gold;
+            border-left: 4px solid var(--gold);
+            transform: translateX(5px);
         }
+        .nav-link i { margin-right: 12px; width: 20px; text-align: center; }
 
-        /* Nội dung bên phải */
+        /* Vùng nội dung bên phải */
         .content-area {
             flex: 1;
-            margin-left: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 10px;
-            padding: 30px;
-            border: 1px solid rgba(255, 215, 0, 0.3);
+            background: var(--dark-bg);
+            border-radius: 15px;
+            padding: 40px;
+            border: 1px solid var(--border-color);
+            min-height: 750px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
         }
-        .tab-content {
-            display: none;
+        .tab-content { display: none; animation: fadeIn 0.6s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- PHẦN NHIỆM VỤ --- */
+        .mission-list { display: flex; flex-direction: column; gap: 20px; }
+        .mission-card {
+            display: flex;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: 0.3s;
         }
-        .tab-content.active {
-            display: block;
+        .mission-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--gold);
+            transform: scale(1.01);
         }
-.report-container {
-    background: rgba(0, 0, 0, 0.6);
-    padding: 25px;
-    border-radius: 10px;
-    border: 1px solid #dc3545;
-}
-.report-container label { color: #ccc; }
-.report-container input, .report-container textarea {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid #444;
-    color: white;
-}
-.report-container input:focus {
-    background: rgba(255, 255, 255, 0.15);
-    color: white;
-    border-color: #dc3545;
-}
-/* Thẻ KPI tương tự thẻ nhiệm vụ */
-.kpi-card {
-    display: flex;
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid gold;
-    border-radius: 10px;
-    position: relative;
-    overflow: hidden;
-    padding: 0;
-}
+        .mission-img { width: 140px; height: 140px; object-fit: cover; border-right: 1px solid var(--border-color); }
+        .mission-info { padding: 20px; flex: 1; }
+        .mission-info h3 { color: var(--gold); text-transform: uppercase; font-size: 1.25rem; margin-bottom: 8px; }
+        .desc-short { 
+            font-size: 0.95rem; color: #ccc; 
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; 
+        }
 
-.kpi-img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border-right: 1px solid gold;
-}
+        /* Ruy băng nhiệm vụ */
+        .ribbon {
+            position: absolute; top: 20px; right: -40px; transform: rotate(45deg);
+            width: 140px; text-align: center; font-weight: 800; font-size: 0.75rem;
+            color: white; box-shadow: 0 3px 6px rgba(0,0,0,0.4); z-index: 10;
+        }
+        .ribbon.so { background: #28a745; }
+        .ribbon.trung { background: #007bff; }
+        .ribbon.cao { background: #ffc107; color: black; }
+        .ribbon.thien { background: #dc3545; }
 
-.kpi-info {
-    padding: 20px;
-}
+        /* --- PHẦN KPI --- */
+        .kpi-card {
+            display: flex; background: rgba(255,255,255,0.05); border: 1px solid var(--gold);
+            border-radius: 12px; position: relative; overflow: hidden;
+        }
+        .kpi-img { width: 160px; height: 160px; object-fit: cover; border-right: 1px solid var(--gold); }
+        .ribbon-kpi {
+            position: absolute; top: 18px; right: -45px; transform: rotate(45deg);
+            width: 160px; text-align: center; font-weight: bold; font-size: 0.75rem; color: white;
+        }
 
-.kpi-info h4 {
-    color: gold;
-    text-transform: uppercase;
-}
+        /* --- QUYỀN LỢI --- */
+        .benefit-card {
+            padding: 25px; border-radius: 15px; border: 1px solid var(--border-color); height: 100%;
+            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(0,0,0,0.2));
+            transition: 0.3s;
+        }
+        .benefit-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(255, 215, 0, 0.1); }
+        .benefit-card h3 { border-bottom: 1px solid var(--gold); padding-bottom: 15px; margin-bottom: 20px; }
 
-.kpi-time {
-    font-size: 0.9rem;
-    color: #aaa;
-}
+        /* --- BẢNG XẾP HẠNG --- */
+        @keyframes sparkle { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .top1-sparkle {
+            background: linear-gradient(90deg, #ffd700, #fff700, #ffec8b, #ffd700);
+            background-size: 300% 300%;
+            animation: sparkle 3s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800; font-size: 1.2rem;
+        }
+        .top1-sparkle::before { content: "👑 "; -webkit-text-fill-color: initial; }
 
-/* Ruy băng trạng thái KPI */
-.ribbon-kpi {
-    position: absolute;
-    top: 15px;
-    right: -40px;
-    transform: rotate(45deg);
-    width: 150px;
-    text-align: center;
-    font-weight: bold;
-    font-size: 0.75rem;
-    color: white;
-}
-.status-done { background: #28a745; } /* Đã hoàn thành */
-.status-not { background: #dc3545; }  /* Chưa hoàn thành */
-        
-.member-column {
-    background: rgba(0, 0, 0, 0.4);
-    padding: 20px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 215, 0, 0.1);
-    min-height: 400px;
-}
-.member-item {
-    background: transparent !important;
-    color: #eee !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-    padding: 10px 15px;
-    font-size: 1.1rem;
-}
-.member-rank {
-    float: right;
-    font-size: 0.85rem;
-    color: gold;
-    font-style: italic;
-}
-        
-/* Hiệu ứng hào quang lấp lánh cho Hạng 1 */
-@keyframes sparkle {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
+        /* --- MODAL HỆ THỐNG --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.92); backdrop-filter: blur(10px);
+            z-index: 9999; display: none; justify-content: center; align-items: center;
+        }
+        .modal-box {
+            background: #111; border: 2px solid var(--gold); padding: 35px;
+            border-radius: 20px; width: 90%; max-width: 650px;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
+        }
 
-.top1-sparkle {
-    background: linear-gradient(90deg, #ffd700, #fff700, #ffec8b, #ffd700);
-    background-size: 300% 300%;
-    animation: sparkle 3s ease infinite;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-weight: bold;
-    text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
-    display: inline-block;
-}
-
-.top1-sparkle::before {
-    content: "👑 ";
-    -webkit-text-fill-color: initial; /* Giữ màu cho vương miện */
-}
-
-
-/* Card Quyền Lợi */
-.benefit-card {
-    padding: 20px;
-    border-radius: 15px;
-    height: 100%;
-    border: 1px solid rgba(255, 215, 0, 0.2);
-    transition: 0.3s;
-}
-
-.benefit-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
-}
-
-.benefit-card.inner {
-    background: linear-gradient(145deg, rgba(139, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
-    border-left: 5px solid #ff4500;
-}
-
-.benefit-card.outer {
-    background: linear-gradient(145deg, rgba(0, 100, 0, 0.4), rgba(0, 0, 0, 0.6));
-    border-left: 5px solid #28a745;
-}
-
-.benefit-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-    text-shadow: 1px 1px 2px #000;
-}
-
-.benefit-card ul {
-    list-style: none;
-    padding-left: 0;
-}
-
-.benefit-card ul li {
-    margin-bottom: 10px;
-    padding-left: 20px;
-    position: relative;
-}
-
-.benefit-card ul li::before {
-    content: "✦";
-    position: absolute;
-    left: 0;
-    color: gold;
-}
-
-/* Tinh chỉnh bảng */
-.table-bordered {
-    border: 1px solid rgba(255, 215, 0, 0.3) !important;
-}
-
-        
-        /* Layout cho danh sách thẻ nhiệm vụ */
-.mission-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.mission-card {
-    display: flex;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 215, 0, 0.2);
-    border-radius: 8px;
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.mission-card:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateX(5px);
-}
-
-.mission-img {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-}
-
-.mission-info {
-    padding: 15px;
-    flex: 1;
-}
-
-.mission-info h3 {
-    text-transform: uppercase;
-    font-size: 1.2rem;
-    color: gold;
-    margin-bottom: 5px;
-}
-
-.mission-desc-short {
-    font-size: 0.9rem;
-    color: #ddd;
-    display: -webkit-box;
-    -webkit-line-clamp: 2; /* Cắt chữ sau 2 dòng */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-/* Ruy băng phân cấp góc phải trên */
-.ribbon {
-    position: absolute;
-    top: 15px;
-    right: -35px;
-    transform: rotate(45deg);
-    width: 120px;
-    text-align: center;
-    font-weight: bold;
-    font-size: 0.8rem;
-    color: white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-}
-
-.ribbon.so { background: #28a745; }    /* Xanh lá */
-.ribbon.trung { background: #007bff; } /* Xanh lam */
-.ribbon.cao { background: #ffc107; color: black; } /* Vàng */
-.ribbon.thien { background: #dc3545; } /* Đỏ */
-
-/* Modal (Khung chi tiết) */
-.modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.85); /* Làm mờ phía sau */
-    backdrop-filter: blur(5px);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-box {
-    background: #1a1a1a;
-    border: 2px solid gold;
-    padding: 30px;
-    border-radius: 15px;
-    width: 90%;
-    max-width: 600px;
-    position: relative;
-}
-    /* Nút dành riêng cho Tông chủ */
-#adminBtn {
-    background-color: #dc3545;
-    border: 1px solid gold;
-    color: white;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-/* Form hoàn thành nhiệm vụ trong Admin Panel */
-#completeForm {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 15px;
-    border-radius: 8px;
-    margin-top: 15px;
-    border: 1px dashed gold;
-}
-
-/* Định dạng bảng xếp hạng */
-.table-dark {
-    background: rgba(0, 0, 0, 0.5);
-    color: gold;
-    border: 1px solid rgba(255, 215, 0, 0.3);
-}    
+        /* Đăng nhập */
+        .auth-input { background: #222 !important; border: 1px solid var(--gold) !important; color: white !important; }
+        .auth-input:focus { box-shadow: 0 0 10px var(--gold) !important; }
     </style>
 </head>
 <body>
+
+<!-- KHUNG ĐĂNG NHẬP (AUTH) -->
 <div id="authOverlay" class="modal-overlay" style="display: flex;">
     <div class="modal-box text-center">
-        <h2 id="authTitle" style="color: gold;">ĐĂNG NHẬP TÔNG MÔN</h2>
-        <div id="loginForm">
-            <input type="text" id="username" class="form-control mb-2" placeholder="Tên đệ tử">
-            <input type="password" id="password" class="form-control mb-2" placeholder="Mật mã">
-            <button class="btn btn-warning w-100 mb-2" onclick="handleLogin()">VÀO TÔNG MÔN</button>
-            <p onclick="toggleAuth(true)" style="cursor:pointer; font-size: 0.8rem;">Chưa có danh tánh? Đăng ký ngay</p>
+        <h2 id="authTitle" style="color: var(--gold); letter-spacing: 2px;">ĐĂNG NHẬP TÔNG MÔN</h2>
+        <div id="loginForm" class="mt-4">
+            <input type="text" id="username" class="form-control auth-input mb-3" placeholder="Danh tánh đệ tử">
+            <input type="password" id="password" class="form-control auth-input mb-3" placeholder="Mật mã">
+            <button class="btn btn-warning w-100 fw-bold py-2" onclick="handleLogin()">VÀO TÔNG MÔN</button>
+            <p onclick="toggleAuth(true)" class="mt-4 text-secondary" style="cursor:pointer;">Chưa có danh tánh? <span class="text-warning">Đăng ký tại đây</span></p>
         </div>
-        <div id="registerForm" style="display: none;">
-            <input type="text" id="regUser" class="form-control mb-2" placeholder="Tên đệ tử mới">
-            <input type="password" id="regPass" class="form-control mb-2" placeholder="Mật mã">
-            <input type="password" id="regPassConfirm" class="form-control mb-2" placeholder="Nhập lại mật mã">
-            <button class="btn btn-success w-100 mb-2" onclick="handleRegister()">KHỞI TẠO DANH TÁNH</button>
-            <p onclick="toggleAuth(false)" style="cursor:pointer; font-size: 0.8rem;">Đã có tài khoản? Đăng nhập</p>
+        <div id="registerForm" class="mt-4" style="display: none;">
+            <input type="text" id="regUser" class="form-control auth-input mb-2" placeholder="Tên đệ tử mới">
+            <input type="password" id="regPass" class="form-control auth-input mb-2" placeholder="Mật mã">
+            <input type="password" id="regPassConfirm" class="form-control auth-input mb-3" placeholder="Nhập lại mật mã">
+            <button class="btn btn-success w-100 fw-bold py-2" onclick="handleRegister()">KHỞI TẠO DANH TÁNH</button>
+            <p onclick="toggleAuth(false)" class="mt-4 text-secondary" style="cursor:pointer;">Đã có tài khoản? <span class="text-success">Quay lại đăng nhập</span></p>
         </div>
     </div>
 </div>
+
 <header>
-    <img src="logo.png" alt="Logo Lạc Vân Tông">
-    <h1>LẠC VÂN TÔNG</h1>
+    <img src="logo.png" alt="Lạc Vân Tông" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3516/3516358.png'">
+    <h1>Lạc Vân Tông</h1>
 </header>
 
 <div class="main-container">
-    <div class="sidebar nav flex-column nav-pills">
-        <button class="nav-link active" onclick="openTab('nhiem-vu')">Nhiệm vụ tông môn</button>
-        <button class="nav-link" onclick="openTab('kpi')">KPI Hàng Tuần</button>
-        <button class="nav-link" onclick="openTab('quyen-loi')">Quyền lợi</button>
-        <button class="nav-link" onclick="openTab('to-cao')">Tố cáo</button>
-        <button class="nav-link" onclick="openTab('thanh-vien')">Danh sách thành viên</button>
-        <button class="nav-link" onclick="openTab('bxh')">Bảng xếp hạng</button>
+    <!-- THANH ĐIỀU HƯỚNG -->
+    <div class="sidebar">
+        <button class="nav-link active" onclick="openTab('nhiem-vu')"><i class="fas fa-scroll"></i> Nhiệm vụ</button>
+        <button class="nav-link" onclick="openTab('kpi')"><i class="fas fa-chart-line"></i> KPI Hàng Tuần</button>
+        <button class="nav-link" onclick="openTab('quyen-loi')"><i class="fas fa-crown"></i> Quyền lợi</button>
+        <button class="nav-link" onclick="openTab('to-cao')"><i class="fas fa-gavel"></i> Tố cáo</button>
+        <button class="nav-link" onclick="openTab('thanh-vien')"><i class="fas fa-users"></i> Thành viên</button>
+        <button class="nav-link" onclick="openTab('bxh')"><i class="fas fa-trophy"></i> Bảng xếp hạng</button>
     </div>
 
-   <div id="nhiem-vu" class="tab-content active">
-       <button id="adminBtn" class="btn w-100" style="display:none;" onclick="showAdminPanel()">QUẢN LÝ NHIỆM VỤ</button>
-    <div class="mission-list">
-        <div class="mission-card" onclick="showDetail('Truy tìm Linh Thảo', 'Cấp Sơ', 'Thu thập 10 ngọn Cỏ Ngưng Lộ tại ngoại vi Lạc Vân Sơn.', 'Đệ tử ngoại môn', '3 ngày', '50 Linh thạch', 'Cẩn thận yêu thú cấp 1', 'so')">
-            <img src="mission1.jpg" class="mission-img" alt="mission">
-            <div class="mission-info">
-                <h3>Truy tìm Linh Thảo</h3>
-                <p class="mission-desc-short">Thu thập 10 ngọn Cỏ Ngưng Lộ tại ngoại vi Lạc Vân Sơn để dùng cho việc luyện đan.</p>
-            </div>
-            <div class="ribbon so">SƠ</div>
-        </div>
+    <!-- NỘI DUNG TỪNG TAB -->
+    <div class="content-area">
         
+        <!-- Tab Nhiệm Vụ -->
+        <div id="nhiem-vu" class="tab-content active">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="text-warning">NHIỆM VỤ TÔNG MÔN</h2>
+                <button id="adminBtn" class="btn btn-danger fw-bold" style="display:none;" onclick="showAdminPanel()">QUẢN TRỊ</button>
+            </div>
+            <div id="mission-list-container" class="mission-list">
+                <!-- Nhiệm vụ sẽ được nạp từ JavaScript renderMissions() -->
+            </div>
         </div>
-</div>
-<button id="adminBtn" class="btn btn-danger mb-3" style="display:none;" onclick="showAdminPanel()">QUẢN LÝ NHIỆM VỤ</button>
 
-<div id="adminModal" class="modal-overlay" onclick="closeAdmin()">
-    <div class="modal-box" onclick="event.stopPropagation()">
-        <h2 style="color: gold;">BẢNG TRƯỞNG LÃO</h2>
-        <div class="d-flex gap-2">
-            <button class="btn btn-info w-50" onclick="alert('Tính năng Edit/Thêm đang phát triển...')">THÊM/SỬA NHIỆM VỤ</button>
-            <button class="btn btn-success w-50" onclick="showCompleteForm()">HOÀN THÀNH NHIỆM VỤ</button>
+        <!-- Tab KPI -->
+        <div id="kpi" class="tab-content">
+            <h2 class="text-warning mb-4">KPI HÀNG TUẦN</h2>
+            <div class="d-flex gap-4">
+                <div class="nav flex-column nav-pills border-end pe-4 border-secondary" style="min-width: 180px;">
+                    <button class="nav-link mb-2 active" onclick="changeKPITeam('linh-thach')">Đội Linh Thạch</button>
+                    <button class="nav-link mb-2" onclick="changeKPITeam('linh-thao')">Đội Linh Thảo</button>
+                    <button class="nav-link mb-2" onclick="changeKPITeam('tai-nguyen')">Đội Tài Nguyên</button>
+                    <button class="nav-link mb-2" onclick="changeKPITeam('xay-dung')">Đội Xây Dựng</button>
+                    <button class="nav-link mb-2" onclick="changeKPITeam('tuyen-dung')">Đội Tuyển Dụng</button>
+                </div>
+                <div class="flex-grow-1">
+                    <div class="btn-group mb-4 w-100" id="weekSelector">
+                        <button class="btn btn-outline-warning active" onclick="changeKPIWeek(1)">Tuần 1</button>
+                        <button class="btn btn-outline-warning" onclick="changeKPIWeek(2)">Tuần 2</button>
+                        <button class="btn btn-outline-warning" onclick="changeKPIWeek(3)">Tuần 3</button>
+                    </div>
+                    <div id="kpi-display-area"></div>
+                </div>
+            </div>
         </div>
-        <div id="completeForm" class="mt-4" style="display:none;">
-            <input type="text" id="finishUser" class="form-control mb-2" placeholder="Tên đệ tử">
-            <select id="finishRank" class="form-control mb-2">
+
+        <!-- Tab Quyền Lợi -->
+        <div id="quyen-loi" class="tab-content">
+            <h2 class="text-warning mb-4">PHÚC LỢI TÔNG MÔN</h2>
+            <div class="row g-4 mb-5">
+                <div class="col-md-6">
+                    <div class="benefit-card" style="border-left: 6px solid #ff4500;">
+                        <h3 style="color: #ff4500;"><i class="fas fa-fire"></i> NỘI MÔN</h3>
+                        <ul class="ps-3">
+                            <li class="mb-2">Tối thiểu <strong>3 lần Ngục Thần</strong> / tuần.</li>
+                            <li class="mb-2">Ưu tiên tài nguyên Luyện Đan cấp cao.</li>
+                            <li class="mb-2">Tham gia các cuộc họp chiến lược Tông môn.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="benefit-card" style="border-left: 6px solid #28a745;">
+                        <h3 style="color: #28a745;"><i class="fas fa-leaf"></i> NGOẠI MÔN</h3>
+                        <ul class="ps-3">
+                            <li class="mb-2">Tối thiểu <strong>3 lần Tàn Tích</strong> / tuần.</li>
+                            <li class="mb-2"><strong>1 lần Ngục Thần</strong> (Điều kiện: Điểm nhiệm vụ > 5).</li>
+                            <li class="mb-2">Cơ hội thăng cấp Nội môn hàng tháng.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <h3 class="text-warning mb-3"><i class="fas fa-medal"></i> ĐẶC QUYỀN CHỨC DANH</h3>
+            <table class="table table-dark table-bordered">
+                <thead><tr class="text-warning"><th>Đội Nhóm / Chức Danh</th><th>Quyền Lợi Bổ Sung</th></tr></thead>
+                <tbody>
+                    <tr><td>Chấp Pháp, Luyện Dược, Xây Dựng, Tuyển Dụng...</td><td>Thêm 3 lần Ngục Thần / tuần</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Tab Tố Cáo -->
+        <div id="to-cao" class="tab-content">
+            <h2 class="text-danger mb-4">HỆ THỐNG TỐ CÁO & KỶ LUẬT</h2>
+            <div class="bg-dark p-4 rounded border border-danger shadow-sm mb-5">
+                <h4 class="text-danger mb-3"><i class="fas fa-file-contract"></i> GỬI ĐƠN TỐ CÁO</h4>
+                <div class="row g-3">
+                    <div class="col-md-6"><label class="small text-secondary">Người bị tố cáo</label><input type="text" id="repAccused" class="form-control auth-input" placeholder="Tên đệ tử vi phạm..."></div>
+                    <div class="col-md-6"><label class="small text-secondary">Thời gian</label><input type="text" id="repTime" class="form-control auth-input" placeholder="Ví dụ: 20:00 hôm nay"></div>
+                    <div class="col-12"><label class="small text-secondary">Lý do & Chứng cứ</label><textarea id="repReason" class="form-control auth-input" rows="3" placeholder="Mô tả hành vi sai phạm..."></textarea></div>
+                    <button class="btn btn-danger fw-bold w-100" onclick="sendReport()">GỬI SỚ TỐ CÁO</button>
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="text-warning"><i class="fas fa-skull-crossbones"></i> BẢNG KỶ LUẬT</h3>
+                <button id="adminReportBtn" class="btn btn-warning btn-sm fw-bold" style="display:none;" onclick="showDisciplineModal()">CẬP NHẬT PHẠT</button>
+            </div>
+            <table class="table table-dark table-bordered text-center">
+                <thead><tr class="text-danger"><th>Tên</th><th>Cảnh cáo nhẹ</th><th>Cảnh cáo nghiêm khắc</th><th>Nghiêm trọng</th></tr></thead>
+                <tbody id="discipline-list"></tbody>
+            </table>
+        </div>
+
+        <!-- Tab Thành Viên -->
+        <div id="thanh-vien" class="tab-content">
+            <h2 class="text-warning mb-5 text-center">DANH SÁCH ĐỆ TỬ LẠC VÂN TÔNG</h2>
+            <div class="row">
+                <div class="col-md-6 border-end border-secondary">
+                    <h4 class="text-danger text-center border-bottom pb-3 mb-4"><i class="fas fa-fire"></i> NỘI MÔN</h4>
+                    <ul id="list-noi-mon" class="list-group list-group-flush bg-transparent"></ul>
+                </div>
+                <div class="col-md-6">
+                    <h4 class="text-info text-center border-bottom pb-3 mb-4"><i class="fas fa-cloud"></i> NGOẠI MÔN</h4>
+                    <ul id="list-ngoai-mon" class="list-group list-group-flush bg-transparent"></ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Bảng Xếp Hạng -->
+        <div id="bxh" class="tab-content">
+            <h2 class="text-warning mb-4 text-center">TOP 10 TU VI BẢNG</h2>
+            <div class="table-responsive">
+                <table class="table table-dark table-hover mt-3">
+                    <thead>
+                        <tr class="text-warning" style="border-bottom: 2px solid var(--gold);">
+                            <th>HẠNG</th><th>ĐỆ TỬ</th><th>ĐIỂM CỐNG HIẾN</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bxh-body">
+                        <!-- Nạp động từ JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- --- CÁC MODAL HỖ TRỢ --- -->
+
+<!-- Modal Chi tiết Nhiệm vụ -->
+<div id="missionModal" class="modal-overlay" onclick="this.style.display='none'">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <h2 id="m-title" style="color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 10px;"></h2>
+        <div class="mt-4 row">
+            <div class="col-12 mb-2"><strong>Mô tả:</strong> <p id="m-desc" class="text-secondary"></p></div>
+            <div class="col-6 mb-2"><strong>Cấp độ:</strong> <span id="m-rank"></span></div>
+            <div class="col-6 mb-2"><strong>Thời hạn:</strong> <span id="m-time"></span></div>
+            <div class="col-6 mb-2"><strong>Điều kiện:</strong> <span id="m-req"></span></div>
+            <div class="col-6 mb-2"><strong>Thưởng:</strong> <span id="m-reward" class="text-success fw-bold"></span></div>
+            <div class="col-12 mb-3"><strong>Lưu ý:</strong> <p id="m-note" class="text-danger small"></p></div>
+        </div>
+        <button class="btn btn-warning w-100 fw-bold py-2 mt-2" onclick="confirmTakeMission()">NHẬN NHIỆM VỤ</button>
+    </div>
+</div>
+
+<!-- Modal Quản trị (Tông Chủ) -->
+<div id="adminModal" class="modal-overlay" onclick="this.style.display='none'">
+    <div class="modal-box" style="max-width: 750px;" onclick="event.stopPropagation()">
+        <h3 class="text-danger border-bottom pb-2 mb-4">BẢNG QUẢN TRỊ TRƯỞNG LÃO</h3>
+        <div class="d-flex gap-2 mb-4">
+            <button class="btn btn-outline-info w-50 fw-bold" onclick="toggleAdminView('edit-mission')">QUẢN LÝ NHIỆM VỤ</button>
+            <button class="btn btn-outline-success w-50 fw-bold" onclick="toggleAdminView('complete-mission')">DUYỆT HOÀN THÀNH</button>
+        </div>
+
+        <!-- Form Edit Nhiệm vụ -->
+        <div id="form-edit-mission" style="display:none;" class="p-3 border rounded border-info">
+            <h5 class="text-info mb-3">Thêm/Sửa Nhiệm Vụ Mới</h5>
+            <div class="row g-2">
+                <div class="col-md-8"><input type="text" id="add-m-name" class="form-control auth-input mb-2" placeholder="Tên nhiệm vụ"></div>
+                <div class="col-md-4">
+                    <select id="add-m-rank" class="form-select auth-input mb-2">
+                        <option value="so">Cấp Sơ</option><option value="trung">Cấp Trung</option>
+                        <option value="cao">Cấp Cao</option><option value="thien">Cấp Thiên</option>
+                    </select>
+                </div>
+                <div class="col-12"><textarea id="add-m-desc" class="form-control auth-input mb-2" placeholder="Mô tả"></textarea></div>
+                <div class="col-md-6"><input type="text" id="add-m-req" class="form-control auth-input mb-2" placeholder="Điều kiện"></div>
+                <div class="col-md-6"><input type="text" id="add-m-reward" class="form-control auth-input mb-2" placeholder="Thưởng"></div>
+            </div>
+            <p class="small text-secondary mt-2">Lưu ý: Nhiệm vụ mới chỉ lưu ở trình duyệt hiện tại. Đạo hữu nên thêm vào code để lưu vĩnh viễn.</p>
+            <button class="btn btn-info w-100 mt-2 fw-bold" onclick="saveAdminMission()">PHÁT HÀNH</button>
+        </div>
+
+        <!-- Form Duyệt Hoàn Thành -->
+        <div id="form-complete-mission" style="display:none;" class="p-3 border rounded border-success">
+            <h5 class="text-success mb-3">Cộng điểm cống hiến</h5>
+            <input type="text" id="finishUser" class="form-control auth-input mb-2" placeholder="Tên đệ tử hoàn thành">
+            <select id="finishPoint" class="form-select auth-input mb-3">
                 <option value="2">Cấp Sơ (+2)</option>
                 <option value="5">Cấp Trung (+5)</option>
                 <option value="7">Cấp Cao (+7)</option>
                 <option value="10">Cấp Thiên (+10)</option>
             </select>
-            <button class="btn btn-primary w-100" onclick="addPoints()">XÁC NHẬN CỘNG ĐIỂM</button>
+            <button class="btn btn-success w-100 fw-bold" onclick="processAddPoints()">XÁC NHẬN CỘNG ĐIỂM</button>
         </div>
     </div>
 </div>
-<div id="missionModal" class="modal-overlay" onclick="closeModal(event)">
+
+<!-- Modal Edit Kỷ Luật -->
+<div id="disciplineModal" class="modal-overlay" onclick="this.style.display='none'">
     <div class="modal-box" onclick="event.stopPropagation()">
-        <h2 id="m-name" style="color: gold; text-transform: uppercase;"></h2>
-        <hr style="border-color: gold;">
-        <p><strong>Cấp độ:</strong> <span id="m-rank"></span></p>
-        <p><strong>Mô tả:</strong> <span id="m-desc"></span></p>
-        <p><strong>Điều kiện:</strong> <span id="m-req"></span></p>
-        <p><strong>Thời hạn:</strong> <span id="m-time"></span></p>
-        <p><strong>Thưởng:</strong> <span id="m-reward"></span></p>
-        <p><strong>Lưu ý:</strong> <span id="m-note"></span></p>
-        <br>
-        <button class="btn btn-warning w-100" onclick="takeMission()">NHẬN NHIỆM VỤ</button>
+        <h3 class="text-warning mb-4">SỔ PHẠT TÔNG MÔN</h3>
+        <input type="text" id="discName" class="form-control auth-input mb-2" placeholder="Tên đệ tử vi phạm">
+        <input type="text" id="discLight" class="form-control auth-input mb-2" placeholder="Phạt nhẹ (Ghi chú)">
+        <input type="text" id="discHard" class="form-control auth-input mb-2" placeholder="Nghiêm khắc">
+        <input type="text" id="discExtreme" class="form-control auth-input mb-3" placeholder="Nghiêm trọng">
+        <button class="btn btn-danger w-100 fw-bold" onclick="saveDisciplineRecord()">LƯU VÀO SỔ PHẠT</button>
     </div>
 </div>
 
-    
-        <div id="kpi" class="tab-content">
-         <div id="kpi" class="tab-content">
-    <h2 style="color: gold; text-align: center; text-transform: uppercase;">Chỉ Tiêu KPI Các Đội Nhóm</h2>
-    
-    <div class="d-flex mt-4" style="min-height: 500px;">
-        <div class="nav flex-column nav-pills me-3 border-end border-warning pe-3" style="min-width: 180px;">
-            <button class="nav-link btn-outline-warning mb-2 active" onclick="showTeamKPI('linh-thach')">Đội Linh Thạch</button>
-            <button class="nav-link btn-outline-warning mb-2" onclick="showTeamKPI('linh-thảo')">Đội Linh Thảo</button>
-            <button class="nav-link btn-outline-warning mb-2" onclick="showTeamKPI('tai-nguyen')">Đội Tài Nguyên</button>
-            <button class="nav-link btn-outline-warning mb-2" onclick="showTeamKPI('xay-dung')">Đội Xây Dựng</button>
-            <button class="nav-link btn-outline-warning mb-2" onclick="showTeamKPI('tuyen-dung')">Đội Tuyển Dụng</button>
-        </div>
-
-        <div class="flex-grow-1 p-3 bg-dark-subtle rounded">
-            <ul class="nav nav-tabs mb-3" id="weekTabs">
-                <li class="nav-item"><a class="nav-link active" href="#" onclick="showWeek(1)">Tuần 1</a></li>
-                <li class="nav-item"><a class="nav-link" href="#" onclick="showWeek(2)">Tuần 2</a></li>
-                <li class="nav-item"><a class="nav-link" href="#" onclick="showWeek(3)">Tuần 3</a></li>
-                <li class="nav-item"><a class="nav-link" href="#" onclick="showWeek(4)">Tuần 4</a></li>
-            </ul>
-
-            <div id="kpi-content-display">
-                </div>
-        </div>
-    </div>
-</div>
-        </div>
-
-
-
-    
-        <div id="quyen-loi" class="tab-content">
-           <div id="quyen-loi" class="tab-content">
-    <h2 style="color: gold; text-align: center; text-transform: uppercase; margin-bottom: 30px;">Phúc Lợi Tông Môn</h2>
-
-    <div class="row mb-4">
-        <div class="col-md-6">
-            <div class="benefit-card inner">
-                <h3><i class="fas fa-crown"></i> NỘI MÔN</h3>
-                <ul>
-                    <li>Tối thiểu <strong>3 lần Ngục Thần</strong> / tuần.</li>
-                    <li>Ưu tiên nhận tài nguyên tu luyện cấp cao.</li>
-                    <li>Tham gia các đại hội bàn luận công pháp.</li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="benefit-card outer">
-                <h3><i class="fas fa-leaf"></i> NGOẠI MÔN</h3>
-                <ul>
-                    <li>Tối thiểu <strong>3 lần Tàn Tích</strong> / tuần.</li>
-                    <li><strong>1 lần Ngục Thần</strong> (Điều kiện: Điểm nhiệm vụ > 5).</li>
-                    <li>Cơ hội thăng tiến lên Nội môn hàng tháng.</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <h3 style="color: gold; margin-top: 40px;"><i class="fas fa-scroll"></i> Đặc Quyền Chức Danh</h3>
-    <div class="table-responsive">
-        <table class="table table-dark table-bordered mt-2">
-            <thead>
-                <tr style="color: gold; background: rgba(255, 215, 0, 0.1);">
-                    <th>Chức Danh / Đội Nhóm</th>
-                    <th>Quyền Lợi Bổ Sung</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Chấp Pháp Đường</td>
-                    <td>Thêm 3 lần Ngục Thần / tuần</td>
-                </tr>
-                <tr>
-                    <td>Luyện Dược Đường</td>
-                    <td>Thêm 3 lần Ngục Thần / tuần</td>
-                </tr>
-                <tr>
-                    <td>Đội Xây Dựng</td>
-                    <td>Thêm 3 lần Ngục Thần / tuần</td>
-                </tr>
-                <tr>
-                    <td>Các đội nhóm khác...</td>
-                    <td>Thêm 3 lần Ngục Thần / tuần</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-        </div>
-
-    
-        <div id="to-cao" class="tab-content">
-<div id="to-cao" class="tab-content">
-    <h2 style="color: gold; text-align: center; text-transform: uppercase;">Hệ Thống Tố Cáo & Kỷ Luật</h2>
-
-    <div class="report-container mt-4">
-        <h3 style="color: #dc3545;"><i class="fas fa-gavel"></i> ĐƠN TỐ CÁO</h3>
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label">Người bị tố cáo</label>
-                <input type="text" id="accusedName" class="form-control" placeholder="Tên đệ tử vi phạm...">
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Thời gian vi phạm</label>
-                <input type="datetime-local" id="reportTime" class="form-control">
-            </div>
-            <div class="col-12">
-                <label class="form-label">Lý do / Chứng cứ</label>
-                <textarea id="reportReason" class="form-control" rows="3" placeholder="Mô tả chi tiết hành vi..."></textarea>
-            </div>
-            <div class="col-12">
-                <button class="btn btn-danger w-100" onclick="sendReport()">GỬI SỚ TỐ CÁO</button>
-            </div>
-        </div>
-    </div>
-
-    <hr style="border-color: gold; margin: 40px 0;">
-
-    <h3 style="color: gold;"><i class="fas fa-skull-crossbones"></i> BẢNG KỶ LUẬT TÔNG MÔN</h3>
-    
-    <button id="adminReportBtn" class="btn btn-warning mb-3" style="display:none;" onclick="showDisciplineForm()">CẬP NHẬT KỶ LUẬT</button>
-
-    <div class="table-responsive">
-        <table class="table table-dark table-bordered">
-            <thead>
-                <tr class="text-center" style="background: rgba(220, 53, 69, 0.2);">
-                    <th>Tên</th>
-                    <th>Cảnh cáo nhẹ</th>
-                    <th>Cảnh cáo nghiêm khắc</th>
-                    <th>Nghiêm trọng</th>
-                </tr>
-            </thead>
-            <tbody id="discipline-body">
-                </tbody>
-        </table>
-    </div>
-</div>
-
-<div id="disciplineModal" class="modal-overlay" onclick="closeDiscipline()">
-    <div class="modal-box" onclick="event.stopPropagation()">
-        <h2 style="color: gold;">CẬP NHẬT HÌNH PHẠT</h2>
-        <input type="text" id="discName" class="form-control mb-2" placeholder="Tên đệ tử">
-        <input type="text" id="discLight" class="form-control mb-2" placeholder="Cảnh cáo nhẹ (Ví dụ: 1 lần)">
-        <input type="text" id="discHard" class="form-control mb-2" placeholder="Nghiêm khắc (Ví dụ: Cấm túc 3 ngày)">
-        <input type="text" id="discExtreme" class="form-control mb-2" placeholder="Nghiêm trọng (Ví dụ: Trục xuất)">
-        <button class="btn btn-danger w-100" onclick="saveDiscipline()">XÁC NHẬN PHẠT</button>
-    </div>
-</div>
-        </div>
-
-
-
-    
-        <div id="thanh-vien" class="tab-content">
-<div id="thanh-vien" class="tab-content">
-    <h2 style="color: gold; text-align: center; text-transform: uppercase; margin-bottom: 30px;">Danh Sách Đệ Tử Tông Môn</h2>
-    
-    <div class="row">
-        <div class="col-md-6">
-            <div class="member-column">
-                <h3 style="color: #ff4500; text-align: center; border-bottom: 2px solid #ff4500; padding-bottom: 10px;">
-                    <i class="fas fa-fire"></i> NỘI MÔN
-                </h3>
-                <ul id="list-noi-mon" class="list-group list-group-flush bg-transparent">
-                    </ul>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="member-column">
-                <h3 style="color: #1e90ff; text-align: center; border-bottom: 2px solid #1e90ff; padding-bottom: 10px;">
-                    <i class="fas fa-cloud"></i> NGOẠI MÔN
-                </h3>
-                <ul id="list-ngoai-mon" class="list-group list-group-flush bg-transparent">
-                    </ul>
-            </div>
-        </div>
-    </div>
-</div>
-        </div>
-        <div id="bxh" class="tab-content">
-            <div id="bxh" class="tab-content">
-    <h2 style="color: gold; text-align: center; text-transform: uppercase;">Top 10 Đệ Tử Xuất Sắc</h2>
-    <div class="table-responsive">
-        <table class="table table-dark table-hover mt-3">
-            <thead>
-                <tr style="color: gold; border-bottom: 2px solid gold;">
-                    <th scope="col" style="width: 20%;">Hạng</th>
-                    <th scope="col" style="width: 50%;">Đệ Tử</th>
-                    <th scope="col" style="width: 30%;">Điểm Cống Hiến</th>
-                </tr>
-            </thead>
-            <tbody id="bxh-body">
-                </tbody>
-        </table>
-    </div>
-</div>
-        </div>
-    </div>
-</div>
-// Kiểm tra quyền khi đăng nhập
-function handleLogin() {
-    const user = document.getElementById('username').value;
-    const pass = document.getElementById('password').value;
-    const storedPass = localStorage.getItem(`user_${user}`);
-
-    if (storedPass && storedPass === pass) {
-        localStorage.setItem('currentUser', user);
-        checkAdmin(user); // Kiểm tra xem có phải tông chủ không
-        document.getElementById('authOverlay').style.display = 'none';
-    } else {
-        alert("Danh tánh hoặc mật mã không đúng!");
-    }
-}
-
-// Hàm kiểm tra quyền Admin
-function checkAdmin(user) {
-    if (user === "minertiti") {
-        document.getElementById('adminBtn').style.display = 'block';
-    }
-}
-
-// Hiển thị bảng Admin
-function showAdminPanel() {
-    document.getElementById('adminModal').style.display = 'flex';
-}
-
-function showCompleteForm() {
-    document.getElementById('completeForm').style.display = 'block';
-}
-
-function closeAdmin() {
-    document.getElementById('adminModal').style.display = 'none';
-}
-
-// Hàm Cộng điểm & Lưu vào Bảng xếp hạng
-function addPoints() {
-    const targetUser = document.getElementById('finishUser').value;
-    const pointsToAdd = parseInt(document.getElementById('finishRank').value);
-
-    if (!targetUser) return alert("Chưa nhập tên đệ tử!");
-
-    // Lấy dữ liệu BXH hiện tại từ LocalStorage
-    let leaderboard = JSON.parse(localStorage.getItem('LạcVânTông_BXH')) || {};
-
-    // Cộng dồn điểm
-    leaderboard[targetUser] = (leaderboard[targetUser] || 0) + pointsToAdd;
-
-    // Lưu lại vào LocalStorage
-    localStorage.setItem('LạcVânTông_BXH', JSON.stringify(leaderboard));
-
-    alert(`Đã cộng ${pointsToAdd} điểm cho đệ tử ${targetUser}!`);
-    updateBXHDisplay(); // Cập nhật hiển thị ở tab Bảng Xếp Hạng
-    closeAdmin();
-}
-
-// Cập nhật hiển thị Tab Bảng Xếp Hạng
-function updateBXHDisplay() {
-    const bxhDiv = document.getElementById('bxh');
-    // Lấy dữ liệu từ LocalStorage
-    let leaderboard = JSON.parse(localStorage.getItem('LạcVânTông_BXH')) || {};
-    
-    // 1. Sắp xếp điểm giảm dần
-    // 2. .slice(0, 10) để chỉ lấy đúng 10 người đầu bảng
-    let sortedList = Object.entries(leaderboard)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 10);
-
-    let html = `
-        <h2 style="color: gold; text-align: center; text-transform: uppercase;">Top 10 Đệ Tử Xuất Sắc</h2>
-        <table class="table table-dark table-hover mt-3">
-            <thead>
-                <tr style="border-bottom: 2px solid gold;">
-                    <th>Hạng</th>
-                    <th>Tên Đệ Tử</th>
-                    <th>Điểm Cống Hiến</th>
-                </tr>
-            </thead>
-            <tbody>`;
-    
-    if (sortedList.length === 0) {
-        html += `<tr><td colspan="3" class="text-center">Chưa có đệ tử nào ghi danh.</td></tr>`;
-    } else {
-        sortedList.forEach((item, index) => {
-            let rank = index + 1;
-            let nameDisplay = item[0];
-            let nameClass = "";
-            let rowStyle = "";
-
-            // Xử lý hiệu ứng cho Top 3
-            if (rank === 1) {
-                // Hạng 1: Thêm class lấp lánh (sparkle)
-                nameClass = 'class="top1-sparkle"';
-                rowStyle = 'style="background: rgba(255, 215, 0, 0.1);"';
-            } else if (rank === 2) {
-                nameClass = 'style="color: #c0c0c0; font-weight: bold;"'; // Màu Bạc
-            } else if (rank === 3) {
-                nameClass = 'style="color: #cd7f32; font-weight: bold;"'; // Màu Đồng
-            }
-
-            html += `
-                <tr ${rowStyle}>
-                    <td style="font-weight: bold;">${rank}</td>
-                    <td ${nameClass}>${nameDisplay}</td>
-                    <td>${item[1].toLocaleString()}</td>
-                </tr>`;
-        });
-    }
-
-    html += `</tbody></table>`;
-    bxhDiv.innerHTML = html;
-}
-    
+<!-- JAVASCRIPT LOGIC -->
 <script>
-    // 1. Cấu hình Pháp bảo
-const DISCORD_WEBHOOK_URL = 'DÁN_LINK_WEBHOOK_CỦA_BẠN_VÀO_ĐÂY'; // Cần bảo mật link này [cite: 45, 47]
+    // --- 1. CẤU HÌNH WEBHOOK DISCORD ---
+    const DISCORD_WEBHOOK_MISSION = 'https://discord.com/api/webhooks/YOUR_ID_HERE';
+    const DISCORD_WEBHOOK_REPORT = 'https://discord.com/api/webhooks/YOUR_ID_HERE';
 
-// 2. Kiểm tra Phiên đăng nhập khi vừa vào trang [cite: 61, 62]
-window.onload = function() {
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-        document.getElementById('authOverlay').style.display = 'none';
-        console.log("Chào mừng đạo hữu " + currentUser + " trở lại tông môn!");
-    }
-}
+    // --- 2. DỮ LIỆU CỐ ĐỊNH (Hardcoded) ---
+    const SECT_MEMBERS_INNER = ["minertiti - Tông Chủ", "Đạo Hữu A - Trưởng Lão", "Đệ Tử X - Đại Đệ Tử"];
+    const SECT_MEMBERS_OUTER = ["Đệ Tử Y - Ngoại Môn", "Tân Thủ Z - Ngoại Môn"];
 
-// 3. Xử lý Chuyển đổi Tab (Nâng cấp từ bản cũ) [cite: 34]
-function openTab(tabId) {
-    const contents = document.querySelectorAll('.tab-content');
-    contents.forEach(content => content.classList.remove('active'));
+    const DEFAULT_MISSIONS = [
+        { name: "TRUY TÌM LINH THẢO", rank: "so", rankText: "Sơ", desc: "Hái 10 ngọn Ngưng Lộ tại chân núi.", req: "Ngoại môn", time: "2 ngày", reward: "2 điểm", note: "Cẩn thận yêu thú nhỏ", img: "logo.png" },
+        { name: "TRẤN ÁP MA THÚ", rank: "thien", rankText: "Thiên", desc: "Tiêu diệt Ma Viên tại Cấm Địa.", req: "Nội môn", time: "7 ngày", reward: "10 điểm", note: "Cực kỳ nguy hiểm", img: "logo.png" }
+    ];
 
-    const links = document.querySelectorAll('.nav-link');
-    links.forEach(link => link.classList.remove('active'));
-
-    document.getElementById(tabId).classList.add('active');
-    event.currentTarget.classList.add('active');
-}
-
-// 4. Xử lý Đăng ký & Đăng nhập (Lưu vào LocalStorage) 
-function toggleAuth(isReg) {
-    document.getElementById('loginForm').style.display = isReg ? 'none' : 'block';
-    document.getElementById('registerForm').style.display = isReg ? 'block' : 'none';
-    document.getElementById('authTitle').innerText = isReg ? 'KHỞI TẠO DANH TÁNH' : 'ĐĂNG NHẬP TÔNG MÔN';
-}
-// Kiểm tra quyền Tông chủ ngay khi đăng nhập thành công
-function checkAdmin(user) {
-    if (user === "minertiti") {
-        document.getElementById('adminBtn').style.display = 'block'; [cite: 148]
-    }
-}
-
-// Logic cộng dồn điểm vào LocalStorage
-function addPoints() {
-    const targetUser = document.getElementById('finishUser').value;
-    const pointsToAdd = parseInt(document.getElementById('finishRank').value); [cite: 126]
-
-    if (!targetUser) return alert("Chưa nhập tên đệ tử!");
-
-    // Lấy dữ liệu cũ hoặc tạo mới nếu chưa có
-    let leaderboard = JSON.parse(localStorage.getItem('LacVanTong_BXH')) || {}; [cite: 162]
-
-    // Cộng dồn điểm nhiệm vụ [cite: 163]
-    leaderboard[targetUser] = (leaderboard[targetUser] || 0) + pointsToAdd;
-
-    // Lưu lại vào bộ nhớ máy local [cite: 162]
-    localStorage.setItem('LacVanTong_BXH', JSON.stringify(leaderboard));
-
-    alert(`Đã cộng ${pointsToAdd} điểm cho ${targetUser}!`);
-    updateBXHDisplay(); 
-    closeAdmin();
-}
-
-// Hàm hiển thị danh sách đệ tử ở Tab Bảng xếp hạng
-function updateBXHDisplay() {
-    const bxhDiv = document.getElementById('bxh');
-    let leaderboard = JSON.parse(localStorage.getItem('LacVanTong_BXH')) || {};
-    let sortedList = Object.entries(leaderboard).sort((a, b) => b[1] - a[1]);
-
-    let html = `<h2>Bảng Xếp Hạng Tu Vi</h2><table class="table table-dark">
-                <thead><tr><th>Hạng</th><th>Tên Đệ Tử</th><th>Điểm</th></tr></thead><tbody>`;
-    sortedList.forEach((item, index) => {
-        html += `<tr><td>${index + 1}</td><td>${item[0]}</td><td>${item[1]}</td></tr>`;
-    });
-    html += `</tbody></table>`;
-    bxhDiv.innerHTML = html;
-}
-
-function showAdminPanel() { document.getElementById('adminModal').style.display = 'flex'; }
-function showCompleteForm() { document.getElementById('completeForm').style.display = 'block'; }
-function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
-function handleRegister() {
-    const user = document.getElementById('regUser').value;
-    const pass = document.getElementById('regPass').value;
-    const confirm = document.getElementById('regPassConfirm').value;
-
-    if (!user || !pass) return alert("Vui lòng điền đầy đủ thông tin!");
-    if (pass !== confirm) return alert("Mật mã không trùng khớp!");
-    
-    // Lưu thông tin vào trình duyệt của đệ tử 
-    localStorage.setItem(`user_${user}`, pass);
-    alert("Khởi tạo thành công! Hãy dùng danh tánh này để đăng nhập.");
-    toggleAuth(false);
-}
-
-function handleLogin() {
-    const user = document.getElementById('username').value;
-    const pass = document.getElementById('password').value;
-    const storedPass = localStorage.getItem(`user_${user}`);
-
-    if (storedPass && storedPass === pass) {
-        localStorage.setItem('currentUser', user); // Ghi nhớ phiên làm việc [cite: 62]
-        document.getElementById('authOverlay').style.display = 'none';
-    } else {
-        alert("Danh tánh hoặc mật mã không đúng!");
-    }
-}
-
-// 5. Hiển thị chi tiết Nhiệm vụ [cite: 41, 45]
-function showDetail(name, rank, desc, req, time, reward, note) {
-    document.getElementById('m-name').innerText = name;
-    document.getElementById('m-rank').innerText = rank;
-    document.getElementById('m-desc').innerText = desc;
-    document.getElementById('m-req').innerText = req;
-    document.getElementById('m-time').innerText = time;
-    document.getElementById('m-reward').innerText = reward;
-    document.getElementById('m-note').innerText = note;
-    
-    document.getElementById('missionModal').style.display = 'flex'; // Hiện khung chi tiết [cite: 41]
-}
-
-function closeModal() {
-    document.getElementById('missionModal').style.display = 'none';
-}
-
-// 6. Gửi thông tin về Discord theo phiên của User [cite: 42, 63]
-async function takeMission() {
-    const missionName = document.getElementById('m-name').innerText;
-    const userName = localStorage.getItem('currentUser'); // Tự động lấy tên đã login 
-
-    const data = {
-        content: `📜 **THÔNG BÁO NHẬN NHIỆM VỤ**`,
-        embeds: [{
-            title: missionName,
-            color: 16766720, // Màu vàng kim đặc trưng Lạc Vân Tông [cite: 35]
-            fields: [
-                { name: "Đệ tử nhận:", value: userName, inline: true },
-                { name: "Cấp độ:", value: document.getElementById('m-rank').innerText, inline: true }
-            ],
-            footer: { text: "Hệ thống quản lý Lạc Vân Tông" }
-        }]
+    const KPI_DATA = {
+        'linh-thach': { 
+            1: { title: "KPI Tuần 1", time: "19/04 - 26/04", status: "done", text: "Gom đủ 5000 linh thạch phẩm cấp hạ.", statusText: "ĐÃ XONG" },
+            2: { title: "KPI Tuần 2", time: "26/04 - 03/05", status: "not", text: "Gom 7000 linh thạch.", statusText: "CHƯA XONG" }
+        },
+        'linh-thao': { 1: { title: "KPI Tuần 1", time: "19/04 - 26/04", status: "done", text: "Hái 200 cỏ linh thảo.", statusText: "ĐÃ XONG" } }
     };
 
-    try {
-        const response = await fetch(DISCORD_WEBHOOK_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        if (response.ok) {
-            alert("Đã gửi sớ nhận nhiệm vụ lên Discord!");
-            closeModal();
+    let currentKPITeam = 'linh-thach';
+    let currentKPIWeek = 1;
+
+    // --- 3. LOGIC ĐĂNG NHẬP ---
+    function toggleAuth(isReg) {
+        document.getElementById('loginForm').style.display = isReg ? 'none' : 'block';
+        document.getElementById('registerForm').style.display = isReg ? 'block' : 'none';
+        document.getElementById('authTitle').innerText = isReg ? 'KHỞI TẠO DANH TÁNH' : 'ĐĂNG NHẬP TÔNG MÔN';
+    }
+
+    function handleRegister() {
+        const u = document.getElementById('regUser').value.trim();
+        const p = document.getElementById('regPass').value;
+        const cp = document.getElementById('regPassConfirm').value;
+        if(!u || !p) return alert("Vui lòng nhập đủ!");
+        if(p !== cp) return alert("Mật mã không khớp!");
+        localStorage.setItem(`user_${u}`, p);
+        alert("Đăng ký thành công! Hãy đăng nhập.");
+        toggleAuth(false);
+    }
+
+    function handleLogin() {
+        const u = document.getElementById('username').value.trim();
+        const p = document.getElementById('password').value;
+        if(localStorage.getItem(`user_${u}`) === p) {
+            localStorage.setItem('currentUser', u);
+            location.reload();
+        } else { alert("Danh tánh hoặc mật mã không đúng!"); }
+    }
+
+    function checkAdmin(user) {
+        if(user === 'minertiti') {
+            document.getElementById('adminBtn').style.display = 'block';
+            document.getElementById('adminReportBtn').style.display = 'block';
         }
-    } catch (error) {
-        alert("Pháp trận truyền tin gặp lỗi, hãy thử lại!");
-    }
-}
-
-function updateBXHDisplay() {
-    const bxhBody = document.getElementById('bxh-body');
-    // Lấy dữ liệu từ "pháp bảo" LocalStorage
-    let leaderboard = JSON.parse(localStorage.getItem('LacVanTong_BXH')) || {};
-    
-    // Chuyển đối tượng thành mảng và sắp xếp theo điểm giảm dần
-    let sortedList = Object.entries(leaderboard)
-        .sort((a, b) => b[1] - a[1]) // Sắp xếp điểm từ cao xuống thấp
-        .slice(0, 10);              // CHỈ LẤY TOP 10
-
-    // Xóa nội dung cũ trong bảng
-    bxhBody.innerHTML = '';
-
-    if (sortedList.length === 0) {
-        bxhBody.innerHTML = '<tr><td colspan="3" class="text-center">Chưa có đệ tử nào ghi danh bảng vàng.</td></tr>';
-        return;
     }
 
-    // Đổ dữ liệu mới vào bảng
-    sortedList.forEach((item, index) => {
-        let rank = index + 1;
-        let color = '';
+    // --- 4. HỆ THỐNG TAB ---
+    function openTab(id) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        event.currentTarget.classList.add('active');
+
+        if(id === 'bxh') updateBXHDisplay();
+        if(id === 'thanh-vien') renderSectMembers();
+        if(id === 'to-cao') renderDisciplineList();
+        if(id === 'kpi') renderKPI();
+        if(id === 'nhiem-vu') renderMissions();
+    }
+
+    // --- 5. NHIỆM VỤ ---
+    function renderMissions() {
+        const container = document.getElementById('mission-list-container');
+        let customMissions = JSON.parse(localStorage.getItem('LacVanTong_CustomMissions')) || [];
+        let allM = [...DEFAULT_MISSIONS, ...customMissions];
+
+        container.innerHTML = allM.map(m => `
+            <div class="mission-card" onclick="openMissionModal('${m.name}', '${m.rankText}', '${m.desc}', '${m.req}', '${m.time}', '${m.reward}', '${m.note}', '${m.rank}')">
+                <img src="${m.img}" class="mission-img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3516/3516358.png'">
+                <div class="mission-info">
+                    <h3>${m.name}</h3>
+                    <p class="desc-short">${m.desc}</p>
+                </div>
+                <div class="ribbon ${m.rank}">${m.rankText.toUpperCase()}</div>
+            </div>
+        `).join('');
+    }
+
+    function openMissionModal(name, rank, desc, req, time, reward, note) {
+        document.getElementById('m-title').innerText = name;
+        document.getElementById('m-rank').innerText = rank;
+        document.getElementById('m-desc').innerText = desc;
+        document.getElementById('m-req').innerText = req;
+        document.getElementById('m-time').innerText = time;
+        document.getElementById('m-reward').innerText = reward;
+        document.getElementById('m-note').innerText = note;
+        document.getElementById('missionModal').style.display = 'flex';
+    }
+
+    async function confirmTakeMission() {
+        const mName = document.getElementById('m-title').innerText;
+        const user = localStorage.getItem('currentUser') || "Ẩn danh";
         
-        // Hiệu ứng màu sắc cho Top 3
-        if (rank === 1) color = 'style="color: #ffd700; font-weight: bold;"'; // Vàng (Hạng 1)
-        else if (rank === 2) color = 'style="color: #c0c0c0;"'; // Bạc (Hạng 2)
-        else if (rank === 3) color = 'style="color: #cd7f32;"'; // Đồng (Hạng 3)
+        const payload = {
+            content: `📜 **THÔNG BÁO NHẬN NHIỆM VỤ**`,
+            embeds: [{
+                title: mName,
+                description: `Đệ tử **${user}** đã nhận sớ nhiệm vụ này!`,
+                color: 16766720,
+                footer: { text: "Lạc Vân Tông - Website System" }
+            }]
+        };
 
-        bxhBody.innerHTML += `
-            <tr ${color}>
-                <td>${rank}</td>
-                <td>${item[0]}</td>
-                <td>${item[1].toLocaleString()}</td>
+        try {
+            await fetch(DISCORD_WEBHOOK_MISSION, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+            alert("Đã gửi sớ nhận nhiệm vụ lên Discord!");
+            document.getElementById('missionModal').style.display = 'none';
+        } catch(e) { alert("Pháp trận truyền tin gặp lỗi!"); }
+    }
+
+    // --- 6. KPI ---
+    function changeKPITeam(team) { currentKPITeam = team; renderKPI(); }
+    function changeKPIWeek(week) { currentKPIWeek = week; renderKPI(); }
+    function renderKPI() {
+        const area = document.getElementById('kpi-display-area');
+        const data = (KPI_DATA[currentKPITeam] || {})[currentKPIWeek];
+        if(!data) { area.innerHTML = `<p class="text-center p-5 text-secondary">Chưa có chỉ tiêu cho tuần này.</p>`; return; }
+        
+        area.innerHTML = `
+            <div class="kpi-card">
+                <img src="logo.png" class="kpi-img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3516/3516358.png'">
+                <div class="kpi-info">
+                    <h4>${data.title}</h4>
+                    <p class="small text-secondary"><i class="far fa-calendar-alt"></i> ${data.time}</p>
+                    <hr class="border-secondary">
+                    <p>${data.text}</p>
+                </div>
+                <div class="ribbon-kpi ${data.status === 'done' ? 'status-done' : 'status-not'}">${data.statusText}</div>
+            </div>`;
+    }
+
+    // --- 7. TỐ CÁO & KỶ LUẬT ---
+    async function sendReport() {
+        const accused = document.getElementById('repAccused').value;
+        const time = document.getElementById('repTime').value;
+        const reason = document.getElementById('repReason').value;
+        const sender = localStorage.getItem('currentUser') || "Ẩn danh";
+
+        if(!accused || !reason) return alert("Hãy điền đủ đơn!");
+
+        const payload = {
+            content: `⚠️ **SỚ TỐ CÁO MỚI**`,
+            embeds: [{
+                title: "Phát hiện sai phạm",
+                fields: [{name: "Người tố", value: sender, inline: true}, {name: "Bị tố", value: accused, inline: true}, {name: "Lý do", value: reason}],
+                color: 15158332
+            }]
+        };
+
+        try {
+            await fetch(DISCORD_WEBHOOK_REPORT, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+            alert("Đã gửi đơn lên Ban Chấp Pháp!");
+            document.getElementById('repAccused').value = ""; document.getElementById('repReason').value = "";
+        } catch(e) { alert("Lỗi!"); }
+    }
+
+    function showDisciplineModal() { document.getElementById('disciplineModal').style.display = 'flex'; }
+    function saveDisciplineRecord() {
+        let name = document.getElementById('discName').value;
+        if(!name) return;
+        let records = JSON.parse(localStorage.getItem('LacVanTong_KyLuat')) || [];
+        records.push({name, light: document.getElementById('discLight').value, hard: document.getElementById('discHard').value, extreme: document.getElementById('discExtreme').value});
+        localStorage.setItem('LacVanTong_KyLuat', JSON.stringify(records));
+        alert("Đã ghi vào sổ!");
+        renderDisciplineList();
+        document.getElementById('disciplineModal').style.display = 'none';
+    }
+
+    function renderDisciplineList() {
+        const list = document.getElementById('discipline-list');
+        let records = JSON.parse(localStorage.getItem('LacVanTong_KyLuat')) || [];
+        list.innerHTML = records.map(r => `<tr><td>${r.name}</td><td>${r.light||'-'}</td><td>${r.hard||'-'}</td><td class="text-danger fw-bold">${r.extreme||'-'}</td></tr>`).join('');
+    }
+
+    // --- 8. THÀNH VIÊN ---
+    function renderSectMembers() {
+        document.getElementById('list-noi-mon').innerHTML = NOI_MON.map(m => `<li class="list-group-item bg-transparent text-white border-0">● ${m}</li>`).join('');
+        document.getElementById('list-ngoai-mon').innerHTML = NGOAI_MON.map(m => `<li class="list-group-item bg-transparent text-white border-0">○ ${m}</li>`).join('');
+    }
+
+    // --- 9. BẢNG XẾP HẠNG ---
+    function updateBXHDisplay() {
+        const body = document.getElementById('bxh-body');
+        let scores = JSON.parse(localStorage.getItem('LacVanTong_BXH')) || {};
+        let sorted = Object.entries(scores).sort((a,b) => b[1] - a[1]).slice(0, 10);
+
+        body.innerHTML = sorted.map(([name, pts], i) => `
+            <tr>
+                <td class="fw-bold">${i+1}</td>
+                <td class="${i === 0 ? 'top1-sparkle' : ''}">${name}</td>
+                <td class="text-warning fw-bold">${pts.toLocaleString()}</td>
             </tr>
-        `;
-    });
-}
+        `).join('') || '<tr><td colspan="3" class="text-center p-4">Chưa có bảng danh.</td></tr>';
+    }
 
-// Gọi hàm này ngay khi chuyển sang tab Bảng Xếp Hạng
-function openTab(tabId) {
-    const contents = document.querySelectorAll('.tab-content');
-    contents.forEach(content => content.classList.remove('active'));
+    // --- 10. ADMIN LOGIC ---
+    function showAdminPanel() { document.getElementById('adminModal').style.display = 'flex'; }
+    function toggleAdminView(view) {
+        document.getElementById('form-edit-mission').style.display = view === 'edit-mission' ? 'block' : 'none';
+        document.getElementById('form-complete-mission').style.display = view === 'complete-mission' ? 'block' : 'none';
+    }
 
-    const links = document.querySelectorAll('.nav-link');
-    links.forEach(link => link.classList.remove('active'));
+    function saveAdminMission() {
+        const name = document.getElementById('add-m-name').value.toUpperCase();
+        if(!name) return;
+        const newM = {
+            name, rank: document.getElementById('add-m-rank').value,
+            rankText: document.getElementById('add-m-rank').options[document.getElementById('add-m-rank').selectedIndex].text.replace('Cấp ',''),
+            desc: document.getElementById('add-m-desc').value,
+            img: 'logo.png', req: document.getElementById('add-m-req').value, reward: document.getElementById('add-m-reward').value
+        };
+        let custom = JSON.parse(localStorage.getItem('LacVanTong_CustomMissions')) || [];
+        custom.push(newM);
+        localStorage.setItem('LacVanTong_CustomMissions', JSON.stringify(custom));
+        alert("Thành công!"); renderMissions();
+    }
 
-    document.getElementById(tabId).classList.add('active');
-    event.currentTarget.classList.add('active');
-
-    // Nếu bấm vào tab BXH thì cập nhật lại dữ liệu mới nhất
-    if (tabId === 'bxh') {
+    function processAddPoints() {
+        const u = document.getElementById('finishUser').value.trim();
+        const p = parseInt(document.getElementById('finishPoint').value);
+        if(!u) return;
+        let bxh = JSON.parse(localStorage.getItem('LacVanTong_BXH')) || {};
+        bxh[u] = (bxh[u] || 0) + p;
+        localStorage.setItem('LacVanTong_BXH', JSON.stringify(bxh));
+        alert(`Đã cộng ${p} điểm cho ${u}!`);
         updateBXHDisplay();
     }
-}
- // --- KHU VỰC CẬP NHẬT THÀNH VIÊN THỦ CÔNG ---
-const NOI_MON = [
-    "minertiti - Tông Chủ",
-    "Đạo Hữu A - Trưởng Lão",
-    "Đạo Hữu B - Đại Đệ Tử",
-    // Thêm dòng mới tại đây: "Tên - Chức vụ",
-];
 
-const NGOẠI_MON = [
-    "Đệ Tử C - Ngoại Môn Đệ Tử",
-    "Đệ Tử D - Tân Thủ",
-    // Để trống mảng [] nếu không có ai
-];
-// ------------------------------------------
-
-function renderThanhVien() {
-    const noiMonUl = document.getElementById('list-noi-mon');
-    const ngoaiMonUl = document.getElementById('list-ngoai-mon');
-
-    // Xóa trắng trước khi nạp
-    noiMonUl.innerHTML = '';
-    ngoaiMonUl.innerHTML = '';
-
-    // Nạp Nội Môn
-    NOI_MON.forEach(member => {
-        if(member.trim() !== "") {
-            const parts = member.split('-');
-            noiMonUl.innerHTML += `
-                <li class="list-group-item member-item">
-                    ${parts[0].trim()} 
-                    <span class="member-rank">${parts[1] ? parts[1].trim() : ''}</span>
-                </li>`;
+    // --- KHỞI ĐỘNG HỆ THỐNG ---
+    window.onload = () => {
+        const user = localStorage.getItem('currentUser');
+        if(user) {
+            document.getElementById('authOverlay').style.display = 'none';
+            checkAdmin(user);
+            renderMissions();
         }
-    });
-
-    // Nạp Ngoại Môn
-    NGOẠI_MON.forEach(member => {
-        if(member.trim() !== "") {
-            const parts = member.split('-');
-            ngoaiMonUl.innerHTML += `
-                <li class="list-group-item member-item">
-                    ${parts[0].trim()} 
-                    <span class="member-rank">${parts[1] ? parts[1].trim() : ''}</span>
-                </li>`;
-        }
-    });
-}
-
-// Cập nhật hàm openTab để khi bấm vào tab Thành Viên nó mới load danh sách
-const originalOpenTab = openTab; // Giữ lại hàm cũ
-openTab = function(tabId) {
-    originalOpenTab(tabId);
-    if (tabId === 'thanh-vien') {
-        renderThanhVien();
-    }
-};   
-
-// --- KHU VỰC EDIT KPI THỦ CÔNG ---
-const KPI_DATA = {
-    "linh-thach": {
-        1: { title: "KPI Tuần 1", time: "19/04 - 26/04", status: "done", text: "Khai thác 5000 Linh Thạch hạ phẩm.", statusText: "ĐÃ HOÀN THÀNH" },
-        2: { title: "KPI Tuần 2", time: "26/04 - 03/05", status: "not", text: "Khai thác 7000 Linh Thạch hạ phẩm.", statusText: "CHƯA HOÀN THÀNH" }
-    },
-    "linh-thảo": {
-        1: { title: "KPI Tuần 1", time: "19/04 - 26/04", status: "done", text: "Thu thập 100 cỏ Ngưng Lộ.", statusText: "ĐÃ HOÀN THÀNH" }
-    },
-    // Đạo hữu thêm các đội khác tương tự...
-};
-
-let currentTeam = 'linh-thach';
-let currentWeek = 1;
-
-function showTeamKPI(teamId) {
-    currentTeam = teamId;
-    renderKPI();
-    
-    // Cập nhật giao diện nút Đội
-    event.target.parentElement.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
-}
-
-function showWeek(weekNum) {
-    currentWeek = weekNum;
-    renderKPI();
-
-    // Cập nhật giao diện nút Tuần
-    event.target.parentElement.parentElement.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
-    event.target.classList.add('active');
-}
-
-function renderKPI() {
-    const display = document.getElementById('kpi-content-display');
-    const data = KPI_DATA[currentTeam] ? KPI_DATA[currentTeam][currentWeek] : null;
-
-    if (!data) {
-        display.innerHTML = `<div class="p-5 text-center text-muted">Chưa có dữ liệu KPI cho tuần này.</div>`;
-        return;
-    }
-
-    const statusClass = data.status === 'done' ? 'status-done' : 'status-not';
-
-    display.innerHTML = `
-        <div class="kpi-card">
-            <img src="kpi.png" class="kpi-img" alt="kpi">
-            <div class="kpi-info">
-                <h4>${data.title}</h4>
-                <p class="kpi-time"><i class="far fa-calendar-alt"></i> Thời gian: ${data.time}</p>
-                <hr style="border-color: rgba(255,215,0,0.3)">
-                <p>${data.text}</p>
-            </div>
-            <div class="ribbon-kpi ${statusClass}">${data.statusText}</div>
-        </div>
-    `;
-}
-
-// Khởi tạo mặc định
-document.addEventListener('DOMContentLoaded', () => {
-    if(document.getElementById('kpi')) renderKPI();
-});
-   // --- CẤU HÌNH WEBHOOK TỐ CÁO ---
-const DISCORD_REPORT_WEBHOOK = 'DÁN_LINK_WEBHOOK_KÊNH_TỐ_CÁO_VÀO_ĐÂY';
-
-// 1. Gửi tố cáo lên Discord
-async function sendReport() {
-    const accused = document.getElementById('accusedName').value;
-    const time = document.getElementById('reportTime').value;
-    const reason = document.getElementById('reportReason').value;
-    const sender = localStorage.getItem('currentUser') || "Ẩn danh";
-
-    if (!accused || !reason) return alert("Vui lòng điền tên người bị tố cáo và lý do!");
-
-    const data = {
-        content: `⚠️ **ĐƠN TỐ CÁO MỚI**`,
-        embeds: [{
-            title: "Phát hiện vi phạm môn quy",
-            color: 15158332, // Màu đỏ
-            fields: [
-                { name: "Người tố cáo:", value: sender, inline: true },
-                { name: "Đối tượng bị tố cáo:", value: accused, inline: true },
-                { name: "Thời gian:", value: time, inline: false },
-                { name: "Lý do / Chứng cứ:", value: reason, inline: false }
-            ],
-            footer: { text: "Pháp luật Lạc Vân Tông" }
-        }]
     };
-
-    try {
-        await fetch(DISCORD_REPORT_WEBHOOK, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        alert("Sớ tố cáo đã được gửi lên Ban Chấp Pháp!");
-        // Reset form
-        document.getElementById('accusedName').value = "";
-        document.getElementById('reportReason').value = "";
-    } catch (e) { alert("Pháp trận truyền tin gặp lỗi!"); }
-}
-
-// 2. Quản lý Bảng Kỷ Luật (Admin minertiti)
-function showDisciplineForm() { document.getElementById('disciplineModal').style.display = 'flex'; }
-function closeDiscipline() { document.getElementById('disciplineModal').style.display = 'none'; }
-
-function saveDiscipline() {
-    const name = document.getElementById('discName').value;
-    const light = document.getElementById('discLight').value;
-    const hard = document.getElementById('discHard').value;
-    const extreme = document.getElementById('discExtreme').value;
-
-    if(!name) return alert("Cần nhập tên người bị phạt!");
-
-    let records = JSON.parse(localStorage.getItem('LacVanTong_KyLuat')) || [];
-    
-    // Tìm xem đã có tên này trong sổ chưa
-    const index = records.findIndex(r => r.name === name);
-    if(index > -1) {
-        records[index] = { name, light, hard, extreme };
-    } else {
-        records.push({ name, light, hard, extreme });
-    }
-
-    localStorage.setItem('LacVanTong_KyLuat', JSON.stringify(records));
-    alert("Đã cập nhật sổ kỷ luật!");
-    renderDiscipline();
-    closeDiscipline();
-}
-
-function renderDiscipline() {
-    const body = document.getElementById('discipline-body');
-    let records = JSON.parse(localStorage.getItem('LacVanTong_KyLuat')) || [];
-    
-    body.innerHTML = records.map(r => `
-        <tr class="text-center">
-            <td style="color: gold;">${r.name}</td>
-            <td>${r.light || '-'}</td>
-            <td>${r.hard || '-'}</td>
-            <td class="text-danger font-weight-bold">${r.extreme || '-'}</td>
-        </tr>
-    `).join('');
-}
-
-// 3. Cập nhật phân quyền Admin trong hàm checkAdmin cũ
-function checkAdmin(user) {
-    if (user === "minertiti") {
-        document.getElementById('adminBtn').style.display = 'block';
-        if(document.getElementById('adminReportBtn')) 
-            document.getElementById('adminReportBtn').style.display = 'block';
-    }
-}     
 </script>
-<div id="adminModal" class="modal-overlay" onclick="closeAdmin()">
-    <div class="modal-box" onclick="event.stopPropagation()">
-        <h2 style="color: gold;">BẢNG TRƯỞNG LÃO</h2>
-        <div class="d-flex gap-2">
-            <button class="btn btn-info w-50" onclick="alert('Đang bảo trì pháp trận này...')">EDIT NHIỆM VỤ</button>
-            <button class="btn btn-success w-50" onclick="showCompleteForm()">HOÀN THÀNH</button>
-        </div>
-        <div id="completeForm" style="display:none;">
-            <input type="text" id="finishUser" class="form-control mb-2" placeholder="Tên đệ tử">
-            <select id="finishRank" class="form-control mb-2">
-                <option value="2">Cấp Sơ (+2)</option>
-                <option value="5">Cấp Trung (+5)</option>
-                <option value="7">Cấp Cao (+7)</option>
-                <option value="10">Cấp Thiên (+10)</option>
-            </select>
-            <button class="btn btn-primary w-100" onclick="addPoints()">XÁC NHẬN CỘNG ĐIỂM</button>
-        </div>
-    </div>
-</div>
+
 </body>
 </html>
