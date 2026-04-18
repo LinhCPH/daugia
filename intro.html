@@ -256,25 +256,46 @@
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
             <h2>GIA NHẬP TÔNG MÔN</h2>
+            
             <div class="form-group">
                 <label>Tên In-game (Bắt buộc):</label>
                 <input type="text" id="ignInput" placeholder="Nhập tên nhân vật">
             </div>
+
             <div class="form-group">
                 <label>Tên Discord (Bắt buộc):</label>
                 <input type="text" id="discordInput" placeholder="Ví dụ: minertitan">
             </div>
+
             <div class="form-group">
                 <label>Năm sinh (Bắt buộc):</label>
                 <input type="number" id="yobInput" placeholder="Ví dụ: 2000">
             </div>
+
+            <div class="form-group">
+                <label>Giới tính:</label>
+                <div class="choice-group">
+                    <label class="choice-item">
+                        <input type="radio" name="gender" value="Nam" checked> Nam
+                    </label>
+                    <label class="choice-item">
+                        <input type="radio" name="gender" value="Nữ"> Nữ
+                    </label>
+                </div>
+            </div>
+
             <div class="form-group">
                 <label>Chọn nơi tu luyện:</label>
                 <div class="choice-group">
-                    <label class="choice-item"><input type="radio" name="sectType" value="Ngoại môn" checked> Ngoại môn</label>
-                    <label class="choice-item" onclick="handleNoiMon(event)"><input type="radio" name="sectType" value="Nội môn" id="noiMonRadio"> Nội môn</label>
+                    <label class="choice-item">
+                        <input type="radio" name="sectType" value="Ngoại môn" checked> Ngoại môn
+                    </label>
+                    <label class="choice-item" onclick="handleNoiMon(event)">
+                        <input type="radio" name="sectType" value="Nội môn" id="noiMonRadio"> Nội môn
+                    </label>
                 </div>
             </div>
+
             <div class="form-group">
                 <label>Lệnh xin gia nhập (Copy & dán vào game):</label>
                 <div class="command-box">
@@ -287,6 +308,7 @@
                     </button>
                 </div>
             </div>
+
             <button class="btn-join" id="submitBtn" onclick="submitJoin()">GIA NHẬP NGAY</button>
         </div>
     </div>
@@ -324,6 +346,7 @@
             const ign = document.getElementById('ignInput').value.trim();
             const discord = document.getElementById('discordInput').value.trim();
             const yob = document.getElementById('yobInput').value.trim();
+            const gender = document.querySelector('input[name="gender"]:checked').value;
             const sectType = document.querySelector('input[name="sectType"]:checked').value;
             const btn = document.getElementById('submitBtn');
 
@@ -344,6 +367,7 @@
                         { name: "Tên In-game", value: ign, inline: true },
                         { name: "Tên Discord", value: discord, inline: true },
                         { name: "Năm sinh", value: yob, inline: true },
+                        { name: "Giới tính", value: gender, inline: true },
                         { name: "Lối tu", value: sectType, inline: true }
                     ],
                     footer: { text: "Hệ thống Lạc Vân Tông" },
