@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sàn Đấu Giá LVT - Hệ Thống Quản Lý Chuyên Nghiệp</title>
+    <style>
+        /* Nhúng font thư pháp từ Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+
+        :root {
+            --primary-color: #f1c40f; 
+            --accent-color: #d4af37; 
+            --title-color: #ffffff; 
+            --bg-overlay: rgba(0, 0, 0, 0.4); 
+            --card-bg: rgba(255, 255, 255, 0.98);
+            --modal-bg: rgba(0, 0, 0, 0.9);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; padding: 20px;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; position: relative;
+        }
+
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('anhnen.png');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            filter: blur(2px) brightness(0.9); z-index: -2;
+        }
+
+        body::after {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--bg-overlay); z-index: -1;
+        }
+
+        /* --- HEADER --- */
+        .top-header {
+            display: flex; justify-content: space-between; align-items: center;
+            width: 100%; max-width: 1300px; padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.6); border: 2px solid var(--accent-color);
+            border-radius: 12px; margin-bottom: 20px; box-sizing: border-box;
+            backdrop-filter: blur(5px);
+        }
+
+        .header-left { 
+            display: flex; align-items: center; gap: 15px; 
+            text-decoration: none; transition: 0.3s; 
+        }
+        
+        .header-left:hover { transform: scale(1.02); }
+        
+        .header-logo { 
+            width: 45px; height: 45px; border-radius: 50%; 
+            border: 2px solid var(--primary-color); object-fit: cover; 
+        }
+        
+        .header-text { 
+            color: white; font-weight: bold; font-size: 0.95rem; 
+            text-shadow: 1px 1px 3px black; transition: 0.3s;
+        }
+        
+        .header-left:hover .header-text { color: var(--primary-color); }
+
+        .header-right {
+            background: linear-gradient(to bottom, #f1c40f, #d4af37); color: #000;
+            text-decoration: none; padding: 8px 18px; border-radius: 8px; font-weight: bold;
+            transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            text-align: center; white-space: nowrap;
+        }
+        
+        .header-right:hover { filter: brightness(1.2); transform: translateY(-2px); }
+
+        /* FONT THƯ PHÁP */
+        h1 { 
+            color: var(--primary-color); 
+            margin-bottom: 20px; 
+            letter-spacing: 3px; 
+            text-shadow: 3px 3px 10px rgba(0,0,0,0.9);
+            border-bottom: 3px solid var(--accent-color); 
+            padding-bottom: 10px;
+            text-align: center;
+            font-family: 'UTM Thu Phap', 'VNI-Thufap', 'Dancing Script', cursive;
+            font-size: 3.8rem;
+            font-weight: 700;
+        }
+
+        /* THIẾT LẬP THANH MENU & DROPDOWN */
+        .top-menu {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+            max-width: 1300px;
+        }
+
+        .menu-item {
+            background: rgba(0, 0, 0, 0.6);
+            color: var(--title-color);
+            padding: 10px 20px;
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background: var(--accent-color);
+            color: #000;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* DROPDOWN MỚI THÊM */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.85);
+            min-width: 220px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+            z-index: 3000;
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
+            top: 110%; /* Hiển thị ngay dưới nút */
+            left: 0;
+            overflow: hidden;
+        }
+
+        .dropdown-content a {
+            color: var(--title-color);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--accent-color);
+            color: #000;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* THIẾT LẬP 4 MẶT HÀNG TRÊN 1 HÀNG */
+        .grid-container {
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 20px; 
+            width: 100%; 
+            max-width: 1300px;
+            padding: 10px 0 20px 0;
+        }
+
+        .product-card {
+            background: var(--card-bg); border-radius: 15px; overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3); 
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            display: flex; flex-direction: column; border: 3px solid var(--accent-color);
+            position: relative; height: 100%;
+            z-index: 1;
+        }
+
+        .product-card:hover {
+            transform: translateY(-15px) scale(1.03); 
+            border-color: #f1c40f;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 20px rgba(212, 175, 55, 0.4);
+            z-index: 10;
+        }
+
+        .product-card::before {
+            content: "LVT"; position: absolute; top: 10px; right: -30px;
+            background-color: var(--accent-color); color: #fff; padding: 5px 35px;
+            transform: rotate(45deg); font-size: 0.75rem; font-weight: bold; z-index: 11;
+        }
+
+        .product-image {
+            width: 100%; height: 160px; 
+            object-fit: cover; 
+            border-bottom: 2px solid var(--accent-color); cursor: pointer;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-image { transform: scale(1.1); }
+
+        .product-info { padding: 12px; display: flex; flex-direction: column; flex-grow: 1; }
+        .product-desc { font-size: 0.9rem; color: #333; font-weight: 600; margin-bottom: 5px; text-align: center; }
+        .stock-label { font-size: 0.8rem; color: #666; text-align: center; margin-bottom: 10px; }
+        .card-footer { margin-top: auto; padding-top: 10px; border-top: 1px dashed #ccc; text-align: center; }
+        .price-row { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+        .price-item { display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 0.85rem; font-weight: bold; }
+        .no-entry-icon { width: 16px; height: 16px; }
+
+        .buy-btn {
+            background: linear-gradient(to bottom, #f1c40f, #d4af37);
+            color: #000; border: none; padding: 8px 15px;
+            border-radius: 8px; font-weight: bold; cursor: pointer;
+            width: 100%; transition: 0.3s;
+        }
+        .buy-btn:hover { filter: brightness(1.2); }
+
+        /* RESPONSIVE */
+        @media (max-width: 1100px) { .grid-container { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { 
+            .top-header { flex-direction: column; gap: 15px; text-align: center; }
+            .header-left { flex-direction: column; gap: 10px; }
+            .grid-container { grid-template-columns: repeat(2, 1fr); gap: 10px; } 
+            .menu-item { padding: 8px 12px; font-size: 0.8rem; }
+        }
+
+        /* MODAL */
+        .order-modal, .img-modal {
+            display: none; position: fixed; z-index: 2000; left: 0; top: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.85);
+            justify-content: center; align-items: center; backdrop-filter: blur(8px);
+        }
+        .order-content {
+            background: white; padding: 25px; border-radius: 15px;
+            width: 90%; max-width: 400px; border: 4px solid var(--accent-color);
+        }
+        .order-content h2 { margin-top: 0; color: #d4af37; text-align: center; font-size: 1.2rem; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; color: #555; }
+        .form-group input[type="text"], .form-group input[type="number"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .payment-box { background: #f9f9f9; padding: 10px; border-radius: 8px; margin: 15px 0; border: 1px solid #eee; }
+        .confirm-btn { background-color: #27ae60; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .cancel-btn { background: none; color: #777; border: none; width: 100%; margin-top: 10px; cursor: pointer; text-decoration: underline; font-size: 0.85rem; }
+        .img-modal img { max-width: 90%; max-height: 90%; border: 3px solid gold; }
+    </style>
+</head>
+<body>
+
+    <header class="top-header">
+        <a href="LINK_DISCORD_CUA_BAN" target="_blank" class="header-left">
+            <img src="logo.png" alt="Logo Tông Môn" class="header-logo">
+            <span class="header-text">Tham gia discord để theo dõi tin tức mới nhất</span>
+        </a>
+        <a href="LINK_KENH_CHU_SHOP" target="_blank" class="header-right">Đăng ký bán hàng</a>
+    </header>
+
+    <h1>Lạc Vân Thương Hội</h1>
+
+    <div class="top-menu">
+        <div class="menu-item active" onclick="setCategory('Tất cả', this)">Tất cả</div>
+        <div class="menu-item" onclick="setCategory('Tiền tệ', this)">Tiền tệ</div>
+        <div class="menu-item" onclick="setCategory('Pháp bảo', this)">Pháp bảo</div>
+        <div class="menu-item" onclick="setCategory('Vũ khí & giáp', this)">Vũ khí & giáp</div>
+        <div class="menu-item" onclick="setCategory('Nguyên liệu', this)">Nguyên liệu</div>
+        <div class="menu-item" onclick="setCategory('Phó bản', this)">Phó bản</div>
+        <div class="menu-item" onclick="setCategory('Combo giảm giá', this)">Combo giảm giá</div>
+        
+        <div class="dropdown">
+            <div class="menu-item">Shop khác ▼</div>
+            <div class="dropdown-content">
+                <a href="shopLucky.html">Shop của Lucky And Lucky</a>
+                <a href="index.html">Lạc Vân Thương Hội</a>                                  
+                <a href="#">Chưa đăng ký</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid-container" id="product-grid"></div>
+
+    <div id="orderModal" class="order-modal">
+        <div class="order-content">
+            <h2>📦 XÁC NHẬN ĐƠN HÀNG</h2>
+            <p id="targetItem" style="font-weight: bold; text-align: center; color: #333; margin-bottom: 20px;"></p>
+            <div class="form-group">
+                <label>Tên Discord (Bắt buộc):</label>
+                <input type="text" id="discordInput" placeholder="Ví dụ: minertitan">
+            </div>
+            <div class="form-group">
+                <label>Tên In-game (Không bắt buộc):</label>
+                <input type="text" id="ignInput" placeholder="Nhập tên nhân vật của bạn">
+            </div>
+            <div class="form-group">
+                <label>Số lượng mua (Tồn kho: <span id="maxStockLabel">0</span>):</label>
+                <input type="number" id="quantityInput" min="1" value="1">
+            </div>
+            <div class="payment-box" id="paymentOptions"></div>
+            <button class="confirm-btn" onclick="submitOrder()">ĐẶT HÀNG</button>
+            <button class="cancel-btn" onclick="closeOrderModal()">Quay lại</button>
+        </div>
+    </div>
+
+    <div id="noticeModal" class="order-modal" style="z-index: 3000;">
+        <div class="order-content" style="text-align: center;">
+            <h2 style="color: #d4af37; margin-bottom: 15px;">LUCKY'S SHOP</h2>
+            <p id="noticeMessage" style="font-weight: bold; color: #333; margin-bottom: 20px;"></p>
+            <button class="confirm-btn" onclick="closeNotice()">ĐÃ HIỂU</button>
+        </div>
+    </div>
+
+    <div id="imageModal" class="img-modal" onclick="this.style.display='none'">
+        <img id="fullImage" src="">
+    </div>
+
+    <script>
+        const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1494077464102568097/oG4QV87lTbZ1XKG3HhAYW7sngyJvqwhq43atabQSgE6tQetcvyEwmQ9eOVvexWYTI6jE";
+
+        const rawData = [
+            "hackiem.png, Hắc Kiếm, 2, 80.000 VNĐ, 25.000.000 linh thạch, Vũ khí & giáp",
+                    ];
+
+        const products = rawData.map((line, index) => {
+            const parts = line.split(',').map(p => p.trim());
+            return { 
+                id: index, 
+                image: parts[0], 
+                desc: parts[1], 
+                stock: parts[2], 
+                priceVND: parts[3] || null, 
+                priceLT: parts[4] || null,
+                category: parts[5] || 'Khác' 
+            };
+        });
+
+        let currentCategory = 'Tất cả';
+
+        function setCategory(cat, element) {
+            currentCategory = cat;
+            document.querySelectorAll('.top-menu > .menu-item').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+            renderProducts();
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            const filteredProducts = currentCategory === 'Tất cả' 
+                ? products 
+                : products.filter(p => p.category === currentCategory);
+
+            if (filteredProducts.length === 0) {
+                grid.innerHTML = '<p style="color:var(--title-color); grid-column: 1/-1; text-align:center; font-size: 1.2rem; font-weight:bold; margin-top: 50px;">Chưa có vật phẩm nào trong mục này!</p>';
+                return;
+            }
+
+            grid.innerHTML = filteredProducts.map((item) => {
+                const vndDisplay = item.priceVND 
+                    ? `<span style="color:#e74c3c">💰 ${item.priceVND}</span>` 
+                    : `<span><img src="no_entry.png" class="no-entry-icon"></span>`;
+                const ltDisplay = item.priceLT 
+                    ? `<span style="color:#2980b9">💎 ${item.priceLT}</span>` 
+                    : `<span><img src="no_entry.png" class="no-entry-icon"></span>`;
+
+                return `
+                <div class="product-card">
+                    <img src="${item.image}" class="product-image" onclick="openImg('${item.image}')">
+                    <div class="product-info">
+                        <div class="product-desc">${item.desc}</div>
+                        <div class="stock-label">Tồn kho: ${item.stock}</div>
+                        <div class="card-footer">
+                            <div class="price-row">
+                                <div class="price-item">${vndDisplay}</div>
+                                <div class="price-item">${ltDisplay}</div>
+                            </div>
+                            <button class="buy-btn" onclick="openOrderModal(${item.id})">MUA NGAY</button>
+                        </div>
+                    </div>
+                </div>`
+            }).join('');
+        }
+
+        function openOrderModal(id) {
+            currentProduct = products[id];
+            document.getElementById('targetItem').innerText = currentProduct.desc;
+            document.getElementById('maxStockLabel').innerText = currentProduct.stock;
+            document.getElementById('quantityInput').value = 1;
+
+            let payHTML = '<p style="margin:0 0 10px 0; font-size:0.85rem; font-weight:bold;">Phương thức thanh toán:</p>';
+            if (currentProduct.priceVND) payHTML += `<label style="display:block; margin-bottom:5px; cursor:pointer;"><input type="radio" name="payType" value="Tiền mặt" checked> Tiền mặt (${currentProduct.priceVND})</label>`;
+            if (currentProduct.priceLT) {
+                const isChecked = !currentProduct.priceVND ? 'checked' : '';
+                payHTML += `<label style="display:block; cursor:pointer;"><input type="radio" name="payType" value="Linh thạch" ${isChecked}> Linh thạch (${currentProduct.priceLT})</label>`;
+            }
+            document.getElementById('paymentOptions').innerHTML = payHTML;
+            document.getElementById('orderModal').style.display = 'flex';
+        }
+
+        function closeOrderModal() {
+            document.getElementById('orderModal').style.display = 'none';
+            document.getElementById('discordInput').value = '';
+            document.getElementById('ignInput').value = '';
+            document.getElementById('quantityInput').value = 1;
+        }
+
+        function showNotice(msg) {
+            document.getElementById('noticeMessage').innerText = msg;
+            document.getElementById('noticeModal').style.display = 'flex';
+        }
+
+        function closeNotice() { document.getElementById('noticeModal').style.display = 'none'; }
+
+        function submitOrder() {
+            const discordName = document.getElementById('discordInput').value.trim();
+            const ign = document.getElementById('ignInput').value.trim() || "Không điền";
+            const payType = document.querySelector('input[name="payType"]:checked')?.value;
+            
+            const buyQty = parseInt(document.getElementById('quantityInput').value);
+            const stockQty = parseInt(currentProduct.stock);
+
+            if (!discordName) { showNotice("Bạn bắt buộc phải nhập tên Discord để chúng tôi liên hệ!"); return; }
+            if (isNaN(buyQty) || buyQty < 1) { showNotice("Vui lòng nhập số lượng mua hợp lệ!"); return; }
+            if (buyQty > stockQty) { showNotice("Số lượng mua không được vượt quá tồn kho hiện có!"); return; }
+
+            const data = {
+                content: "🔔 **YÊU CẦU MUA HÀNG MỚI!**",
+                embeds: [{
+                    title: "Thông Tin Đơn Hàng",
+                    color: 15844367,
+                    fields: [
+                        { name: "Tên Discord", value: discordName, inline: true },
+                        { name: "Tên In-game", value: ign, inline: true },
+                        { name: "Vật phẩm", value: currentProduct.desc, inline: false },
+                        { name: "Số lượng mua", value: buyQty.toString(), inline: true },
+                        { name: "Thanh toán bằng", value: payType, inline: true },
+                        { name: "Tồn kho hiện tại", value: currentProduct.stock, inline: true }
+                    ],
+                    footer: { text: "Shop Market System" },
+                    timestamp: new Date()
+                }]
+            };
+
+            fetch(DISCORD_WEBHOOK_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
+            .then(() => { showNotice("Yêu cầu đã được gửi! Shop sẽ chủ động nhắn tin cho bạn qua Discord."); closeOrderModal(); })
+            .catch(() => showNotice("Lỗi kết nối!"));
+        }
+
+        function openImg(src) {
+            document.getElementById('fullImage').src = src;
+            document.getElementById('imageModal').style.display = 'flex';
+        }
+        
+        renderProducts();
+    </script>
+</body>
+</html>
