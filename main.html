@@ -174,7 +174,24 @@
     </style>
 </head>
 <body>
-
+<div id="authOverlay" class="modal-overlay" style="display: flex;">
+    <div class="modal-box text-center">
+        <h2 id="authTitle" style="color: gold;">ĐĂNG NHẬP TÔNG MÔN</h2>
+        <div id="loginForm">
+            <input type="text" id="username" class="form-control mb-2" placeholder="Tên đệ tử">
+            <input type="password" id="password" class="form-control mb-2" placeholder="Mật mã">
+            <button class="btn btn-warning w-100 mb-2" onclick="handleLogin()">VÀO TÔNG MÔN</button>
+            <p onclick="toggleAuth(true)" style="cursor:pointer; font-size: 0.8rem;">Chưa có danh tánh? Đăng ký ngay</p>
+        </div>
+        <div id="registerForm" style="display: none;">
+            <input type="text" id="regUser" class="form-control mb-2" placeholder="Tên đệ tử mới">
+            <input type="password" id="regPass" class="form-control mb-2" placeholder="Mật mã">
+            <input type="password" id="regPassConfirm" class="form-control mb-2" placeholder="Nhập lại mật mã">
+            <button class="btn btn-success w-100 mb-2" onclick="handleRegister()">KHỞI TẠO DANH TÁNH</button>
+            <p onclick="toggleAuth(false)" style="cursor:pointer; font-size: 0.8rem;">Đã có tài khoản? Đăng nhập</p>
+        </div>
+    </div>
+</div>
 <header>
     <img src="logo.png" alt="Logo Lạc Vân Tông">
     <h1>LẠC VÂN TÔNG</h1>
@@ -245,19 +262,113 @@
 </div>
 
 <script>
-    function openTab(tabId) {
-        // Ẩn tất cả nội dung
-        const contents = document.querySelectorAll('.tab-content');
-        contents.forEach(content => content.classList.remove('active'));
+    // 1. Cấu hình Pháp bảo
+const DISCORD_WEBHOOK_URL = 'DÁN_LINK_WEBHOOK_CỦA_BẠN_VÀO_ĐÂY'; // Cần bảo mật link này [cite: 45, 47]
 
-        // Bỏ active ở tất cả các nút
-        const links = document.querySelectorAll('.nav-link');
-        links.forEach(link => link.classList.remove('active'));
-
-        // Hiển thị tab được chọn
-        document.getElementById(tabId).classList.add('active');
-        event.currentTarget.classList.add('active');
+// 2. Kiểm tra Phiên đăng nhập khi vừa vào trang [cite: 61, 62]
+window.onload = function() {
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+        document.getElementById('authOverlay').style.display = 'none';
+        console.log("Chào mừng đạo hữu " + currentUser + " trở lại tông môn!");
     }
+}
+
+// 3. Xử lý Chuyển đổi Tab (Nâng cấp từ bản cũ) [cite: 34]
+function openTab(tabId) {
+    const contents = document.querySelectorAll('.tab-content');
+    contents.forEach(content => content.classList.remove('active'));
+
+    const links = document.querySelectorAll('.nav-link');
+    links.forEach(link => link.classList.remove('active'));
+
+    document.getElementById(tabId).classList.add('active');
+    event.currentTarget.classList.add('active');
+}
+
+// 4. Xử lý Đăng ký & Đăng nhập (Lưu vào LocalStorage) 
+function toggleAuth(isReg) {
+    document.getElementById('loginForm').style.display = isReg ? 'none' : 'block';
+    document.getElementById('registerForm').style.display = isReg ? 'block' : 'none';
+    document.getElementById('authTitle').innerText = isReg ? 'KHỞI TẠO DANH TÁNH' : 'ĐĂNG NHẬP TÔNG MÔN';
+}
+
+function handleRegister() {
+    const user = document.getElementById('regUser').value;
+    const pass = document.getElementById('regPass').value;
+    const confirm = document.getElementById('regPassConfirm').value;
+
+    if (!user || !pass) return alert("Vui lòng điền đầy đủ thông tin!");
+    if (pass !== confirm) return alert("Mật mã không trùng khớp!");
+    
+    // Lưu thông tin vào trình duyệt của đệ tử 
+    localStorage.setItem(`user_${user}`, pass);
+    alert("Khởi tạo thành công! Hãy dùng danh tánh này để đăng nhập.");
+    toggleAuth(false);
+}
+
+function handleLogin() {
+    const user = document.getElementById('username').value;
+    const pass = document.getElementById('password').value;
+    const storedPass = localStorage.getItem(`user_${user}`);
+
+    if (storedPass && storedPass === pass) {
+        localStorage.setItem('currentUser', user); // Ghi nhớ phiên làm việc [cite: 62]
+        document.getElementById('authOverlay').style.display = 'none';
+    } else {
+        alert("Danh tánh hoặc mật mã không đúng!");
+    }
+}
+
+// 5. Hiển thị chi tiết Nhiệm vụ [cite: 41, 45]
+function showDetail(name, rank, desc, req, time, reward, note) {
+    document.getElementById('m-name').innerText = name;
+    document.getElementById('m-rank').innerText = rank;
+    document.getElementById('m-desc').innerText = desc;
+    document.getElementById('m-req').innerText = req;
+    document.getElementById('m-time').innerText = time;
+    document.getElementById('m-reward').innerText = reward;
+    document.getElementById('m-note').innerText = note;
+    
+    document.getElementById('missionModal').style.display = 'flex'; // Hiện khung chi tiết [cite: 41]
+}
+
+function closeModal() {
+    document.getElementById('missionModal').style.display = 'none';
+}
+
+// 6. Gửi thông tin về Discord theo phiên của User [cite: 42, 63]
+async function takeMission() {
+    const missionName = document.getElementById('m-name').innerText;
+    const userName = localStorage.getItem('currentUser'); // Tự động lấy tên đã login 
+
+    const data = {
+        content: `📜 **THÔNG BÁO NHẬN NHIỆM VỤ**`,
+        embeds: [{
+            title: missionName,
+            color: 16766720, // Màu vàng kim đặc trưng Lạc Vân Tông [cite: 35]
+            fields: [
+                { name: "Đệ tử nhận:", value: userName, inline: true },
+                { name: "Cấp độ:", value: document.getElementById('m-rank').innerText, inline: true }
+            ],
+            footer: { text: "Hệ thống quản lý Lạc Vân Tông" }
+        }]
+    };
+
+    try {
+        const response = await fetch(DISCORD_WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        if (response.ok) {
+            alert("Đã gửi sớ nhận nhiệm vụ lên Discord!");
+            closeModal();
+        }
+    } catch (error) {
+        alert("Pháp trận truyền tin gặp lỗi, hãy thử lại!");
+    }
+}
 </script>
 
 </body>
