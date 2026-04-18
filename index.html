@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sàn Đấu Giá LVT - Hệ Thống Quản Lý Chuyên Nghiệp</title>
     <style>
+        /* Nhúng font thư pháp từ Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+
         :root {
             --primary-color: #f1c40f; 
             --accent-color: #d4af37; 
@@ -33,23 +36,138 @@
             background-color: var(--bg-overlay); z-index: -1;
         }
 
+        /* --- HEADER --- */
+        .top-header {
+            display: flex; justify-content: space-between; align-items: center;
+            width: 100%; max-width: 1300px; padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.6); border: 2px solid var(--accent-color);
+            border-radius: 12px; margin-bottom: 20px; box-sizing: border-box;
+            backdrop-filter: blur(5px);
+        }
+
+        .header-left { 
+            display: flex; align-items: center; gap: 15px; 
+            text-decoration: none; transition: 0.3s; 
+        }
+        
+        .header-left:hover { transform: scale(1.02); }
+        
+        .header-logo { 
+            width: 45px; height: 45px; border-radius: 50%; 
+            border: 2px solid var(--primary-color); object-fit: cover; 
+        }
+        
+        .header-text { 
+            color: white; font-weight: bold; font-size: 0.95rem; 
+            text-shadow: 1px 1px 3px black; transition: 0.3s;
+        }
+        
+        .header-left:hover .header-text { color: var(--primary-color); }
+
+        .header-right {
+            background: linear-gradient(to bottom, #f1c40f, #d4af37); color: #000;
+            text-decoration: none; padding: 8px 18px; border-radius: 8px; font-weight: bold;
+            transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            text-align: center; white-space: nowrap;
+        }
+        
+        .header-right:hover { filter: brightness(1.2); transform: translateY(-2px); }
+
+        /* FONT THƯ PHÁP */
         h1 { 
-            color: var(--title-color); margin-bottom: 40px; text-transform: uppercase;
-            letter-spacing: 2px; text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
-            border-bottom: 3px solid var(--accent-color); padding-bottom: 10px;
+            color: var(--primary-color); 
+            margin-bottom: 20px; 
+            letter-spacing: 3px; 
+            text-shadow: 3px 3px 10px rgba(0,0,0,0.9);
+            border-bottom: 3px solid var(--accent-color); 
+            padding-bottom: 10px;
+            text-align: center;
+            font-family: 'UTM Thu Phap', 'VNI-Thufap', 'Dancing Script', cursive;
+            font-size: 3.8rem;
+            font-weight: 700;
+        }
+
+        /* THIẾT LẬP THANH MENU & DROPDOWN */
+        .top-menu {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+            max-width: 1300px;
+        }
+
+        .menu-item {
+            background: rgba(0, 0, 0, 0.6);
+            color: var(--title-color);
+            padding: 10px 20px;
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background: var(--accent-color);
+            color: #000;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* DROPDOWN MỚI THÊM */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.85);
+            min-width: 220px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+            z-index: 3000;
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
+            top: 110%; /* Hiển thị ngay dưới nút */
+            left: 0;
+            overflow: hidden;
+        }
+
+        .dropdown-content a {
+            color: var(--title-color);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--accent-color);
+            color: #000;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
         }
 
         /* THIẾT LẬP 4 MẶT HÀNG TRÊN 1 HÀNG */
         .grid-container {
             display: grid; 
-            grid-template-columns: repeat(4, 1fr); /* Ép 4 cột */
+            grid-template-columns: repeat(4, 1fr); 
             gap: 20px; 
             width: 100%; 
             max-width: 1300px;
-            padding: 20px 0;
+            padding: 10px 0 20px 0;
         }
 
-        /* HIỆU ỨNG NỔI KHỐI 3D KHI DI CHUỘT */
         .product-card {
             background: var(--card-bg); border-radius: 15px; overflow: hidden;
             box-shadow: 0 10px 20px rgba(0,0,0,0.3); 
@@ -60,7 +178,7 @@
         }
 
         .product-card:hover {
-            transform: translateY(-15px) scale(1.03); /* Nhô cao và to hơn 3% */
+            transform: translateY(-15px) scale(1.03); 
             border-color: #f1c40f;
             box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 20px rgba(212, 175, 55, 0.4);
             z-index: 10;
@@ -73,15 +191,13 @@
         }
 
         .product-image {
-            width: 100%; height: 160px; /* Thu nhỏ chiều cao ảnh một chút để cân đối 4 khung */
+            width: 100%; height: 160px; 
             object-fit: cover; 
             border-bottom: 2px solid var(--accent-color); cursor: pointer;
             transition: transform 0.5s ease;
         }
 
-        .product-card:hover .product-image {
-            transform: scale(1.1); /* Phóng to ảnh nhẹ khi hover khung */
-        }
+        .product-card:hover .product-image { transform: scale(1.1); }
 
         .product-info { padding: 12px; display: flex; flex-direction: column; flex-grow: 1; }
         .product-desc { font-size: 0.9rem; color: #333; font-weight: 600; margin-bottom: 5px; text-align: center; }
@@ -99,11 +215,16 @@
         }
         .buy-btn:hover { filter: brightness(1.2); }
 
-        /* RESPONSIVE: Đảm bảo hiển thị tốt trên điện thoại và máy tính bảng */
+        /* RESPONSIVE */
         @media (max-width: 1100px) { .grid-container { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 600px) { .grid-container { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+        @media (max-width: 600px) { 
+            .top-header { flex-direction: column; gap: 15px; text-align: center; }
+            .header-left { flex-direction: column; gap: 10px; }
+            .grid-container { grid-template-columns: repeat(2, 1fr); gap: 10px; } 
+            .menu-item { padding: 8px 12px; font-size: 0.8rem; }
+        }
 
-        /* GIỮ NGUYÊN CÁC MODAL */
+        /* MODAL */
         .order-modal, .img-modal {
             display: none; position: fixed; z-index: 2000; left: 0; top: 0;
             width: 100%; height: 100%; background: rgba(0,0,0,0.85);
@@ -125,7 +246,33 @@
 </head>
 <body>
 
-    <h1>LẠC VÂN THƯƠNG HỘI</h1>
+    <header class="top-header">
+        <a href="LINK_DISCORD_CUA_BAN" target="_blank" class="header-left">
+            <img src="logo.png" alt="Logo Tông Môn" class="header-logo">
+            <span class="header-text">Tham gia discord để theo dõi tin tức mới nhất</span>
+        </a>
+        <a href="LINK_KENH_CHU_SHOP" target="_blank" class="header-right">Đăng ký bán hàng</a>
+    </header>
+
+    <h1>Lạc Vân Thương Hội</h1>
+
+    <div class="top-menu">
+        <div class="menu-item active" onclick="setCategory('Tất cả', this)">Tất cả</div>
+        <div class="menu-item" onclick="setCategory('Tiền tệ', this)">Tiền tệ</div>
+        <div class="menu-item" onclick="setCategory('Pháp bảo', this)">Pháp bảo</div>
+        <div class="menu-item" onclick="setCategory('Vũ khí & giáp', this)">Vũ khí & giáp</div>
+        <div class="menu-item" onclick="setCategory('Nguyên liệu', this)">Nguyên liệu</div>
+        <div class="menu-item" onclick="setCategory('Phó bản', this)">Phó bản</div>
+        <div class="menu-item" onclick="setCategory('Combo giảm giá', this)">Combo giảm giá</div>
+        
+        <div class="dropdown">
+            <div class="menu-item">Shop khác ▼</div>
+            <div class="dropdown-content">
+                <a href="shopLucky.html">Shop của Lucky And Lucky</a>
+                <a href="#">Chưa đăng ký</a>
+            </div>
+        </div>
+    </div>
 
     <div class="grid-container" id="product-grid"></div>
 
@@ -167,40 +314,64 @@
         const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1494077464102568097/oG4QV87lTbZ1XKG3HhAYW7sngyJvqwhq43atabQSgE6tQetcvyEwmQ9eOVvexWYTI6jE";
 
         const rawData = [
-            "html.png, Hoàng Thiên Mộng Liêm +10 1 dòng thần, 2, 600.000 VNĐ, ",
-            "linhthach.png, 1 triệu linh thạch, 150, 5.000 VNĐ, ",
-            "ngucthan.png, 1 lượt kéo phó bản Ngục Thần,99999, 4.000 VNĐ, 400.000 linh thạch",
-            "daychuyentheluc, Pháp bảo Dây chuyền thể lực, 5, 100.000 VNĐ, 40.000.000 linh thạch",
-            "nguclongthiet.png, Pháp bảo Ngục Long Thiết +20, 1, 250.000 VNĐ, ",
-            "huyetlecothan, Pháp bảo Huyết lệ Cổ Thần, 1, 250.000 VNĐ, ",
-            "minhquang.png, Set giáp Minh Quang, 1, 400.000 VNĐ, ",
-            "setlamhoang, Set giáp Lam Hoàng, 1, 550.000 VNĐ, ",
-            "hackiem.png, Hắc Kiếm, 2, 80.000 VNĐ, 25.000.000 linh thạch",
-            "thiencolinhtich, Pháp bảo Thiên cổ linh tịch, 2, 80.000 VNĐ, 25.000.000 linh thạch",
-            "sethoangkim, Set giáp Hoàng Kim, 1, 100.000 VNĐ, ",
-            "hulinh.png, Set giáp Hư Linh, 1, 140.000 VNĐ, ",
-            "hoatu.png,Hỏa Tự Thạch ,5,5.000 VNĐ ,1.000.000 linh thạch ",
-            "loitu.png, Lôi Tự Thạch,10,5.000 VNĐ ,1.000.000 linh thạch ",
-            "thuytu.png, Thủy Tự Thạch,5,10.000 VNĐ ,3.500.000 linh thạch ",
-            "thanthach.png,Thần Thạch,140,5.000 VNĐ ,1.000.000 linh thạch ",
-            "thanthiet.png,Thần Thiết,150,2.000 VNĐ,100.000 linh thạch ",
-            "lhq.png,Luân Hồi Quả ,5 ,10.000 VNĐ ,3.500.000 linh thạch ",
-            "tcst.png,Thần cơ sắc thạch ,30 ,10.000 VNĐ ,2.500.000 linh thạch  ",
-            "thienlinhcham.png,Thiên Linh Châm x64 ,2,20.000 VNĐ , ",
-            "thiennguuqua.png,Huyết Ngưu Quả x64  ,2,20.000 VNĐ , ",
-            "huyenthugiac.png,Huyền Thú Giác x64  ,2,20.000 VNĐ , "
+            "html.png, Hoàng Thiên Mộng Liêm +10 1 dòng thần, 2, 600.000 VNĐ, , Vũ khí & giáp",
+            "linhthach.png, 1 triệu linh thạch, 150, 5.000 VNĐ, , Tiền tệ",
+            "ngucthan.png, 1 lượt kéo phó bản Ngục Thần, 99999, 4.000 VNĐ, 400.000 linh thạch, Phó bản",
+            "daychuyentheluc, Pháp bảo Dây chuyền thể lực, 5, 100.000 VNĐ, 40.000.000 linh thạch, Pháp bảo",
+            "nguclongthiet.png, Pháp bảo Ngục Long Thiết +20, 1, 250.000 VNĐ, , Pháp bảo",
+            "huyetlecothan, Pháp bảo Huyết lệ Cổ Thần, 1, 250.000 VNĐ, , Pháp bảo",
+            "minhquang.png, Set giáp Minh Quang, 1, 400.000 VNĐ, , Vũ khí & giáp",
+            "setlamhoang, Set giáp Lam Hoàng, 1, 550.000 VNĐ, , Vũ khí & giáp",
+            "hackiem.png, Hắc Kiếm, 2, 80.000 VNĐ, 25.000.000 linh thạch, Vũ khí & giáp",
+            "thiencolinhtich, Pháp bảo Thiên cổ linh tịch, 2, 80.000 VNĐ, 25.000.000 linh thạch, Pháp bảo",
+            "sethoangkim, Set giáp Hoàng Kim, 1, 100.000 VNĐ, , Vũ khí & giáp",
+            "hulinh.png, Set giáp Hư Linh, 1, 140.000 VNĐ, , Vũ khí & giáp",
+            "hoatu.png, Hỏa Tự Thạch, 5, 5.000 VNĐ, 1.000.000 linh thạch, Nguyên liệu",
+            "loitu.png, Lôi Tự Thạch, 10, 5.000 VNĐ, 1.000.000 linh thạch, Nguyên liệu",
+            "thuytu.png, Thủy Tự Thạch, 5, 10.000 VNĐ, 3.500.000 linh thạch, Nguyên liệu",
+            "thanthach.png, Thần Thạch, 140, 5.000 VNĐ, 1.000.000 linh thạch, Nguyên liệu",
+            "thanthiet.png, Thần Thiết, 150, 2.000 VNĐ, 100.000 linh thạch, Nguyên liệu",
+            "lhq.png, Luân Hồi Quả, 5, 10.000 VNĐ, 3.500.000 linh thạch, Nguyên liệu",
+            "tcst.png, Thần cơ sắc thạch, 30, 10.000 VNĐ, 2.500.000 linh thạch, Nguyên liệu",
+            "thienlinhcham.png, Thiên Linh Châm x64, 2, 20.000 VNĐ, , Nguyên liệu",
+            "thiennguuqua.png, Huyết Ngưu Quả x64, 2, 20.000 VNĐ, , Nguyên liệu",
+            "huyenthugiac.png, Huyền Thú Giác x64, 2, 20.000 VNĐ, , Nguyên liệu"
         ];
 
-        const products = rawData.map(line => {
+        const products = rawData.map((line, index) => {
             const parts = line.split(',').map(p => p.trim());
-            return { image: parts[0], desc: parts[1], stock: parts[2], priceVND: parts[3] || null, priceLT: parts[4] || null };
+            return { 
+                id: index, 
+                image: parts[0], 
+                desc: parts[1], 
+                stock: parts[2], 
+                priceVND: parts[3] || null, 
+                priceLT: parts[4] || null,
+                category: parts[5] || 'Khác' 
+            };
         });
 
-        let currentProduct = null;
+        let currentCategory = 'Tất cả';
+
+        function setCategory(cat, element) {
+            currentCategory = cat;
+            document.querySelectorAll('.top-menu > .menu-item').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+            renderProducts();
+        }
 
         function renderProducts() {
             const grid = document.getElementById('product-grid');
-            grid.innerHTML = products.map((item, index) => {
+            const filteredProducts = currentCategory === 'Tất cả' 
+                ? products 
+                : products.filter(p => p.category === currentCategory);
+
+            if (filteredProducts.length === 0) {
+                grid.innerHTML = '<p style="color:var(--title-color); grid-column: 1/-1; text-align:center; font-size: 1.2rem; font-weight:bold; margin-top: 50px;">Chưa có vật phẩm nào trong mục này!</p>';
+                return;
+            }
+
+            grid.innerHTML = filteredProducts.map((item) => {
                 const vndDisplay = item.priceVND 
                     ? `<span style="color:#e74c3c">💰 ${item.priceVND}</span>` 
                     : `<span><img src="no_entry.png" class="no-entry-icon"></span>`;
@@ -219,18 +390,16 @@
                                 <div class="price-item">${vndDisplay}</div>
                                 <div class="price-item">${ltDisplay}</div>
                             </div>
-                            <button class="buy-btn" onclick="openOrderModal(${index})">MUA NGAY</button>
+                            <button class="buy-btn" onclick="openOrderModal(${item.id})">MUA NGAY</button>
                         </div>
                     </div>
                 </div>`
             }).join('');
         }
 
-        function openOrderModal(index) {
-            currentProduct = products[index];
+        function openOrderModal(id) {
+            currentProduct = products[id];
             document.getElementById('targetItem').innerText = currentProduct.desc;
-            
-            // Cập nhật nhãn tồn kho tối đa trong modal
             document.getElementById('maxStockLabel').innerText = currentProduct.stock;
             document.getElementById('quantityInput').value = 1;
 
@@ -256,34 +425,19 @@
             document.getElementById('noticeModal').style.display = 'flex';
         }
 
-        function closeNotice() {
-            document.getElementById('noticeModal').style.display = 'none';
-        }
+        function closeNotice() { document.getElementById('noticeModal').style.display = 'none'; }
 
         function submitOrder() {
             const discordName = document.getElementById('discordInput').value.trim();
             const ign = document.getElementById('ignInput').value.trim() || "Không điền";
             const payType = document.querySelector('input[name="payType"]:checked')?.value;
             
-            // Lấy và kiểm tra số lượng mua
             const buyQty = parseInt(document.getElementById('quantityInput').value);
-            // Xử lý tồn kho (lấy phần số nếu tồn kho là dạng "150 triệu")
             const stockQty = parseInt(currentProduct.stock);
 
-            if (!discordName) { 
-                showNotice("Bạn bắt buộc phải nhập tên Discord để chúng tôi liên hệ!"); 
-                return; 
-            }
-
-            if (isNaN(buyQty) || buyQty < 1) {
-                showNotice("Vui lòng nhập số lượng mua hợp lệ!");
-                return;
-            }
-
-            if (buyQty > stockQty) {
-                showNotice("Số lượng mua không được vượt quá tồn kho hiện có!");
-                return;
-            }
+            if (!discordName) { showNotice("Bạn bắt buộc phải nhập tên Discord để chúng tôi liên hệ!"); return; }
+            if (isNaN(buyQty) || buyQty < 1) { showNotice("Vui lòng nhập số lượng mua hợp lệ!"); return; }
+            if (buyQty > stockQty) { showNotice("Số lượng mua không được vượt quá tồn kho hiện có!"); return; }
 
             const data = {
                 content: "🔔 **YÊU CẦU MUA HÀNG MỚI!**",
@@ -294,7 +448,7 @@
                         { name: "Tên Discord", value: discordName, inline: true },
                         { name: "Tên In-game", value: ign, inline: true },
                         { name: "Vật phẩm", value: currentProduct.desc, inline: false },
-                        { name: "Số lượng mua", value: buyQty.toString(), inline: true }, // Thêm số lượng vào Discord
+                        { name: "Số lượng mua", value: buyQty.toString(), inline: true },
                         { name: "Thanh toán bằng", value: payType, inline: true },
                         { name: "Tồn kho hiện tại", value: currentProduct.stock, inline: true }
                     ],
@@ -304,10 +458,7 @@
             };
 
             fetch(DISCORD_WEBHOOK_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
-            .then(() => { 
-                showNotice("Yêu cầu đã được gửi! LVT sẽ chủ động nhắn tin cho bạn qua Discord."); 
-                closeOrderModal(); 
-            })
+            .then(() => { showNotice("Yêu cầu đã được gửi! LVT sẽ chủ động nhắn tin cho bạn qua Discord."); closeOrderModal(); })
             .catch(() => showNotice("Lỗi kết nối!"));
         }
 
@@ -315,6 +466,7 @@
             document.getElementById('fullImage').src = src;
             document.getElementById('imageModal').style.display = 'flex';
         }
+        
         renderProducts();
     </script>
 </body>
