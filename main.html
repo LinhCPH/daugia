@@ -79,6 +79,27 @@
         .tab-content.active {
             display: block;
         }
+.member-column {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 215, 0, 0.1);
+    min-height: 400px;
+}
+.member-item {
+    background: transparent !important;
+    color: #eee !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding: 10px 15px;
+    font-size: 1.1rem;
+}
+.member-rank {
+    float: right;
+    font-size: 0.85rem;
+    color: gold;
+    font-style: italic;
+}
+        
 /* Hiệu ứng hào quang lấp lánh cho Hạng 1 */
 @keyframes sparkle {
     0% { background-position: 0% 50%; }
@@ -316,8 +337,31 @@
             <p>Nơi tiếp nhận phản ánh về các hành vi vi phạm môn quy...</p>
         </div>
         <div id="thanh-vien" class="tab-content">
-            <h2>Danh sách thành viên</h2>
-            <p>Thông tin các đệ tử thuộc Lạc Vân Tông...</p>
+<div id="thanh-vien" class="tab-content">
+    <h2 style="color: gold; text-align: center; text-transform: uppercase; margin-bottom: 30px;">Danh Sách Đệ Tử Tông Môn</h2>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="member-column">
+                <h3 style="color: #ff4500; text-align: center; border-bottom: 2px solid #ff4500; padding-bottom: 10px;">
+                    <i class="fas fa-fire"></i> NỘI MÔN
+                </h3>
+                <ul id="list-noi-mon" class="list-group list-group-flush bg-transparent">
+                    </ul>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="member-column">
+                <h3 style="color: #1e90ff; text-align: center; border-bottom: 2px solid #1e90ff; padding-bottom: 10px;">
+                    <i class="fas fa-cloud"></i> NGOẠI MÔN
+                </h3>
+                <ul id="list-ngoai-mon" class="list-group list-group-flush bg-transparent">
+                    </ul>
+            </div>
+        </div>
+    </div>
+</div>
         </div>
         <div id="bxh" class="tab-content">
             <div id="bxh" class="tab-content">
@@ -660,7 +704,62 @@ function openTab(tabId) {
         updateBXHDisplay();
     }
 }
-    
+ // --- KHU VỰC CẬP NHẬT THÀNH VIÊN THỦ CÔNG ---
+const NOI_MON = [
+    "minertiti - Tông Chủ",
+    "Đạo Hữu A - Trưởng Lão",
+    "Đạo Hữu B - Đại Đệ Tử",
+    // Thêm dòng mới tại đây: "Tên - Chức vụ",
+];
+
+const NGOẠI_MON = [
+    "Đệ Tử C - Ngoại Môn Đệ Tử",
+    "Đệ Tử D - Tân Thủ",
+    // Để trống mảng [] nếu không có ai
+];
+// ------------------------------------------
+
+function renderThanhVien() {
+    const noiMonUl = document.getElementById('list-noi-mon');
+    const ngoaiMonUl = document.getElementById('list-ngoai-mon');
+
+    // Xóa trắng trước khi nạp
+    noiMonUl.innerHTML = '';
+    ngoaiMonUl.innerHTML = '';
+
+    // Nạp Nội Môn
+    NOI_MON.forEach(member => {
+        if(member.trim() !== "") {
+            const parts = member.split('-');
+            noiMonUl.innerHTML += `
+                <li class="list-group-item member-item">
+                    ${parts[0].trim()} 
+                    <span class="member-rank">${parts[1] ? parts[1].trim() : ''}</span>
+                </li>`;
+        }
+    });
+
+    // Nạp Ngoại Môn
+    NGOẠI_MON.forEach(member => {
+        if(member.trim() !== "") {
+            const parts = member.split('-');
+            ngoaiMonUl.innerHTML += `
+                <li class="list-group-item member-item">
+                    ${parts[0].trim()} 
+                    <span class="member-rank">${parts[1] ? parts[1].trim() : ''}</span>
+                </li>`;
+        }
+    });
+}
+
+// Cập nhật hàm openTab để khi bấm vào tab Thành Viên nó mới load danh sách
+const originalOpenTab = openTab; // Giữ lại hàm cũ
+openTab = function(tabId) {
+    originalOpenTab(tabId);
+    if (tabId === 'thanh-vien') {
+        renderThanhVien();
+    }
+};   
 </script>
 <div id="adminModal" class="modal-overlay" onclick="closeAdmin()">
     <div class="modal-box" onclick="event.stopPropagation()">
