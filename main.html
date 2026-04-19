@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* --- GIỮ NGUYÊN CẤU HÌNH GIAO DIỆN CỦA ĐẠO HỮU --- */
+        /* --- CẤU HÌNH GIAO DIỆN CHỦ ĐẠO (GIỮ NGUYÊN) --- */
         :root {
             --gold: #ffd700;
             --dark-bg: rgba(10, 10, 10, 0.9);
@@ -16,118 +16,67 @@
         }
 
         body {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #e0e0e0;
             min-height: 100vh;
-            /* Sửa để load ảnh nền và thêm ảnh dự phòng nếu ko tìm thấy file */
             background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), 
-                        url('anhnen.png'), url('https://images.unsplash.com/photo-1614850523296-d8c1af93d400?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+                        url('anhnen.png') no-repeat center center fixed,
+                        url('https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&w=1920&q=80');
             background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
         }
 
-        /* Header */
         header {
-            display: flex;
-            align-items: center;
-            padding: 15px 40px;
+            display: flex; align-items: center; padding: 15px 40px;
             background: rgba(0, 0, 0, 0.6);
             border-bottom: 2px solid var(--gold);
             box-shadow: 0 2px 15px rgba(0,0,0,0.5);
         }
         header img { height: 70px; margin-right: 25px; filter: drop-shadow(0 0 5px var(--gold)); }
         header h1 {
-            color: var(--gold);
-            font-weight: 800;
-            margin: 0;
-            text-shadow: 2px 2px 8px #000;
-            letter-spacing: 3px;
-            text-transform: uppercase;
+            color: var(--gold); font-weight: 800; margin: 0;
+            text-shadow: 2px 2px 8px #000; letter-spacing: 3px; text-transform: uppercase;
         }
 
-        /* Bố cục chính */
-        .main-container {
-            display: flex;
-            margin: 30px auto;
-            padding: 0 30px;
-            max-width: 1400px;
-            gap: 25px;
-        }
+        .main-container { display: flex; margin: 30px auto; padding: 0 30px; max-width: 1400px; gap: 25px; }
 
-        /* Sidebar bên trái */
         .sidebar {
-            width: 280px;
-            background: var(--dark-bg);
-            border-radius: 15px;
-            padding: 20px;
-            border: 1px solid var(--border-color);
-            height: fit-content;
-            position: sticky;
-            top: 20px;
+            width: 280px; background: var(--dark-bg); border-radius: 15px;
+            padding: 20px; border: 1px solid var(--border-color);
+            height: fit-content; position: sticky; top: 20px;
         }
         .nav-link {
-            color: #bbb;
-            margin-bottom: 12px;
-            cursor: pointer;
-            text-align: left;
-            border-left: 4px solid transparent;
-            transition: all 0.3s ease;
-            width: 100%;
-            background: rgba(255,255,255,0.03);
-            border-top: none; border-right: none; border-bottom: none;
-            padding: 12px 20px;
-            font-weight: 600;
-            border-radius: 0 8px 8px 0;
+            color: #bbb; margin-bottom: 12px; cursor: pointer; text-align: left;
+            border-left: 4px solid transparent; transition: all 0.3s ease; width: 100%;
+            background: rgba(255,255,255,0.03); border-top: none; border-right: none; border-bottom: none;
+            padding: 12px 20px; font-weight: 600; border-radius: 0 8px 8px 0;
         }
         .nav-link:hover, .nav-link.active {
-            color: var(--gold) !important;
-            background: rgba(255, 215, 0, 0.1);
-            border-left: 4px solid var(--gold);
-            transform: translateX(5px);
+            color: var(--gold) !important; background: rgba(255, 215, 0, 0.1);
+            border-left: 4px solid var(--gold); transform: translateX(5px);
         }
         .nav-link i { margin-right: 12px; width: 20px; text-align: center; }
 
-        /* Vùng nội dung bên phải */
         .content-area {
-            flex: 1;
-            background: var(--dark-bg);
-            border-radius: 15px;
-            padding: 40px;
-            border: 1px solid var(--border-color);
-            min-height: 750px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            flex: 1; background: var(--dark-bg); border-radius: 15px;
+            padding: 40px; border: 1px solid var(--border-color);
+            min-height: 750px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
         }
         .tab-content { display: none; animation: fadeIn 0.6s ease; }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- PHẦN NHIỆM VỤ --- */
         .mission-list { display: flex; flex-direction: column; gap: 20px; }
         .mission-card {
-            display: flex;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 215, 0, 0.15);
-            border-radius: 12px;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            transition: 0.3s;
+            display: flex; background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 215, 0, 0.15); border-radius: 12px;
+            position: relative; overflow: hidden; cursor: pointer; transition: 0.3s;
         }
-        .mission-card:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: var(--gold);
-            transform: scale(1.01);
-        }
+        .mission-card:hover { background: rgba(255, 255, 255, 0.08); border-color: var(--gold); transform: scale(1.01); }
         .mission-img { width: 140px; height: 140px; object-fit: cover; border-right: 1px solid var(--border-color); }
         .mission-info { padding: 20px; flex: 1; }
         .mission-info h3 { color: var(--gold); text-transform: uppercase; font-size: 1.25rem; margin-bottom: 8px; }
-        .desc-short { 
-            font-size: 0.95rem; color: #ccc; 
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; 
-        }
+        .desc-short { font-size: 0.95rem; color: #ccc; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
         .ribbon {
             position: absolute; top: 20px; right: -40px; transform: rotate(45deg);
@@ -139,39 +88,25 @@
         .ribbon.cao { background: #ffc107; color: black; }
         .ribbon.thien { background: #dc3545; }
 
-        /* --- PHẦN KPI --- */
-        .kpi-card {
-            display: flex; background: rgba(255,255,255,0.05); border: 1px solid var(--gold);
-            border-radius: 12px; position: relative; overflow: hidden;
-        }
+        .kpi-card { display: flex; background: rgba(255,255,255,0.05); border: 1px solid var(--gold); border-radius: 12px; position: relative; overflow: hidden; }
         .kpi-img { width: 160px; height: 160px; object-fit: cover; border-right: 1px solid var(--gold); }
-        .ribbon-kpi {
-            position: absolute; top: 18px; right: -45px; transform: rotate(45deg);
-            width: 160px; text-align: center; font-weight: bold; font-size: 0.75rem; color: white;
-        }
+        .ribbon-kpi { position: absolute; top: 18px; right: -45px; transform: rotate(45deg); width: 160px; text-align: center; font-weight: bold; font-size: 0.75rem; color: white; }
 
-        /* --- QUYỀN LỢI --- */
         .benefit-card {
             padding: 25px; border-radius: 15px; border: 1px solid var(--border-color); height: 100%;
-            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(0,0,0,0.2));
-            transition: 0.3s;
+            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(0,0,0,0.2)); transition: 0.3s;
         }
         .benefit-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(255, 215, 0, 0.1); }
         .benefit-card h3 { border-bottom: 1px solid var(--gold); padding-bottom: 15px; margin-bottom: 20px; }
 
-        /* --- BẢNG XẾP HẠNG --- */
         @keyframes sparkle { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         .top1-sparkle {
-            background: linear-gradient(90deg, #ffd700, #fff700, #ffec8b, #ffd700);
-            background-size: 300% 300%;
-            animation: sparkle 3s ease infinite;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            background: linear-gradient(90deg, #ffd700, #fff700, #ffec8b, #ffd700); background-size: 300% 300%;
+            animation: sparkle 3s ease infinite; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             font-weight: 800; font-size: 1.2rem;
         }
         .top1-sparkle::before { content: "👑 "; -webkit-text-fill-color: initial; }
 
-        /* --- MODAL HỆ THỐNG --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.92); backdrop-filter: blur(10px);
@@ -180,14 +115,10 @@
         .modal-box {
             background: #111; border: 2px solid var(--gold); padding: 35px;
             border-radius: 20px; width: 90%; max-width: 650px;
-            box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
-            max-height: 90vh; overflow-y: auto;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.3); max-height: 90vh; overflow-y: auto;
         }
-
         .auth-input { background: #222 !important; border: 1px solid var(--gold) !important; color: white !important; }
-        .auth-input:focus { box-shadow: 0 0 10px var(--gold) !important; }
-
-        /* Ô xuất mã nguồn */
+        
         #export-area {
             background: #000; color: #0f0; font-family: monospace; font-size: 11px;
             width: 100%; height: 150px; margin-top: 15px; border: 1px solid #333;
@@ -208,9 +139,8 @@
         <div id="registerForm" class="mt-4" style="display: none;">
             <input type="text" id="regUser" class="form-control auth-input mb-2" placeholder="Tên đệ tử mới">
             <input type="password" id="regPass" class="form-control auth-input mb-2" placeholder="Mật mã">
-            <input type="password" id="regPassConfirm" class="form-control auth-input mb-3" placeholder="Nhập lại mật mã">
-            <button class="btn btn-success w-100 fw-bold py-2" onclick="handleRegister()">KHỞI TẠO DANH TÁNH</button>
-            <p onclick="toggleAuth(false)" class="mt-4 text-secondary" style="cursor:pointer;">Đã có tài khoản? <span class="text-success">Quay lại đăng nhập</span></p>
+            <button class="btn btn-success w-100 fw-bold py-2" onclick="handleRegister()">KHỞI TẠO</button>
+            <p onclick="toggleAuth(false)" class="mt-4 text-secondary" style="cursor:pointer;">Quay lại</p>
         </div>
     </div>
 </div>
@@ -246,38 +176,68 @@
                     <button class="nav-link mb-2 active" onclick="changeKPITeam('linh-thach')">Đội Linh Thạch</button>
                     <button class="nav-link mb-2" onclick="changeKPITeam('linh-thao')">Đội Linh Thảo</button>
                 </div>
-                <div class="flex-grow-1">
-                    <div id="kpi-display-area"></div>
-                </div>
+                <div class="flex-grow-1"><div id="kpi-display-area"></div></div>
             </div>
         </div>
 
         <div id="quyen-loi" class="tab-content">
             <h2 class="text-warning mb-4">PHÚC LỢI TÔNG MÔN</h2>
-            <div class="row g-4">
-                <div class="col-md-6"><div class="benefit-card"><h3>NỘI MÔN</h3><ul><li>3 lần Ngục Thần/tuần</li></ul></div></div>
-                <div class="col-md-6"><div class="benefit-card"><h3>NGOẠI MÔN</h3><ul><li>3 lần Tàn Tích/tuần</li></ul></div></div>
+            <div class="row g-4 mb-5">
+                <div class="col-md-6">
+                    <div class="benefit-card" style="border-left: 6px solid #ff4500;">
+                        <h3 style="color: #ff4500;"><i class="fas fa-fire"></i> NỘI MÔN</h3>
+                        <ul>
+                            <li>Tối thiểu 3 lần Ngục Thần / tuần.</li>
+                            <li>Ưu tiên tài nguyên Luyện Đan cấp cao.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="benefit-card" style="border-left: 6px solid #28a745;">
+                        <h3 style="color: #28a745;"><i class="fas fa-leaf"></i> NGOẠI MÔN</h3>
+                        <ul>
+                            <li>Tối thiểu 3 lần Tàn Tích / tuần.</li>
+                            <li>1 lần Ngục Thần (Điểm NV > 5).</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
+            <h3 class="text-warning mb-3"><i class="fas fa-medal"></i> ĐẶC QUYỀN CHỨC DANH</h3>
+            <table class="table table-dark table-bordered">
+                <thead><tr class="text-warning"><th>Đội Nhóm / Chức Danh</th><th>Quyền Lợi Bổ Sung</th></tr></thead>
+                <tbody><tr><td>Chấp Pháp, Luyện Dược, Xây Dựng, Tuyển Dụng...</td><td>Thêm 3 lần Ngục Thần / tuần</td></tr></tbody>
+            </table>
         </div>
 
         <div id="to-cao" class="tab-content">
-            <h2 class="text-danger mb-4">TỐ CÁO & KỶ LUẬT</h2>
-            <div class="bg-dark p-4 rounded border border-danger shadow-sm">
-                <input type="text" id="repAccused" class="form-control auth-input mb-2" placeholder="Người vi phạm">
-                <textarea id="repReason" class="form-control auth-input mb-3" placeholder="Lý do"></textarea>
-                <button class="btn btn-danger fw-bold w-100" onclick="sendReport()">GỬI SỚ</button>
+            <h2 class="text-danger mb-4">HỆ THỐNG TỐ CÁO & KỶ LUẬT</h2>
+            <div class="bg-dark p-4 rounded border border-danger shadow-sm mb-5">
+                <h4 class="text-danger mb-3">GỬI ĐƠN TỐ CÁO</h4>
+                <div class="row g-3">
+                    <div class="col-md-6"><input type="text" id="repAccused" class="form-control auth-input" placeholder="Người bị tố cáo"></div>
+                    <div class="col-md-6"><input type="text" id="repTime" class="form-control auth-input" placeholder="Thời gian"></div>
+                    <div class="col-12"><textarea id="repReason" class="form-control auth-input" rows="3" placeholder="Lý do & Chứng cứ"></textarea></div>
+                    <button class="btn btn-danger fw-bold w-100" onclick="sendReport()">GỬI SỚ TỐ CÁO</button>
+                </div>
             </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="text-warning"><i class="fas fa-skull-crossbones"></i> BẢNG KỶ LUẬT</h3>
+            </div>
+            <table class="table table-dark table-bordered text-center">
+                <thead><tr class="text-danger"><th>Tên</th><th>Cảnh cáo nhẹ</th><th>Cảnh cáo nghiêm khắc</th><th>Nghiêm trọng</th></tr></thead>
+                <tbody id="discipline-list"></tbody>
+            </table>
         </div>
 
         <div id="thanh-vien" class="tab-content">
             <h2 class="text-warning mb-5 text-center">DANH SÁCH ĐỆ TỬ</h2>
             <div class="row">
                 <div class="col-md-6 border-end border-secondary">
-                    <h4 class="text-danger text-center border-bottom pb-3 mb-4">NỘI MÔN</h4>
+                    <h4 class="text-danger text-center border-bottom pb-3">NỘI MÔN</h4>
                     <ul id="list-noi-mon" class="list-group list-group-flush bg-transparent"></ul>
                 </div>
                 <div class="col-md-6">
-                    <h4 class="text-info text-center border-bottom pb-3 mb-4">NGOẠI MÔN</h4>
+                    <h4 class="text-info text-center border-bottom pb-3">NGOẠI MÔN</h4>
                     <ul id="list-ngoai-mon" class="list-group list-group-flush bg-transparent"></ul>
                 </div>
             </div>
@@ -286,7 +246,7 @@
         <div id="bxh" class="tab-content">
             <h2 class="text-warning mb-4 text-center">TOP 10 TU VI BẢNG</h2>
             <table class="table table-dark table-hover">
-                <thead><tr class="text-warning"><th>HẠNG</th><th>ĐỆ TỬ</th><th>ĐIỂM</th></tr></thead>
+                <thead><tr class="text-warning"><th>HẠNG</th><th>ĐỆ TỬ</th><th>ĐIỂM CỐNG HIẾN</th></tr></thead>
                 <tbody id="bxh-body"></tbody>
             </table>
         </div>
@@ -296,48 +256,39 @@
 <div id="missionModal" class="modal-overlay" onclick="this.style.display='none'">
     <div class="modal-box" onclick="event.stopPropagation()">
         <h2 id="m-title" style="color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 10px;"></h2>
-        <div class="mt-4">
-            <p id="m-desc" class="text-secondary"></p>
-            <p><strong>Cấp:</strong> <span id="m-rank"></span></p>
-            <p><strong>Thưởng:</strong> <span id="m-reward" class="text-success fw-bold"></span></p>
-        </div>
-        <button class="btn btn-warning w-100 fw-bold py-2 mt-2" onclick="confirmTakeMission()">NHẬN NHIỆM VỤ</button>
+        <div class="mt-4"><p id="m-desc" class="text-secondary"></p></div>
+        <button class="btn btn-warning w-100 fw-bold" onclick="confirmTakeMission()">NHẬN NHIỆM VỤ</button>
     </div>
 </div>
 
 <div id="adminModal" class="modal-overlay" onclick="this.style.display='none'">
-    <div class="modal-box" style="max-width: 750px;" onclick="event.stopPropagation()">
+    <div class="modal-box" style="max-width: 800px;" onclick="event.stopPropagation()">
         <h3 class="text-danger border-bottom pb-2 mb-4">BẢNG QUẢN TRỊ TRƯỞNG LÃO</h3>
-        
         <div class="row">
             <div class="col-md-6 border-end border-secondary">
-                <h6 class="text-info">THÊM NHIỆM VỤ</h6>
-                <input type="text" id="add-m-name" class="form-control auth-input mb-2" placeholder="Tên nhiệm vụ">
-                <select id="add-m-rank-val" class="form-select auth-input mb-2">
-                    <option value="so">Sơ</option><option value="trung">Trung</option><option value="cao">Cao</option><option value="thien">Thiên</option>
-                </select>
-                <textarea id="add-m-desc" class="form-control auth-input mb-2" placeholder="Mô tả"></textarea>
-                <input type="text" id="add-m-reward" class="form-control auth-input mb-2" placeholder="Thưởng (VD: 5 điểm)">
-                <button class="btn btn-info btn-sm w-100" onclick="saveAdminMission()">THÊM NV</button>
+                <h6 class="text-info">QUẢN LÝ NHIỆM VỤ & ĐIỂM</h6>
+                <input type="text" id="adm-m-name" class="form-control auth-input mb-2" placeholder="Tên nhiệm vụ">
+                <textarea id="adm-m-desc" class="form-control auth-input mb-2" placeholder="Mô tả"></textarea>
+                <button class="btn btn-info btn-sm w-100 mb-3" onclick="admAddMission()">THÊM NV</button>
+                <input type="text" id="adm-user-point" class="form-control auth-input mb-2" placeholder="Tên đệ tử">
+                <input type="number" id="adm-point-val" class="form-control auth-input mb-2" placeholder="Số điểm">
+                <button class="btn btn-success btn-sm w-100" onclick="admAddScore()">CỘNG ĐIỂM</button>
             </div>
             <div class="col-md-6">
-                <h6 class="text-success">CỘNG ĐIỂM / THÀNH VIÊN</h6>
-                <input type="text" id="finishUser" class="form-control auth-input mb-2" placeholder="Tên đệ tử">
-                <input type="number" id="finishPoint" class="form-control auth-input mb-2" placeholder="Số điểm">
+                <h6 class="text-primary">QUẢN LÝ THÀNH VIÊN & PHẠT</h6>
+                <input type="text" id="adm-user-mem" class="form-control auth-input mb-2" placeholder="Tên đệ tử">
                 <div class="d-flex gap-1 mb-3">
-                    <button class="btn btn-success btn-sm w-100" onclick="processAddPoints()">CỘNG ĐIỂM</button>
+                    <button class="btn btn-danger btn-sm w-50" onclick="admAddMember('inner')">+ NỘI MÔN</button>
+                    <button class="btn btn-primary btn-sm w-50" onclick="admAddMember('outer')">+ NGOẠI MÔN</button>
                 </div>
-                <h6 class="text-primary">QUẢN LÝ THÀNH VIÊN</h6>
-                <div class="d-flex gap-1">
-                    <button class="btn btn-danger btn-sm w-50" onclick="addSectMember('inner')">THÊM NỘI MÔN</button>
-                    <button class="btn btn-primary btn-sm w-50" onclick="addSectMember('outer')">THÊM NGOẠI MÔN</button>
-                </div>
+                <h6 class="text-warning">GHI SỔ PHẠT</h6>
+                <input type="text" id="adm-disc-name" class="form-control auth-input mb-2" placeholder="Tên bị phạt">
+                <input type="text" id="adm-disc-note" class="form-control auth-input mb-2" placeholder="Lý do phạt">
+                <button class="btn btn-warning btn-sm w-100" onclick="admAddDisc()">GHI SỔ</button>
             </div>
         </div>
-
         <div class="mt-4 p-3 border border-warning rounded">
-            <h6 class="text-warning">XUẤT MÃ NGUỒN CẬP NHẬT (LƯU VĨNH VIỄN)</h6>
-            <p class="small text-secondary">Sau khi thêm xong, nhấn nút này và copy code dán đè vào file .html của bạn.</p>
+            <h6 class="text-warning">PHÁP BẢO: XUẤT MÃ NGUỒN VĨNH CỬU</h6>
             <button class="btn btn-warning btn-sm w-100 fw-bold" onclick="exportCode()">TẠO MÃ NGUỒN MỚI</button>
             <textarea id="export-area" readonly placeholder="Mã nguồn mới sẽ hiện ở đây..."></textarea>
         </div>
@@ -345,133 +296,98 @@
 </div>
 
 <script>
-    // --- DỮ LIỆU GỐC (Sẽ được hàm Xuất Mã Nguồn ghi đè tự động) ---
-    let SECT_MEMBERS_INNER = ["minertiti - Tông Chủ", "Đạo Hữu A - Trưởng Lão", "Đệ Tử X - Đại Đệ Tử"];
-    let SECT_MEMBERS_OUTER = ["Đệ Tử Y - Ngoại Môn", "Tân Thủ Z - Ngoại Môn"];
-    let DEFAULT_MISSIONS = [
-        { name: "TRUY TÌM LINH THẢO", rank: "so", rankText: "Sơ", desc: "Hái 10 ngọn Ngưng Lộ tại chân núi.", req: "Ngoại môn", reward: "2 điểm", img: "logo.png" },
-        { name: "TRẤN ÁP MA THÚ", rank: "thien", rankText: "Thiên", desc: "Tiêu diệt Ma Viên tại Cấm Địa.", req: "Nội môn", reward: "10 điểm", img: "logo.png" }
-    ];
-    let PERSISTENT_BXH = {"minertiti": 50, "Đạo Hữu A": 20};
+    // --- DỮ LIỆU GỐC (Sẽ được ghi đè khi đạo hữu Xuất mã nguồn) ---
+    let SECT_MEMBERS_INNER = ["minertiti - Tông Chủ", "Đạo Hữu A - Trưởng Lão"];
+    let SECT_MEMBERS_OUTER = ["Đệ Tử Y - Ngoại Môn"];
+    let DEFAULT_MISSIONS = [{ name: "TRUY TÌM LINH THẢO", rank: "so", rankText: "Sơ", desc: "Hái linh thảo Ngưng Lộ.", reward: "2 điểm", img: "logo.png" }];
+    let PERSISTENT_BXH = {"minertiti": 100};
+    let PERSISTENT_DISCIPLINE = [{name: "Vô Danh", light: "Đi trễ", hard: "-", extreme: "-"}];
 
-    // --- LOGIC HỆ THỐNG ---
+    // --- LOGIC TAB & HIỂN THỊ ---
     function openTab(id) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         event.currentTarget.classList.add('active');
-        if(id === 'bxh') updateBXHDisplay();
-        if(id === 'thanh-vien') renderSectMembers();
+        if(id === 'bxh') renderBXH();
+        if(id === 'thanh-vien') renderMembers();
+        if(id === 'to-cao') renderDiscipline();
         if(id === 'nhiem-vu') renderMissions();
     }
 
     function renderMissions() {
-        const container = document.getElementById('mission-list-container');
-        container.innerHTML = DEFAULT_MISSIONS.map(m => `
-            <div class="mission-card" onclick="openMissionModal('${m.name}', '${m.rankText}', '${m.desc}', '${m.reward}')">
-                <img src="${m.img}" class="mission-img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3516/3516358.png'">
-                <div class="mission-info"><h3>${m.name}</h3><p class="desc-short">${m.desc}</p></div>
-                <div class="ribbon ${m.rank || 'so'}">${(m.rankText || 'Sơ').toUpperCase()}</div>
-            </div>
-        `).join('');
+        document.getElementById('mission-list-container').innerHTML = DEFAULT_MISSIONS.map(m => `
+            <div class="mission-card" onclick="openMissionModal('${m.name}', '${m.desc}')">
+                <img src="${m.img}" class="mission-img">
+                <div class="mission-info"><h3>${m.name}</h3><p>${m.desc}</p></div>
+                <div class="ribbon ${m.rank}">${m.rankText.toUpperCase()}</div>
+            </div>`).join('');
     }
 
-    function openMissionModal(name, rank, desc, reward) {
-        document.getElementById('m-title').innerText = name;
-        document.getElementById('m-rank').innerText = rank;
-        document.getElementById('m-desc').innerText = desc;
-        document.getElementById('m-reward').innerText = reward;
-        document.getElementById('missionModal').style.display = 'flex';
-    }
-
-    function renderSectMembers() {
+    function renderMembers() {
         document.getElementById('list-noi-mon').innerHTML = SECT_MEMBERS_INNER.map(m => `<li class="list-group-item bg-transparent text-white border-0">● ${m}</li>`).join('');
         document.getElementById('list-ngoai-mon').innerHTML = SECT_MEMBERS_OUTER.map(m => `<li class="list-group-item bg-transparent text-white border-0">○ ${m}</li>`).join('');
     }
 
-    function updateBXHDisplay() {
-        const body = document.getElementById('bxh-body');
-        let sorted = Object.entries(PERSISTENT_BXH).sort((a,b) => b[1] - a[1]).slice(0, 10);
-        body.innerHTML = sorted.map(([name, pts], i) => `
-            <tr><td>${i+1}</td><td class="${i === 0 ? 'top1-sparkle' : ''}">${name}</td><td class="text-warning fw-bold">${pts}</td></tr>
-        `).join('') || '<tr><td colspan="3" class="text-center">Chưa có bảng danh.</td></tr>';
+    function renderDiscipline() {
+        document.getElementById('discipline-list').innerHTML = PERSISTENT_DISCIPLINE.map(d => `<tr><td>${d.name}</td><td>${d.light}</td><td>${d.hard}</td><td class="text-danger">${d.extreme}</td></tr>`).join('');
+    }
+
+    function renderBXH() {
+        let sorted = Object.entries(PERSISTENT_BXH).sort((a,b) => b[1] - a[1]);
+        document.getElementById('bxh-body').innerHTML = sorted.map(([n, p], i) => `<tr><td>${i+1}</td><td class="${i===0?'top1-sparkle':''}">${n}</td><td>${p}</td></tr>`).join('');
+    }
+
+    function openMissionModal(title, desc) {
+        document.getElementById('m-title').innerText = title;
+        document.getElementById('m-desc').innerText = desc;
+        document.getElementById('missionModal').style.display = 'flex';
     }
 
     // --- QUẢN TRỊ ---
     function showAdminPanel() { document.getElementById('adminModal').style.display = 'flex'; }
-
-    function saveAdminMission() {
-        const name = document.getElementById('add-m-name').value;
-        if(!name) return;
-        const rank = document.getElementById('add-m-rank-val').value;
-        DEFAULT_MISSIONS.push({
-            name: name.toUpperCase(),
-            rank: rank,
-            rankText: document.getElementById('add-m-rank-val').options[document.getElementById('add-m-rank-val').selectedIndex].text,
-            desc: document.getElementById('add-m-desc').value,
-            reward: document.getElementById('add-m-reward').value,
-            img: 'logo.png'
-        });
-        renderMissions();
-        alert("Đã thêm nhiệm vụ!");
-    }
-
-    function processAddPoints() {
-        const u = document.getElementById('finishUser').value;
-        const p = parseInt(document.getElementById('finishPoint').value);
-        if(!u || isNaN(p)) return;
-        PERSISTENT_BXH[u] = (PERSISTENT_BXH[u] || 0) + p;
-        alert(`Đã cộng ${p} điểm!`);
-    }
-
-    function addSectMember(type) {
-        const u = document.getElementById('finishUser').value;
-        if(!u) return;
-        if(type === 'inner') SECT_MEMBERS_INNER.push(u);
-        else SECT_MEMBERS_OUTER.push(u);
-        alert("Đã thêm thành viên!");
-    }
-
-    // --- HÀM QUAN TRỌNG: XUẤT MÃ NGUỒN VĨNH CỬU ---
-    function exportCode() {
-        let fullSource = document.documentElement.outerHTML;
-        
-        // Tạo chuỗi thay thế chính xác
-        const innerStr = `let SECT_MEMBERS_INNER = ${JSON.stringify(SECT_MEMBERS_INNER)};`;
-        const outerStr = `let SECT_MEMBERS_OUTER = ${JSON.stringify(SECT_MEMBERS_OUTER)};`;
-        const missionStr = `let DEFAULT_MISSIONS = ${JSON.stringify(DEFAULT_MISSIONS)};`;
-        const bxhStr = `let PERSISTENT_BXH = ${JSON.stringify(PERSISTENT_BXH)};`;
-
-        // Tìm và thay thế các biến trong script
-        let updatedSource = fullSource
-            .replace(/let SECT_MEMBERS_INNER = \[.*?\];/, innerStr)
-            .replace(/let SECT_MEMBERS_OUTER = \[.*?\];/, outerStr)
-            .replace(/let DEFAULT_MISSIONS = \[.*?\];/, missionStr)
-            .replace(/let PERSISTENT_BXH = \{.*?\};/, bxhStr);
-
-        document.getElementById('export-area').value = updatedSource;
-        alert("Đã tạo mã nguồn! Hãy Copy khung đen và dán đè vào file .html của bạn.");
-    }
-
-    function handleLogin() {
-        const u = document.getElementById('username').value;
-        if(u) { localStorage.setItem('currentUser', u); location.reload(); }
-    }
     
-    function toggleAuth(isReg) {
-        document.getElementById('loginForm').style.display = isReg ? 'none' : 'block';
-        document.getElementById('registerForm').style.display = isReg ? 'block' : 'none';
+    function admAddMission() {
+        DEFAULT_MISSIONS.push({ name: document.getElementById('adm-m-name').value.toUpperCase(), rank: "so", rankText: "Sơ", desc: document.getElementById('adm-m-desc').value, reward: "2 điểm", img: "logo.png" });
+        renderMissions(); alert("Đã thêm!");
     }
+
+    function admAddScore() {
+        let u = document.getElementById('adm-user-point').value;
+        PERSISTENT_BXH[u] = (PERSISTENT_BXH[u] || 0) + parseInt(document.getElementById('adm-point-val').value);
+        alert("Đã cộng điểm!");
+    }
+
+    function admAddMember(type) {
+        let u = document.getElementById('adm-user-mem').value;
+        if(type === 'inner') SECT_MEMBERS_INNER.push(u); else SECT_MEMBERS_OUTER.push(u);
+        alert("Đã thêm TV!");
+    }
+
+    function admAddDisc() {
+        PERSISTENT_DISCIPLINE.push({name: document.getElementById('adm-disc-name').value, light: document.getElementById('adm-disc-note').value, hard: "-", extreme: "-"});
+        renderDiscipline(); alert("Đã ghi sổ!");
+    }
+
+    // --- XUẤT MÃ NGUỒN ---
+    function exportCode() {
+        let source = document.documentElement.outerHTML;
+        source = source.replace(/let SECT_MEMBERS_INNER = \[.*?\];/, `let SECT_MEMBERS_INNER = ${JSON.stringify(SECT_MEMBERS_INNER)};`)
+                      .replace(/let SECT_MEMBERS_OUTER = \[.*?\];/, `let SECT_MEMBERS_OUTER = ${JSON.stringify(SECT_MEMBERS_OUTER)};`)
+                      .replace(/let DEFAULT_MISSIONS = \[.*?\];/, `let DEFAULT_MISSIONS = ${JSON.stringify(DEFAULT_MISSIONS)};`)
+                      .replace(/let PERSISTENT_BXH = \{.*?\};/, `let PERSISTENT_BXH = ${JSON.stringify(PERSISTENT_BXH)};`)
+                      .replace(/let PERSISTENT_DISCIPLINE = \[.*?\];/, `let PERSISTENT_DISCIPLINE = ${JSON.stringify(PERSISTENT_DISCIPLINE)};`);
+        document.getElementById('export-area').value = source;
+        alert("Thành công! Hãy copy khung đen dán vào file .html");
+    }
+
+    function handleLogin() { localStorage.setItem('currentUser', document.getElementById('username').value); location.reload(); }
+    function toggleAuth(isReg) { document.getElementById('loginForm').style.display = isReg ? 'none' : 'block'; document.getElementById('registerForm').style.display = isReg ? 'block' : 'none'; }
 
     window.onload = () => {
-        const user = localStorage.getItem('currentUser');
-        if(user) {
-            document.getElementById('authOverlay').style.display = 'none';
-            if(user === 'minertiti') document.getElementById('adminBtn').style.display = 'block';
-            renderMissions();
-        }
+        const u = localStorage.getItem('currentUser');
+        if(u) { document.getElementById('authOverlay').style.display = 'none'; if(u === 'minertiti') document.getElementById('adminBtn').style.display = 'block'; renderMissions(); }
     };
 </script>
-
 </body>
 </html>
