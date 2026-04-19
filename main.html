@@ -8,97 +8,179 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
+        /* --- GIỮ NGUYÊN CẤU HÌNH GIAO DIỆN CỦA ĐẠO HỮU --- */
         :root {
             --gold: #ffd700;
-            --dark-bg: rgba(10, 10, 10, 0.95);
+            --dark-bg: rgba(10, 10, 10, 0.9);
             --border-color: rgba(255, 215, 0, 0.3);
         }
 
         body {
-            margin: 0; padding: 0;
+            margin: 0;
+            padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #e0e0e0;
             min-height: 100vh;
-            /* Thay link ảnh nền tại đây hoặc để file anhnen.png cùng thư mục */
-            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), 
-                        url('anhnen.png'), url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            /* Sửa để load ảnh nền và thêm ảnh dự phòng nếu ko tìm thấy file */
+            background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), 
+                        url('anhnen.png'), url('https://images.unsplash.com/photo-1614850523296-d8c1af93d400?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }
 
         header {
-            display: flex; align-items: center; padding: 15px 40px;
-            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            padding: 15px 40px;
+            background: rgba(0, 0, 0, 0.6);
             border-bottom: 2px solid var(--gold);
             box-shadow: 0 2px 15px rgba(0,0,0,0.5);
         }
-        header img { height: 60px; margin-right: 20px; filter: drop-shadow(0 0 5px var(--gold)); }
-        header h1 { color: var(--gold); font-weight: 800; margin: 0; letter-spacing: 3px; text-transform: uppercase; }
+        header img { height: 70px; margin-right: 25px; filter: drop-shadow(0 0 5px var(--gold)); }
+        header h1 {
+            color: var(--gold);
+            font-weight: 800;
+            margin: 0;
+            text-shadow: 2px 2px 8px #000;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
 
-        .main-container { display: flex; margin: 30px auto; padding: 0 30px; max-width: 1400px; gap: 25px; }
+        .main-container {
+            display: flex;
+            margin: 30px auto;
+            padding: 0 30px;
+            max-width: 1400px;
+            gap: 25px;
+        }
 
         .sidebar {
-            width: 280px; background: var(--dark-bg); border-radius: 15px;
-            padding: 20px; border: 1px solid var(--border-color);
-            height: fit-content; position: sticky; top: 20px;
+            width: 280px;
+            background: var(--dark-bg);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
         }
         .nav-link {
-            color: #bbb; margin-bottom: 10px; cursor: pointer; text-align: left;
-            border-left: 4px solid transparent; transition: all 0.3s; width: 100%;
-            background: rgba(255,255,255,0.03); padding: 12px 20px; font-weight: 600; border-radius: 0 8px 8px 0;
+            color: #bbb;
+            margin-bottom: 12px;
+            cursor: pointer;
+            text-align: left;
+            border-left: 4px solid transparent;
+            transition: all 0.3s ease;
+            width: 100%;
+            background: rgba(255,255,255,0.03);
+            border-top: none; border-right: none; border-bottom: none;
+            padding: 12px 20px;
+            font-weight: 600;
+            border-radius: 0 8px 8px 0;
         }
         .nav-link:hover, .nav-link.active {
-            color: var(--gold) !important; background: rgba(255, 215, 0, 0.1);
-            border-left: 4px solid var(--gold); transform: translateX(5px);
+            color: var(--gold) !important;
+            background: rgba(255, 215, 0, 0.1);
+            border-left: 4px solid var(--gold);
+            transform: translateX(5px);
         }
+        .nav-link i { margin-right: 12px; width: 20px; text-align: center; }
 
         .content-area {
-            flex: 1; background: var(--dark-bg); border-radius: 15px;
-            padding: 40px; border: 1px solid var(--border-color);
-            min-height: 700px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            flex: 1;
+            background: var(--dark-bg);
+            border-radius: 15px;
+            padding: 40px;
+            border: 1px solid var(--border-color);
+            min-height: 750px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
         }
-        .tab-content { display: none; animation: fadeIn 0.5s ease; }
+        .tab-content { display: none; animation: fadeIn 0.6s ease; }
         .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Nhiệm vụ */
+        .mission-list { display: flex; flex-direction: column; gap: 20px; }
         .mission-card {
-            display: flex; background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 215, 0, 0.15); border-radius: 12px;
-            position: relative; overflow: hidden; cursor: pointer; transition: 0.3s; margin-bottom: 15px;
+            display: flex;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: 0.3s;
         }
-        .mission-card:hover { border-color: var(--gold); background: rgba(255, 255, 255, 0.08); }
-        .mission-img { width: 120px; height: 120px; object-fit: cover; border-right: 1px solid var(--border-color); }
-        .mission-info { padding: 15px 20px; }
-        .mission-info h3 { color: var(--gold); font-size: 1.1rem; margin-bottom: 5px; }
+        .mission-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--gold);
+            transform: scale(1.01);
+        }
+        .mission-img { width: 140px; height: 140px; object-fit: cover; border-right: 1px solid var(--border-color); }
+        .mission-info { padding: 20px; flex: 1; }
+        .mission-info h3 { color: var(--gold); text-transform: uppercase; font-size: 1.25rem; margin-bottom: 8px; }
+        .desc-short { 
+            font-size: 0.95rem; color: #ccc; 
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; 
+        }
 
         .ribbon {
-            position: absolute; top: 15px; right: -35px; transform: rotate(45deg);
-            width: 120px; text-align: center; font-weight: 800; font-size: 0.7rem; color: white;
+            position: absolute; top: 20px; right: -40px; transform: rotate(45deg);
+            width: 140px; text-align: center; font-weight: 800; font-size: 0.75rem;
+            color: white; box-shadow: 0 3px 6px rgba(0,0,0,0.4); z-index: 10;
         }
         .ribbon.so { background: #28a745; }
         .ribbon.trung { background: #007bff; }
         .ribbon.cao { background: #ffc107; color: black; }
         .ribbon.thien { background: #dc3545; }
 
-        /* Modal */
+        .kpi-card {
+            display: flex; background: rgba(255,255,255,0.05); border: 1px solid var(--gold);
+            border-radius: 12px; position: relative; overflow: hidden;
+        }
+        .kpi-img { width: 160px; height: 160px; object-fit: cover; border-right: 1px solid var(--gold); }
+        .ribbon-kpi {
+            position: absolute; top: 18px; right: -45px; transform: rotate(45deg);
+            width: 160px; text-align: center; font-weight: bold; font-size: 0.75rem; color: white;
+        }
+
+        .benefit-card {
+            padding: 25px; border-radius: 15px; border: 1px solid var(--border-color); height: 100%;
+            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(0,0,0,0.2));
+            transition: 0.3s;
+        }
+        .benefit-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(255, 215, 0, 0.1); }
+        .benefit-card h3 { border-bottom: 1px solid var(--gold); padding-bottom: 15px; margin-bottom: 20px; }
+
+        @keyframes sparkle { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .top1-sparkle {
+            background: linear-gradient(90deg, #ffd700, #fff700, #ffec8b, #ffd700);
+            background-size: 300% 300%;
+            animation: sparkle 3s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800; font-size: 1.2rem;
+        }
+        .top1-sparkle::before { content: "👑 "; -webkit-text-fill-color: initial; }
+
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.92); backdrop-filter: blur(10px);
             z-index: 9999; display: none; justify-content: center; align-items: center;
         }
         .modal-box {
-            background: #111; border: 2px solid var(--gold); padding: 30px;
-            border-radius: 15px; width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto;
+            background: #111; border: 2px solid var(--gold); padding: 35px;
+            border-radius: 20px; width: 90%; max-width: 650px;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
+            max-height: 90vh; overflow-y: auto;
         }
-        .auth-input { background: #222 !important; border: 1px solid var(--gold) !important; color: white !important; margin-bottom: 10px; }
-        
-        .top1-sparkle { color: var(--gold); font-weight: 800; text-shadow: 0 0 10px var(--gold); }
 
-        #source-export-area {
-            background: #000; color: #0f0; font-family: monospace; font-size: 12px;
-            width: 100%; height: 200px; margin-top: 15px; padding: 10px; border: 1px solid #333;
+        .auth-input { background: #222 !important; border: 1px solid var(--gold) !important; color: white !important; }
+        .auth-input:focus { box-shadow: 0 0 10px var(--gold) !important; }
+        
+        #export-area {
+            background: #000; color: #0f0; font-family: monospace; font-size: 11px;
+            width: 100%; height: 150px; margin-top: 15px; border: 1px solid #333;
         }
     </style>
 </head>
@@ -106,31 +188,32 @@
 
 <div id="authOverlay" class="modal-overlay" style="display: flex;">
     <div class="modal-box text-center">
-        <h2 id="authTitle" style="color: var(--gold);">ĐĂNG NHẬP TÔNG MÔN</h2>
+        <h2 id="authTitle" style="color: var(--gold); letter-spacing: 2px;">ĐĂNG NHẬP TÔNG MÔN</h2>
         <div id="loginForm" class="mt-4">
-            <input type="text" id="username" class="form-control auth-input" placeholder="Danh tánh đệ tử">
-            <input type="password" id="password" class="form-control auth-input" placeholder="Mật mã">
-            <button class="btn btn-warning w-100 fw-bold" onclick="handleLogin()">VÀO TÔNG MÔN</button>
-            <p onclick="toggleAuth(true)" class="mt-3 text-secondary" style="cursor:pointer;">Chưa có danh tánh? <span class="text-warning">Đăng ký</span></p>
+            <input type="text" id="username" class="form-control auth-input mb-3" placeholder="Danh tánh đệ tử">
+            <input type="password" id="password" class="form-control auth-input mb-3" placeholder="Mật mã">
+            <button class="btn btn-warning w-100 fw-bold py-2" onclick="handleLogin()">VÀO TÔNG MÔN</button>
+            <p onclick="toggleAuth(true)" class="mt-4 text-secondary" style="cursor:pointer;">Chưa có danh tánh? <span class="text-warning">Đăng ký tại đây</span></p>
         </div>
         <div id="registerForm" class="mt-4" style="display: none;">
-            <input type="text" id="regUser" class="form-control auth-input" placeholder="Tên đệ tử mới">
-            <input type="password" id="regPass" class="form-control auth-input" placeholder="Mật mã">
-            <button class="btn btn-success w-100 fw-bold" onclick="handleRegister()">KHỞI TẠO</button>
-            <p onclick="toggleAuth(false)" class="mt-3 text-secondary" style="cursor:pointer;">Đã có tài khoản? <span class="text-success">Đăng nhập</span></p>
+            <input type="text" id="regUser" class="form-control auth-input mb-2" placeholder="Tên đệ tử mới">
+            <input type="password" id="regPass" class="form-control auth-input mb-2" placeholder="Mật mã">
+            <input type="password" id="regPassConfirm" class="form-control auth-input mb-3" placeholder="Nhập lại mật mã">
+            <button class="btn btn-success w-100 fw-bold py-2" onclick="handleRegister()">KHỞI TẠO DANH TÁNH</button>
+            <p onclick="toggleAuth(false)" class="mt-4 text-secondary" style="cursor:pointer;">Đã có tài khoản? <span class="text-success">Quay lại đăng nhập</span></p>
         </div>
     </div>
 </div>
 
 <header>
-    <img src="logo.png" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3516/3516358.png'">
+    <img src="logo.png" alt="Lạc Vân Tông" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3516/3516358.png'">
     <h1>Lạc Vân Tông</h1>
 </header>
 
 <div class="main-container">
     <div class="sidebar">
         <button class="nav-link active" onclick="openTab('nhiem-vu')"><i class="fas fa-scroll"></i> Nhiệm vụ</button>
-        <button class="nav-link" onclick="openTab('kpi')"><i class="fas fa-chart-line"></i> KPI</button>
+        <button class="nav-link" onclick="openTab('kpi')"><i class="fas fa-chart-line"></i> KPI Hàng Tuần</button>
         <button class="nav-link" onclick="openTab('quyen-loi')"><i class="fas fa-crown"></i> Quyền lợi</button>
         <button class="nav-link" onclick="openTab('to-cao')"><i class="fas fa-gavel"></i> Tố cáo</button>
         <button class="nav-link" onclick="openTab('thanh-vien')"><i class="fas fa-users"></i> Thành viên</button>
@@ -139,56 +222,61 @@
 
     <div class="content-area">
         <div id="nhiem-vu" class="tab-content active">
-            <div class="d-flex justify-content-between mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="text-warning">NHIỆM VỤ TÔNG MÔN</h2>
-                <button id="adminBtn" class="btn btn-danger btn-sm fw-bold" style="display:none;" onclick="showAdminPanel()">QUẢN TRỊ</button>
+                <button id="adminBtn" class="btn btn-danger fw-bold" style="display:none;" onclick="showAdminPanel()">QUẢN TRỊ</button>
             </div>
-            <div id="mission-list-container"></div>
+            <div id="mission-list-container" class="mission-list"></div>
         </div>
 
         <div id="kpi" class="tab-content">
             <h2 class="text-warning mb-4">KPI HÀNG TUẦN</h2>
-            <p class="text-secondary">Chỉ tiêu rèn luyện cho các phân đội.</p>
-            <div id="kpi-display-area" class="border border-secondary p-4 rounded">
-                <h5>Đội Linh Thạch: Gom 5000 viên (Tuần 1) - <span class="text-success">Hoàn thành</span></h5>
+            <div class="d-flex gap-4">
+                <div class="nav flex-column nav-pills border-end pe-4 border-secondary" style="min-width: 180px;">
+                    <button class="nav-link mb-2 active" onclick="changeKPITeam('linh-thach')">Đội Linh Thạch</button>
+                    <button class="nav-link mb-2" onclick="changeKPITeam('linh-thao')">Đội Linh Thảo</button>
+                </div>
+                <div class="flex-grow-1">
+                    <div id="kpi-display-area"></div>
+                </div>
             </div>
         </div>
 
         <div id="quyen-loi" class="tab-content">
-            <h2 class="text-warning mb-4">PHÚC LỢI</h2>
-            <div class="row g-3">
-                <div class="col-md-6"><div class="p-3 border rounded"><h5>Nội Môn</h5><p>3 Ngục thần/tuần, ưu tiên đan dược.</p></div></div>
-                <div class="col-md-6"><div class="p-3 border rounded"><h5>Ngoại Môn</h5><p>3 Tàn tích/tuần.</p></div></div>
+            <h2 class="text-warning mb-4">PHÚC LỢI TÔNG MÔN</h2>
+            <div class="row g-4">
+                <div class="col-md-6"><div class="benefit-card"><h3>NỘI MÔN</h3><ul><li>3 lần Ngục Thần/tuần</li></ul></div></div>
+                <div class="col-md-6"><div class="benefit-card"><h3>NGOẠI MÔN</h3><ul><li>3 lần Tàn Tích/tuần</li></ul></div></div>
             </div>
         </div>
 
         <div id="to-cao" class="tab-content">
-            <h2 class="text-danger mb-4">CHẤP PHÁP ĐƯỜNG</h2>
-            <div class="bg-dark p-3 rounded border border-danger mb-4">
-                <input type="text" id="repAccused" class="form-control auth-input" placeholder="Tên người vi phạm">
-                <textarea id="repReason" class="form-control auth-input" placeholder="Chứng cứ / Lý do"></textarea>
-                <button class="btn btn-danger w-100" onclick="sendReport()">GỬI SỚ TỐ CÁO</button>
+            <h2 class="text-danger mb-4">TỐ CÁO & KỶ LUẬT</h2>
+            <div class="bg-dark p-4 rounded border border-danger shadow-sm">
+                <input type="text" id="repAccused" class="form-control auth-input mb-2" placeholder="Người vi phạm">
+                <textarea id="repReason" class="form-control auth-input mb-3" placeholder="Lý do"></textarea>
+                <button class="btn btn-danger fw-bold w-100" onclick="sendReport()">GỬI SỚ</button>
             </div>
         </div>
 
         <div id="thanh-vien" class="tab-content">
-            <h2 class="text-warning mb-4 text-center">DANH SÁCH ĐỆ TỬ</h2>
+            <h2 class="text-warning mb-5 text-center">DANH SÁCH ĐỆ TỬ</h2>
             <div class="row">
-                <div class="col-md-6">
-                    <h4 class="text-danger border-bottom pb-2">NỘI MÔN</h4>
-                    <ul id="list-noi-mon" class="list-unstyled"></ul>
+                <div class="col-md-6 border-end border-secondary">
+                    <h4 class="text-danger text-center border-bottom pb-3 mb-4">NỘI MÔN</h4>
+                    <ul id="list-noi-mon" class="list-group list-group-flush bg-transparent"></ul>
                 </div>
                 <div class="col-md-6">
-                    <h4 class="text-info border-bottom pb-2">NGOẠI MÔN</h4>
-                    <ul id="list-ngoai-mon" class="list-unstyled"></ul>
+                    <h4 class="text-info text-center border-bottom pb-3 mb-4">NGOẠI MÔN</h4>
+                    <ul id="list-ngoai-mon" class="list-group list-group-flush bg-transparent"></ul>
                 </div>
             </div>
         </div>
 
         <div id="bxh" class="tab-content">
-            <h2 class="text-warning mb-4 text-center">TOP 10 CỐNG HIẾN</h2>
-            <table class="table table-dark">
-                <thead><tr><th>HẠNG</th><th>ĐỆ TỬ</th><th>ĐIỂM</th></tr></thead>
+            <h2 class="text-warning mb-4 text-center">TOP 10 TU VI BẢNG</h2>
+            <table class="table table-dark table-hover">
+                <thead><tr class="text-warning"><th>HẠNG</th><th>ĐỆ TỬ</th><th>ĐIỂM</th></tr></thead>
                 <tbody id="bxh-body"></tbody>
             </table>
         </div>
@@ -197,216 +285,163 @@
 
 <div id="missionModal" class="modal-overlay" onclick="this.style.display='none'">
     <div class="modal-box" onclick="event.stopPropagation()">
-        <h3 id="m-title" class="text-warning"></h3>
-        <p id="m-desc" class="mt-3"></p>
-        <hr class="border-secondary">
-        <p><strong>Yêu cầu:</strong> <span id="m-req"></span></p>
-        <p><strong>Phần thưởng:</strong> <span id="m-reward" class="text-success"></span></p>
-        <button class="btn btn-warning w-100 mt-3" onclick="confirmTakeMission()">NHẬN LỆNH</button>
+        <h2 id="m-title" style="color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 10px;"></h2>
+        <div class="mt-4">
+            <p id="m-desc" class="text-secondary"></p>
+            <p><strong>Cấp:</strong> <span id="m-rank"></span></p>
+            <p><strong>Thưởng:</strong> <span id="m-reward" class="text-success fw-bold"></span></p>
+        </div>
+        <button class="btn btn-warning w-100 fw-bold py-2 mt-2" onclick="confirmTakeMission()">NHẬN NHIỆM VỤ</button>
     </div>
 </div>
 
 <div id="adminModal" class="modal-overlay" onclick="this.style.display='none'">
-    <div class="modal-box" style="max-width: 800px;" onclick="event.stopPropagation()">
-        <h3 class="text-danger border-bottom pb-2">QUẢN TRỊ VIÊN</h3>
+    <div class="modal-box" style="max-width: 750px;" onclick="event.stopPropagation()">
+        <h3 class="text-danger border-bottom pb-2 mb-4">BẢNG QUẢN TRỊ TRƯỞNG LÃO</h3>
         
-        <div class="row mt-3">
-            <div class="col-md-6">
-                <h6>THÊM NHIỆM VỤ</h6>
-                <input type="text" id="adm-m-name" class="form-control auth-input" placeholder="Tên NV">
-                <select id="adm-m-rank" class="form-control auth-input">
-                    <option value="so">Sơ</option><option value="trung">Trung</option>
-                    <option value="cao">Cao</option><option value="thien">Thiên</option>
-                </select>
-                <input type="text" id="adm-m-reward" class="form-control auth-input" placeholder="Thưởng (VD: 5 điểm)">
-                <textarea id="adm-m-desc" class="form-control auth-input" placeholder="Mô tả ngắn"></textarea>
-                <button class="btn btn-info btn-sm w-100" onclick="adminAddMission()">THÊM VÀO DANH SÁCH</button>
+        <div class="row">
+            <div class="col-md-6 border-end border-secondary">
+                <h6 class="text-info">THÊM NHIỆM VỤ</h6>
+                <input type="text" id="add-m-name" class="form-control auth-input mb-2" placeholder="Tên nhiệm vụ">
+                <textarea id="add-m-desc" class="form-control auth-input mb-2" placeholder="Mô tả"></textarea>
+                <input type="text" id="add-m-reward" class="form-control auth-input mb-2" placeholder="Thưởng (VD: 5 điểm)">
+                <button class="btn btn-info btn-sm w-100" onclick="saveAdminMission()">THÊM NV</button>
             </div>
             <div class="col-md-6">
-                <h6>CỘNG ĐIỂM BXH / THÀNH VIÊN</h6>
-                <input type="text" id="adm-user-name" class="form-control auth-input" placeholder="Tên đệ tử">
-                <input type="number" id="adm-user-score" class="form-control auth-input" placeholder="Số điểm cộng thêm">
-                <div class="d-flex gap-2">
-                    <button class="btn btn-success btn-sm w-50" onclick="adminAddScore()">CỘNG ĐIỂM</button>
-                    <button class="btn btn-primary btn-sm w-50" onclick="adminAddMember()">THÊM TV</button>
+                <h6 class="text-success">CỘNG ĐIỂM / THÀNH VIÊN</h6>
+                <input type="text" id="finishUser" class="form-control auth-input mb-2" placeholder="Tên đệ tử">
+                <input type="number" id="finishPoint" class="form-control auth-input mb-2" placeholder="Số điểm">
+                <div class="d-flex gap-1">
+                    <button class="btn btn-success btn-sm w-50" onclick="processAddPoints()">CỘNG ĐIỂM</button>
+                    <button class="btn btn-primary btn-sm w-50" onclick="addSectMember()">THÊM TV</button>
                 </div>
             </div>
         </div>
 
-        <div class="mt-4 p-3 border border-warning">
-            <h6 class="text-warning">CÔNG CỤ XUẤT MÃ NGUỒN (LƯU VĨNH VIỄN)</h6>
-            <p class="small">Sau khi sửa xong, nhấn nút dưới, copy code và dán đè vào file HTML của bạn.</p>
-            <button class="btn btn-warning btn-sm fw-bold w-100" onclick="exportNewSource()">TẠO MÃ NGUỒN CẬP NHẬT</button>
-            <textarea id="source-export-area" readonly placeholder="Mã nguồn sẽ xuất hiện tại đây..."></textarea>
+        <div class="mt-4 p-3 border border-warning rounded">
+            <h6 class="text-warning">XUẤT MÃ NGUỒN CẬP NHẬT (LƯU VĨNH VIỄN)</h6>
+            <p class="small text-secondary">Sửa xong hãy nhấn nút này, copy code và dán vào file HTML của đạo hữu.</p>
+            <button class="btn btn-warning btn-sm w-100 fw-bold" onclick="exportCode()">TẠO MÃ NGUỒN MỚI</button>
+            <textarea id="export-area" readonly placeholder="Mã nguồn mới sẽ hiện ở đây..."></textarea>
         </div>
     </div>
 </div>
 
 <script>
-    // ==========================================
-    // DỮ LIỆU GỐC - BẠN SẼ SỬA Ở ĐÂY HOẶC QUA ADMIN
-    // ==========================================
-    let SECT_DATA = {
-        missions: [
-            { name: "TRUY TÌM LINH THẢO", rank: "so", rankText: "Sơ", desc: "Hái 10 ngọn Ngưng Lộ tại chân núi.", req: "Ngoại môn", reward: "2 điểm" },
-            { name: "TRẤN ÁP MA THÚ", rank: "thien", rankText: "Thiên", desc: "Tiêu diệt Ma Viên tại Cấm Địa.", req: "Nội môn", reward: "10 điểm" }
-        ],
-        members: {
-            inner: ["minertiti - Tông Chủ", "Đạo Hữu A - Trưởng Lão"],
-            outer: ["Đệ Tử Y - Ngoại Môn"]
-        },
-        scores: {
-            "minertiti": 1000,
-            "Đạo Hữu A": 500
-        }
-    };
-
-    const WEBHOOK_MISSION = 'https://discord.com/api/webhooks/1495146134388080713/yqj8UnvCnB1zLUkn9sBZmDI_l7p-TPP6iyCWvMkdyc3WxTPNvQWEbL5qmysrh_O1KEtC';
-
-    // Khởi tạo từ LocalStorage nếu có, không thì dùng SECT_DATA gốc
-    let currentData = JSON.parse(localStorage.getItem('LacVanTong_Data')) || SECT_DATA;
+    // --- DỮ LIỆU GỐC (BẠN SỬA Ở ĐÂY HOẶC QUA BẢNG ADMIN RỒI XUẤT CODE) ---
+    const SECT_MEMBERS_INNER = ["minertiti - Tông Chủ", "Đạo Hữu A - Trưởng Lão", "Đệ Tử X - Đại Đệ Tử"];
+    const SECT_MEMBERS_OUTER = ["Đệ Tử Y - Ngoại Môn", "Tân Thủ Z - Ngoại Môn"];
+    const DEFAULT_MISSIONS = [
+        { name: "TRUY TÌM LINH THẢO", rank: "so", rankText: "Sơ", desc: "Hái 10 ngọn Ngưng Lộ tại chân núi.", req: "Ngoại môn", reward: "2 điểm", img: "logo.png" },
+        { name: "TRẤN ÁP MA THÚ", rank: "thien", rankText: "Thiên", desc: "Tiêu diệt Ma Viên tại Cấm Địa.", req: "Nội môn", reward: "10 điểm", img: "logo.png" }
+    ];
+    const PERSISTENT_BXH = {"minertiti": 50, "Đạo Hữu A": 20};
 
     // --- LOGIC HỆ THỐNG ---
-    function toggleAuth(isReg) {
-        document.getElementById('loginForm').style.display = isReg ? 'none' : 'block';
-        document.getElementById('registerForm').style.display = isReg ? 'block' : 'none';
-    }
-
-    function handleLogin() {
-        const u = document.getElementById('username').value.trim();
-        if(u) {
-            localStorage.setItem('currentUser', u);
-            location.reload();
-        }
-    }
-
-    function handleRegister() {
-        const u = document.getElementById('regUser').value.trim();
-        if(u) {
-            localStorage.setItem('currentUser', u);
-            location.reload();
-        }
-    }
+    let currentMissions = [...DEFAULT_MISSIONS];
+    let currentInner = [...SECT_MEMBERS_INNER];
+    let currentOuter = [...SECT_MEMBERS_OUTER];
+    let bxh = {...PERSISTENT_BXH};
 
     function openTab(id) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         event.currentTarget.classList.add('active');
-        if(id === 'bxh') renderBXH();
-        if(id === 'thanh-vien') renderMembers();
+        if(id === 'bxh') updateBXHDisplay();
+        if(id === 'thanh-vien') renderSectMembers();
         if(id === 'nhiem-vu') renderMissions();
     }
 
-    // --- RENDER DỮ LIỆU ---
     function renderMissions() {
         const container = document.getElementById('mission-list-container');
-        container.innerHTML = currentData.missions.map(m => `
-            <div class="mission-card" onclick="showMissionDetail('${m.name}')">
-                <img src="logo.png" class="mission-img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3516/3516358.png'">
-                <div class="mission-info">
-                    <h3>${m.name}</h3>
-                    <p class="small text-secondary">${m.desc}</p>
-                </div>
-                <div class="ribbon ${m.rank}">${m.rankText.toUpperCase()}</div>
+        container.innerHTML = currentMissions.map(m => `
+            <div class="mission-card" onclick="openMissionModal('${m.name}', '${m.rankText}', '${m.desc}', '${m.reward}')">
+                <img src="${m.img}" class="mission-img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3516/3516358.png'">
+                <div class="mission-info"><h3>${m.name}</h3><p class="desc-short">${m.desc}</p></div>
+                <div class="ribbon ${m.rank || 'so'}">${(m.rankText || 'Sơ').toUpperCase()}</div>
             </div>
         `).join('');
     }
 
-    function showMissionDetail(name) {
-        const m = currentData.missions.find(x => x.name === name);
-        document.getElementById('m-title').innerText = m.name;
-        document.getElementById('m-desc').innerText = m.desc;
-        document.getElementById('m-req').innerText = m.req;
-        document.getElementById('m-reward').innerText = m.reward;
+    function openMissionModal(name, rank, desc, reward) {
+        document.getElementById('m-title').innerText = name;
+        document.getElementById('m-rank').innerText = rank;
+        document.getElementById('m-desc').innerText = desc;
+        document.getElementById('m-reward').innerText = reward;
         document.getElementById('missionModal').style.display = 'flex';
     }
 
-    function renderMembers() {
-        document.getElementById('list-noi-mon').innerHTML = currentData.members.inner.map(m => `<li class="mb-1">● ${m}</li>`).join('');
-        document.getElementById('list-ngoai-mon').innerHTML = currentData.members.outer.map(m => `<li class="mb-1">○ ${m}</li>`).join('');
+    function renderSectMembers() {
+        document.getElementById('list-noi-mon').innerHTML = currentInner.map(m => `<li class="list-group-item bg-transparent text-white border-0">● ${m}</li>`).join('');
+        document.getElementById('list-ngoai-mon').innerHTML = currentOuter.map(m => `<li class="list-group-item bg-transparent text-white border-0">○ ${m}</li>`).join('');
     }
 
-    function renderBXH() {
+    function updateBXHDisplay() {
         const body = document.getElementById('bxh-body');
-        const sorted = Object.entries(currentData.scores).sort((a,b) => b[1] - a[1]);
-        body.innerHTML = sorted.map(([name, score], i) => `
-            <tr>
-                <td>${i+1}</td>
-                <td class="${i===0?'top1-sparkle':''}">${name}</td>
-                <td class="text-warning">${score}</td>
-            </tr>
-        `).join('');
+        let sorted = Object.entries(bxh).sort((a,b) => b[1] - a[1]);
+        body.innerHTML = sorted.map(([name, pts], i) => `
+            <tr><td>${i+1}</td><td class="${i === 0 ? 'top1-sparkle' : ''}">${name}</td><td class="text-warning fw-bold">${pts}</td></tr>
+        `).join('') || '<tr><td colspan="3" class="text-center">Chưa có bảng danh.</td></tr>';
     }
 
-    // --- ADMIN ACTIONS ---
+    // --- QUẢN TRỊ ---
     function showAdminPanel() { document.getElementById('adminModal').style.display = 'flex'; }
 
-    function adminAddMission() {
-        const name = document.getElementById('adm-m-name').value;
+    function saveAdminMission() {
+        const name = document.getElementById('add-m-name').value;
         if(!name) return;
-        currentData.missions.push({
-            name: name,
-            rank: document.getElementById('adm-m-rank').value,
-            rankText: document.getElementById('adm-m-rank').options[document.getElementById('adm-m-rank').selectedIndex].text,
-            desc: document.getElementById('adm-m-desc').value,
-            req: "Tự do",
-            reward: document.getElementById('adm-m-reward').value
-        });
-        saveData();
+        currentMissions.push({ name: name.toUpperCase(), rank: "so", rankText: "Sơ", desc: document.getElementById('add-m-desc').value, reward: document.getElementById('add-m-reward').value, img: 'logo.png' });
         renderMissions();
         alert("Đã thêm nhiệm vụ!");
     }
 
-    function adminAddScore() {
-        const u = document.getElementById('adm-user-name').value;
-        const s = parseInt(document.getElementById('adm-user-score').value);
-        if(!u || isNaN(s)) return;
-        currentData.scores[u] = (currentData.scores[u] || 0) + s;
-        saveData();
-        alert("Đã cộng điểm!");
+    function processAddPoints() {
+        const u = document.getElementById('finishUser').value;
+        const p = parseInt(document.getElementById('finishPoint').value);
+        if(!u || isNaN(p)) return;
+        bxh[u] = (bxh[u] || 0) + p;
+        alert(`Đã cộng ${p} điểm!`);
     }
 
-    function adminAddMember() {
-        const u = document.getElementById('adm-user-name').value;
+    function addSectMember() {
+        const u = document.getElementById('finishUser').value;
         if(!u) return;
-        currentData.members.outer.push(u);
-        saveData();
-        alert("Đã thêm vào Ngoại môn!");
+        currentOuter.push(u + " - Ngoại Môn");
+        alert("Đã thêm vào Ngoại Môn!");
     }
 
-    function saveData() {
-        localStorage.setItem('LacVanTong_Data', JSON.stringify(currentData));
+    // --- HÀM XUẤT MÃ NGUỒN VĨNH CỬU ---
+    function exportCode() {
+        let fullSource = document.documentElement.outerHTML;
+        
+        // Thay thế các mảng dữ liệu trong code bằng dữ liệu hiện tại
+        const innerStr = `const SECT_MEMBERS_INNER = ${JSON.stringify(currentInner)};`;
+        const outerStr = `const SECT_MEMBERS_OUTER = ${JSON.stringify(currentOuter)};`;
+        const missionStr = `const DEFAULT_MISSIONS = ${JSON.stringify(currentMissions)};`;
+        const bxhStr = `const PERSISTENT_BXH = ${JSON.stringify(bxh)};`;
+
+        let updatedSource = fullSource
+            .replace(/const SECT_MEMBERS_INNER = \[.*?\];/, innerStr)
+            .replace(/const SECT_MEMBERS_OUTER = \[.*?\];/, outerStr)
+            .replace(/const DEFAULT_MISSIONS = \[.*?\];/, missionStr)
+            .replace(/const PERSISTENT_BXH = \{.*?\};/, bxhStr);
+
+        document.getElementById('export-area').value = updatedSource;
+        alert("Đã tạo mã nguồn! Hãy Copy khung đen và dán đè vào file .html của bạn.");
     }
 
-    // --- CÔNG CỤ QUAN TRỌNG NHẤT: XUẤT MÃ NGUỒN ---
-    function exportNewSource() {
-        const fullHTML = document.documentElement.outerHTML;
-        // Tạo chuỗi JSON của dữ liệu hiện tại
-        const dataString = JSON.stringify(currentData, null, 4);
-        
-        // Tìm và thay thế biến SECT_DATA trong mã nguồn
-        const scriptRegex = /let SECT_DATA = \{[\s\S]*?\};/;
-        const newDataBlock = `let SECT_DATA = ${dataString};`;
-        
-        const updatedHTML = fullHTML.replace(scriptRegex, newDataBlock);
-        
-        document.getElementById('source-export-area').value = updatedHTML;
-        alert("Đã tạo mã nguồn mới! Hãy Copy toàn bộ trong khung đen và dán vào file .html của bạn.");
+    function handleLogin() {
+        const u = document.getElementById('username').value;
+        if(u) {
+            localStorage.setItem('currentUser', u);
+            location.reload();
+        }
     }
-
-    async function confirmTakeMission() {
-        const user = localStorage.getItem('currentUser') || "Ẩn danh";
-        const mName = document.getElementById('m-title').innerText;
-        try {
-            await fetch(WEBHOOK_MISSION, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({content: `📜 **${user}** đã nhận nhiệm vụ: **${mName}**`})
-            });
-            alert("Đã nhận lệnh!");
-            document.getElementById('missionModal').style.display = 'none';
-        } catch(e) { alert("Lỗi kết nối Discord!"); }
+    
+    function toggleAuth(isReg) {
+        document.getElementById('loginForm').style.display = isReg ? 'none' : 'block';
+        document.getElementById('registerForm').style.display = isReg ? 'block' : 'none';
     }
 
     window.onload = () => {
