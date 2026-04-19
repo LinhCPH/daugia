@@ -29,6 +29,7 @@
             background-attachment: fixed;
         }
 
+        /* Header */
         header {
             display: flex;
             align-items: center;
@@ -47,6 +48,7 @@
             text-transform: uppercase;
         }
 
+        /* Bố cục chính */
         .main-container {
             display: flex;
             margin: 30px auto;
@@ -55,6 +57,7 @@
             gap: 25px;
         }
 
+        /* Sidebar bên trái */
         .sidebar {
             width: 280px;
             background: var(--dark-bg);
@@ -87,6 +90,7 @@
         }
         .nav-link i { margin-right: 12px; width: 20px; text-align: center; }
 
+        /* Vùng nội dung bên phải */
         .content-area {
             flex: 1;
             background: var(--dark-bg);
@@ -100,6 +104,7 @@
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* --- PHẦN NHIỆM VỤ --- */
         .mission-list { display: flex; flex-direction: column; gap: 20px; }
         .mission-card {
             display: flex;
@@ -134,6 +139,7 @@
         .ribbon.cao { background: #ffc107; color: black; }
         .ribbon.thien { background: #dc3545; }
 
+        /* --- PHẦN KPI --- */
         .kpi-card {
             display: flex; background: rgba(255,255,255,0.05); border: 1px solid var(--gold);
             border-radius: 12px; position: relative; overflow: hidden;
@@ -144,6 +150,7 @@
             width: 160px; text-align: center; font-weight: bold; font-size: 0.75rem; color: white;
         }
 
+        /* --- QUYỀN LỢI --- */
         .benefit-card {
             padding: 25px; border-radius: 15px; border: 1px solid var(--border-color); height: 100%;
             background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(0,0,0,0.2));
@@ -152,6 +159,7 @@
         .benefit-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(255, 215, 0, 0.1); }
         .benefit-card h3 { border-bottom: 1px solid var(--gold); padding-bottom: 15px; margin-bottom: 20px; }
 
+        /* --- BẢNG XẾP HẠNG --- */
         @keyframes sparkle { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         .top1-sparkle {
             background: linear-gradient(90deg, #ffd700, #fff700, #ffec8b, #ffd700);
@@ -163,6 +171,7 @@
         }
         .top1-sparkle::before { content: "👑 "; -webkit-text-fill-color: initial; }
 
+        /* --- MODAL HỆ THỐNG --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.92); backdrop-filter: blur(10px);
@@ -177,7 +186,8 @@
 
         .auth-input { background: #222 !important; border: 1px solid var(--gold) !important; color: white !important; }
         .auth-input:focus { box-shadow: 0 0 10px var(--gold) !important; }
-        
+
+        /* Ô xuất mã nguồn */
         #export-area {
             background: #000; color: #0f0; font-family: monospace; font-size: 11px;
             width: 100%; height: 150px; margin-top: 15px; border: 1px solid #333;
@@ -303,6 +313,9 @@
             <div class="col-md-6 border-end border-secondary">
                 <h6 class="text-info">THÊM NHIỆM VỤ</h6>
                 <input type="text" id="add-m-name" class="form-control auth-input mb-2" placeholder="Tên nhiệm vụ">
+                <select id="add-m-rank-val" class="form-select auth-input mb-2">
+                    <option value="so">Sơ</option><option value="trung">Trung</option><option value="cao">Cao</option><option value="thien">Thiên</option>
+                </select>
                 <textarea id="add-m-desc" class="form-control auth-input mb-2" placeholder="Mô tả"></textarea>
                 <input type="text" id="add-m-reward" class="form-control auth-input mb-2" placeholder="Thưởng (VD: 5 điểm)">
                 <button class="btn btn-info btn-sm w-100" onclick="saveAdminMission()">THÊM NV</button>
@@ -311,16 +324,20 @@
                 <h6 class="text-success">CỘNG ĐIỂM / THÀNH VIÊN</h6>
                 <input type="text" id="finishUser" class="form-control auth-input mb-2" placeholder="Tên đệ tử">
                 <input type="number" id="finishPoint" class="form-control auth-input mb-2" placeholder="Số điểm">
+                <div class="d-flex gap-1 mb-3">
+                    <button class="btn btn-success btn-sm w-100" onclick="processAddPoints()">CỘNG ĐIỂM</button>
+                </div>
+                <h6 class="text-primary">QUẢN LÝ THÀNH VIÊN</h6>
                 <div class="d-flex gap-1">
-                    <button class="btn btn-success btn-sm w-50" onclick="processAddPoints()">CỘNG ĐIỂM</button>
-                    <button class="btn btn-primary btn-sm w-50" onclick="addSectMember()">THÊM TV</button>
+                    <button class="btn btn-danger btn-sm w-50" onclick="addSectMember('inner')">THÊM NỘI MÔN</button>
+                    <button class="btn btn-primary btn-sm w-50" onclick="addSectMember('outer')">THÊM NGOẠI MÔN</button>
                 </div>
             </div>
         </div>
 
         <div class="mt-4 p-3 border border-warning rounded">
             <h6 class="text-warning">XUẤT MÃ NGUỒN CẬP NHẬT (LƯU VĨNH VIỄN)</h6>
-            <p class="small text-secondary">Sửa xong hãy nhấn nút này, copy code và dán vào file HTML của đạo hữu.</p>
+            <p class="small text-secondary">Sau khi thêm xong, nhấn nút này và copy code dán đè vào file .html của bạn.</p>
             <button class="btn btn-warning btn-sm w-100 fw-bold" onclick="exportCode()">TẠO MÃ NGUỒN MỚI</button>
             <textarea id="export-area" readonly placeholder="Mã nguồn mới sẽ hiện ở đây..."></textarea>
         </div>
@@ -328,21 +345,16 @@
 </div>
 
 <script>
-    // --- DỮ LIỆU GỐC (BẠN SỬA Ở ĐÂY HOẶC QUA BẢNG ADMIN RỒI XUẤT CODE) ---
-    const SECT_MEMBERS_INNER = ["minertiti - Tông Chủ", "Đạo Hữu A - Trưởng Lão", "Đệ Tử X - Đại Đệ Tử"];
-    const SECT_MEMBERS_OUTER = ["Đệ Tử Y - Ngoại Môn", "Tân Thủ Z - Ngoại Môn"];
-    const DEFAULT_MISSIONS = [
+    // --- DỮ LIỆU GỐC (Sẽ được hàm Xuất Mã Nguồn ghi đè tự động) ---
+    let SECT_MEMBERS_INNER = ["minertiti - Tông Chủ", "Đạo Hữu A - Trưởng Lão", "Đệ Tử X - Đại Đệ Tử"];
+    let SECT_MEMBERS_OUTER = ["Đệ Tử Y - Ngoại Môn", "Tân Thủ Z - Ngoại Môn"];
+    let DEFAULT_MISSIONS = [
         { name: "TRUY TÌM LINH THẢO", rank: "so", rankText: "Sơ", desc: "Hái 10 ngọn Ngưng Lộ tại chân núi.", req: "Ngoại môn", reward: "2 điểm", img: "logo.png" },
         { name: "TRẤN ÁP MA THÚ", rank: "thien", rankText: "Thiên", desc: "Tiêu diệt Ma Viên tại Cấm Địa.", req: "Nội môn", reward: "10 điểm", img: "logo.png" }
     ];
-    const PERSISTENT_BXH = {"minertiti": 50, "Đạo Hữu A": 20};
+    let PERSISTENT_BXH = {"minertiti": 50, "Đạo Hữu A": 20};
 
     // --- LOGIC HỆ THỐNG ---
-    let currentMissions = [...DEFAULT_MISSIONS];
-    let currentInner = [...SECT_MEMBERS_INNER];
-    let currentOuter = [...SECT_MEMBERS_OUTER];
-    let bxh = {...PERSISTENT_BXH};
-
     function openTab(id) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
@@ -355,7 +367,7 @@
 
     function renderMissions() {
         const container = document.getElementById('mission-list-container');
-        container.innerHTML = currentMissions.map(m => `
+        container.innerHTML = DEFAULT_MISSIONS.map(m => `
             <div class="mission-card" onclick="openMissionModal('${m.name}', '${m.rankText}', '${m.desc}', '${m.reward}')">
                 <img src="${m.img}" class="mission-img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3516/3516358.png'">
                 <div class="mission-info"><h3>${m.name}</h3><p class="desc-short">${m.desc}</p></div>
@@ -373,13 +385,13 @@
     }
 
     function renderSectMembers() {
-        document.getElementById('list-noi-mon').innerHTML = currentInner.map(m => `<li class="list-group-item bg-transparent text-white border-0">● ${m}</li>`).join('');
-        document.getElementById('list-ngoai-mon').innerHTML = currentOuter.map(m => `<li class="list-group-item bg-transparent text-white border-0">○ ${m}</li>`).join('');
+        document.getElementById('list-noi-mon').innerHTML = SECT_MEMBERS_INNER.map(m => `<li class="list-group-item bg-transparent text-white border-0">● ${m}</li>`).join('');
+        document.getElementById('list-ngoai-mon').innerHTML = SECT_MEMBERS_OUTER.map(m => `<li class="list-group-item bg-transparent text-white border-0">○ ${m}</li>`).join('');
     }
 
     function updateBXHDisplay() {
         const body = document.getElementById('bxh-body');
-        let sorted = Object.entries(bxh).sort((a,b) => b[1] - a[1]);
+        let sorted = Object.entries(PERSISTENT_BXH).sort((a,b) => b[1] - a[1]).slice(0, 10);
         body.innerHTML = sorted.map(([name, pts], i) => `
             <tr><td>${i+1}</td><td class="${i === 0 ? 'top1-sparkle' : ''}">${name}</td><td class="text-warning fw-bold">${pts}</td></tr>
         `).join('') || '<tr><td colspan="3" class="text-center">Chưa có bảng danh.</td></tr>';
@@ -391,7 +403,15 @@
     function saveAdminMission() {
         const name = document.getElementById('add-m-name').value;
         if(!name) return;
-        currentMissions.push({ name: name.toUpperCase(), rank: "so", rankText: "Sơ", desc: document.getElementById('add-m-desc').value, reward: document.getElementById('add-m-reward').value, img: 'logo.png' });
+        const rank = document.getElementById('add-m-rank-val').value;
+        DEFAULT_MISSIONS.push({
+            name: name.toUpperCase(),
+            rank: rank,
+            rankText: document.getElementById('add-m-rank-val').options[document.getElementById('add-m-rank-val').selectedIndex].text,
+            desc: document.getElementById('add-m-desc').value,
+            reward: document.getElementById('add-m-reward').value,
+            img: 'logo.png'
+        });
         renderMissions();
         alert("Đã thêm nhiệm vụ!");
     }
@@ -400,32 +420,34 @@
         const u = document.getElementById('finishUser').value;
         const p = parseInt(document.getElementById('finishPoint').value);
         if(!u || isNaN(p)) return;
-        bxh[u] = (bxh[u] || 0) + p;
+        PERSISTENT_BXH[u] = (PERSISTENT_BXH[u] || 0) + p;
         alert(`Đã cộng ${p} điểm!`);
     }
 
-    function addSectMember() {
+    function addSectMember(type) {
         const u = document.getElementById('finishUser').value;
         if(!u) return;
-        currentOuter.push(u + " - Ngoại Môn");
-        alert("Đã thêm vào Ngoại Môn!");
+        if(type === 'inner') SECT_MEMBERS_INNER.push(u);
+        else SECT_MEMBERS_OUTER.push(u);
+        alert("Đã thêm thành viên!");
     }
 
-    // --- HÀM XUẤT MÃ NGUỒN VĨNH CỬU ---
+    // --- HÀM QUAN TRỌNG: XUẤT MÃ NGUỒN VĨNH CỬU ---
     function exportCode() {
         let fullSource = document.documentElement.outerHTML;
         
-        // Thay thế các mảng dữ liệu trong code bằng dữ liệu hiện tại
-        const innerStr = `const SECT_MEMBERS_INNER = ${JSON.stringify(currentInner)};`;
-        const outerStr = `const SECT_MEMBERS_OUTER = ${JSON.stringify(currentOuter)};`;
-        const missionStr = `const DEFAULT_MISSIONS = ${JSON.stringify(currentMissions)};`;
-        const bxhStr = `const PERSISTENT_BXH = ${JSON.stringify(bxh)};`;
+        // Tạo chuỗi thay thế chính xác
+        const innerStr = `let SECT_MEMBERS_INNER = ${JSON.stringify(SECT_MEMBERS_INNER)};`;
+        const outerStr = `let SECT_MEMBERS_OUTER = ${JSON.stringify(SECT_MEMBERS_OUTER)};`;
+        const missionStr = `let DEFAULT_MISSIONS = ${JSON.stringify(DEFAULT_MISSIONS)};`;
+        const bxhStr = `let PERSISTENT_BXH = ${JSON.stringify(PERSISTENT_BXH)};`;
 
+        // Tìm và thay thế các biến trong script
         let updatedSource = fullSource
-            .replace(/const SECT_MEMBERS_INNER = \[.*?\];/, innerStr)
-            .replace(/const SECT_MEMBERS_OUTER = \[.*?\];/, outerStr)
-            .replace(/const DEFAULT_MISSIONS = \[.*?\];/, missionStr)
-            .replace(/const PERSISTENT_BXH = \{.*?\};/, bxhStr);
+            .replace(/let SECT_MEMBERS_INNER = \[.*?\];/, innerStr)
+            .replace(/let SECT_MEMBERS_OUTER = \[.*?\];/, outerStr)
+            .replace(/let DEFAULT_MISSIONS = \[.*?\];/, missionStr)
+            .replace(/let PERSISTENT_BXH = \{.*?\};/, bxhStr);
 
         document.getElementById('export-area').value = updatedSource;
         alert("Đã tạo mã nguồn! Hãy Copy khung đen và dán đè vào file .html của bạn.");
@@ -433,10 +455,7 @@
 
     function handleLogin() {
         const u = document.getElementById('username').value;
-        if(u) {
-            localStorage.setItem('currentUser', u);
-            location.reload();
-        }
+        if(u) { localStorage.setItem('currentUser', u); location.reload(); }
     }
     
     function toggleAuth(isReg) {
